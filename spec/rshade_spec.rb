@@ -1,6 +1,11 @@
 RSpec.describe Rshade do
-  it "has a version number" do
-    expect(Rshade::VERSION).not_to be nil
+  subject { Rshade::Trace.new }
+
+  it "has a version number", focus: true do
+    subject.reveal do
+      TestRshade.new.some
+    end
+    binding.pry
   end
 
   it "does something useful" do

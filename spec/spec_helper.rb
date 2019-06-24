@@ -1,5 +1,7 @@
 require "bundler/setup"
 require "rshade"
+require 'fixture/test'
+Bundler.require(:test, :development)
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
