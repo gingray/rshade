@@ -19,8 +19,18 @@ module Rshade
       @tp.disable
     end
 
-    def show
-      @tree.to_s
+    def show(&block)
+      return print_tree(@tree.copy(&block)) if block_given?
+
+      print_tree(@tree)
+    end
+
+    def print_tree(root)
+      str = StringIO.new
+      Node.traverse(root) do |node, level|
+        str.write"#{' ' * level} #{node.value}\n"
+      end
+      str.string
     end
 
     def process_trace(tp)

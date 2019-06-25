@@ -12,12 +12,18 @@ module Rshade
       @nodes << node
     end
 
-    def to_s
-      str = StringIO.new
-      Node.traverse(self) do |node, level|
-        str.write"#{' ' * level} #{node.value}\n"
+    def copy(parent=nil, &block)
+      node = Node.new(parent)
+      if block_given?
+        nodes.select(&block).each do |item|
+          node.nodes << item.copy(node)
+        end
+      else
+        nodes.each do |item|
+          node.nodes << item.copy(node)
+        end
       end
-      str.string
+      node
     end
 
     def self.traverse(node, level = 0, &block)
@@ -26,6 +32,5 @@ module Rshade
       block.call(node, level)
       node.nodes.each { |leaf| traverse(leaf, level + 1, &block) }
     end
-
   end
 end
