@@ -15,7 +15,7 @@ module Rshade
     def to_s
       str = StringIO.new
       Node.traverse(self) do |node, level|
-        str.write"#{'' * level} #{node.value}\n"
+        str.write"#{' ' * level} #{node.value}\n"
       end
       str.string
     end
