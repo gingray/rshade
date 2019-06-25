@@ -3,7 +3,7 @@ module RShade
     attr_accessor :nodes, :value, :parent
 
     def initialize(parent, value=nil)
-      @nodes = []
+      @nodes = Set.new
       @value = value
       @parent = parent
     end
@@ -26,10 +26,22 @@ module RShade
       node
     end
 
+    def eql?(other)
+      value?.path == other.value?.path
+    end
+
+    def flatten
+      arr = []
+      traverse(self) do |node|
+        arr << node.value.path
+      end
+      arr.uniq
+    end
+
     def print_tree
       str = StringIO.new
       traverse(self) do |node|
-        str.write"#{' ' * node.value.level} #{node.value.path}\n"
+        str.write"#{node.value.level} #{node.value.path}\n"
       end
       str.string
     end
@@ -37,7 +49,7 @@ module RShade
     def traverse(node, &block)
       return unless block_given?
 
-      block.call(node, level)
+      block.call(node)
       node.nodes.each { |leaf| traverse(leaf, &block) }
     end
   end
