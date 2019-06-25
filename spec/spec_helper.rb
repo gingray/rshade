@@ -3,7 +3,33 @@ require "rshade"
 require 'fixture/test'
 Bundler.require(:test, :development)
 
+RSPEC_ROOT = File.dirname __FILE__
+
+module Helpers
+  def file_fixture_read(path)
+    absolute_path = File.join(RSPEC_ROOT,'fixture', path)
+    File.read(absolute_path)
+  end
+
+  def create_source_node(hash, parent = nil)
+    result = RShade::SourceNode.new(parent)
+    value = RShade::SourceValue.new
+    hash.each do |k, v|
+      value.level = v if k == 'level'
+      value.path = v if k == 'path'
+      next unless k == 'nodes'
+
+      v.each do |node|
+        result.nodes << create_source_node(node, result)
+      end
+    end
+    result.value = value
+    result
+  end
+end
+
 RSpec.configure do |config|
+  config.include Helpers
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 

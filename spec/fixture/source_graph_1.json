@@ -1,0 +1,24 @@
+{
+  "level": 0,
+  "path": "/home/test/.rvm/gems/ruby-2.3.8/gems/rspec-mocks-3.6.0/lib/rspec/mocks/order_group.rb",
+  "nodes": [
+    {
+      "level": 1,
+      "path": "/home/test/.rvm/gems/ruby-2.3.8/gems/rspec-mocks-3.6.0/lib/rspec/mocks/order_group.rb"
+    },
+    {
+      "level": 1,
+      "path": "/home/test/.rvm/gems/ruby-2.3.8/gems/rspec-mocks-3.6.0/lib/rspec/mocks/order_group.rb",
+      "nodes": [
+        {
+          "level": 2,
+          "path": "/home/test/web/test_app/app/models/store.rb"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "path": "/home/test/.rvm/gems/ruby-2.3.8/gems/rspec-mocks-3.6.0/lib/rspec/mocks/order_group.rb"
+    }
+  ]
+}

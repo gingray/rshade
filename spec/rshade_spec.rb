@@ -1,4 +1,4 @@
-RSpec.describe RShade, focus: true do
+RSpec.describe RShade do
   subject { RShade::Trace.new }
 
   it "has a version number", focus: true do
@@ -8,14 +8,14 @@ RSpec.describe RShade, focus: true do
   end
 
   it "check copy tree" do
-    node = RShade::Node.new(nil)
+    node = RShade::SourceNode.new(nil)
     5.times do |n|
-      item = RShade::Node.new(node)
+      item = RShade::SourceNode.new(node)
       item.value = n
       node.nodes << item
     end
 
-    copy = node.copy do |node|
+    copy = node.duplicate do |node|
       node.value >= 2
     end
     expect(copy.nodes.count).to eq 3
