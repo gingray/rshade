@@ -1,5 +1,5 @@
-RSpec.describe Rshade do
-  subject { Rshade::Trace.new }
+RSpec.describe RShade, focus: true do
+  subject { RShade::Trace.new }
 
   it "has a version number", focus: true do
     subject.reveal do
@@ -7,10 +7,10 @@ RSpec.describe Rshade do
     end
   end
 
-  it "check copy tree", focus: true do
-    node = Rshade::Node.new(nil)
+  it "check copy tree" do
+    node = RShade::Node.new(nil)
     5.times do |n|
-      item = Rshade::Node.new(node)
+      item = RShade::Node.new(node)
       item.value = n
       node.nodes << item
     end

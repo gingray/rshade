@@ -1,4 +1,4 @@
-module Rshade
+module RShade
   class Node
     attr_accessor :nodes, :value, :parent
 

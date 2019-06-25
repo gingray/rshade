@@ -5,7 +5,7 @@ require "rshade/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "rshade"
-  spec.version       = Rshade::VERSION
+  spec.version       = RShade::VERSION
   spec.authors       = ["Ivan Lopatin"]
   spec.email         = ["gingray.dev@gmail.com"]
 

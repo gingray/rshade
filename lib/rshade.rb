@@ -1,7 +1,7 @@
 require "rshade/tree"
 require "rshade/version"
 
-module Rshade
+module RShade
   class Trace
     EVENTS = %i[call return].freeze
 
