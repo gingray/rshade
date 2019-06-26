@@ -1,21 +1,23 @@
 module RShade
   class Trace
-    attr_accessor :source_tree
+    attr_accessor :source_tree, :open, :close, :set
     EVENTS = %i[call return].freeze
+    MAX = 20
 
     def initialize
-      @source_tree = SourceNode.new(nil, RShade::SourceValue.new)
-      @current_node = nil
+      @source_tree = SourceNode.new(nil, RShade::SourceValue.new(level:0))
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
-      @level = 0
       @filter = RShade::Filter.new
+      @stack = [@source_tree]
+      @find_user_code = false
+      @set = Set.new
     end
 
     def reveal
       return unless block_given?
-
       @tp.enable
       yield
+    ensure
       @tp.disable
     end
 
@@ -26,22 +28,27 @@ module RShade
     end
 
     def process_trace(tp)
-      @current_node ||= @source_tree
-      if tp.event == :call
-        return unless @filter.call(tp.path)
-
-        hash = { level: @level + 1, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method: tp.method_id }
-        value = SourceValue.new(hash)
-        node = SourceNode.new(@current_node, value)
-        @current_node.nodes << node
-        @current_node = node
+      unless @find_user_code
+        @set << tp.path
+        @find_user_code = @filter.call(tp.path)
       end
 
-       if tp.event == :return
-         return unless @filter.call(tp.path)
-         @level -= 1
-         @current_node = @current_node.parent
-       end
+      return unless @find_user_code
+
+      if tp.event == :call
+        parent = @stack.last
+        return unless parent && @stack.size < MAX
+
+        hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method: tp.method_id }
+        value = SourceValue.new(hash)
+        node = SourceNode.new(parent, value)
+        parent.add node
+        @stack.push node
+      end
+
+      if tp.event == :return
+        @stack.pop if @stack.size > 1
+      end
     end
   end
 end
