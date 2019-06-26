@@ -4,7 +4,7 @@ module RShade
     EVENTS = %i[call return].freeze
 
     def initialize
-      @source_tree = SourceNode.new(nil, RShade::SourceValue.new(1,''))
+      @source_tree = SourceNode.new(nil, RShade::SourceValue.new)
       @current_node = nil
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @level = 0
@@ -30,7 +30,8 @@ module RShade
       if tp.event == :call
         return unless @filter.call(tp.path)
 
-        value = SourceValue.new(@level + 1, tp.path)
+        hash = { level: @level + 1, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method: tp.method_id }
+        value = SourceValue.new(hash)
         node = SourceNode.new(@current_node, value)
         @current_node.nodes << node
         @current_node = node

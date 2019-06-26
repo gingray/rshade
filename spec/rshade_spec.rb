@@ -1,4 +1,4 @@
-RSpec.describe RShade do
+RSpec.describe RShade, focus: true do
   subject { RShade::Trace.new }
 
   it "has a version number", focus: true do

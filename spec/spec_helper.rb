@@ -14,15 +14,17 @@ module Helpers
   def create_source_node(hash, parent = nil)
     result = RShade::SourceNode.new(parent)
     value = RShade::SourceValue.new
+    hash = {}
     hash.each do |k, v|
-      value.level = v if k == 'level'
-      value.path = v if k == 'path'
+      hash[:level] = v if k == 'level'
+      hash[:path] = v if k == 'path'
       next unless k == 'nodes'
-
+      
       v.each do |node|
         result.nodes << create_source_node(node, result)
       end
     end
+    value.hash = hash
     result.value = value
     result
   end

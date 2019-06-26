@@ -33,7 +33,7 @@ module RShade
     def flatten
       arr = []
       traverse(self) do |node|
-        arr << node.value.path
+        arr << node.value.inspect
       end
       arr.uniq
     end
