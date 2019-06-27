@@ -13,7 +13,6 @@ module Helpers
 
   def create_source_node(hash, parent = nil)
     result = RShade::SourceNode.new(parent)
-    value = RShade::SourceValue.new
     hash_val = {}
     hash.each do |k, v|
       hash_val[:level] = v if k == 'level'
@@ -24,8 +23,7 @@ module Helpers
         result.nodes << create_source_node(node, result)
       end
     end
-    value.hash = hash
-    result.value = value
+    result.value = hash
     result
   end
 end

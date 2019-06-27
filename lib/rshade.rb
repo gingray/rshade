@@ -1,5 +1,5 @@
 require 'colorize'
-require "rshade/source_value"
+require "rshade/helper"
 require "rshade/source_node"
 require "rshade/filter"
 require "rshade/trace"

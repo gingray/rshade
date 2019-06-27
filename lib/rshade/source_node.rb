@@ -1,11 +1,11 @@
 module RShade
   class SourceNode
     attr_accessor :nodes, :value, :parent
-    MAX_SIZE = 5
 
-    def initialize(parent, value=nil)
+    def initialize(parent, value = nil)
       @nodes = []
-      @value = value
+      @value = value || { valid: true, level: 0 }
+      @value[:valid] = true unless @value.has_key?(:valid)
       @parent = parent
     end
 
@@ -13,12 +13,38 @@ module RShade
       @nodes << node
     end
 
-    def print_tree
-      str = StringIO.new
-      traverse(self) do |node|
-        str.write"#{' ' * node.value.level}#{node.value.inspect}\n" if node.value.valid
-      end
-      str.string
+    def valid?
+      @value[:valid]
+    end
+
+    def toggle_valid(state)
+      @value[:valid] = state
+    end
+
+    def level
+      @value[:level] || 0
+    end
+
+    def klass
+      @value[:klass]
+    end
+
+    def method_name
+      @value[:method_name]
+    end
+
+    def path
+      @value[:path]
+    end
+
+    def lineno
+      @value[:lineno]
+    end
+
+    def pretty
+      class_method = "#{klass}##{method_name}".colorize(:green)
+      full_path = "#{path}:#{lineno}".colorize(:blue)
+      "#{class_method} -> #{full_path}"
     end
 
     def filter(node = self, &block)
@@ -29,11 +55,11 @@ module RShade
       end
 
       unless yield(node)
-        node.value.valid = false
+        node.toggle_valid false
       end
     end
 
-    def traverse(node, &block)
+    def traverse(node = self, &block)
       return unless block_given?
 
       yield(node)
