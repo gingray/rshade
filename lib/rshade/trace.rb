@@ -28,14 +28,9 @@ module RShade
     end
 
     def process_trace(tp)
-      unless @find_user_code
-        @set << tp.path
-        @find_user_code = @filter.call(tp.path)
-      end
-
-      return unless @find_user_code
-
       if tp.event == :call
+        return unless @filter.call(tp.path)
+
         parent = @stack.last
         return unless parent && @stack.size < MAX
 
@@ -47,6 +42,8 @@ module RShade
       end
 
       if tp.event == :return
+        return unless @filter.call(tp.path)
+
         @stack.pop if @stack.size > 1
       end
     end
