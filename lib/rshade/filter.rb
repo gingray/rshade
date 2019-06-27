@@ -2,6 +2,8 @@ module RShade
   class Filter
     RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
     def call(path)
+      return false unless path
+
       exclude_path.none? { |item| path.include? item }
     end
 

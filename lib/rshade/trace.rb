@@ -2,7 +2,6 @@ module RShade
   class Trace
     attr_accessor :source_tree, :open, :close, :set
     EVENTS = %i[call return].freeze
-    MAX = 20
 
     def initialize
       @source_tree = SourceNode.new(nil, RShade::SourceValue.new(level:0))
@@ -21,19 +20,16 @@ module RShade
       @tp.disable
     end
 
-    def show(&block)
-      return @source_tree.duplicate(&block).print_tree if block_given?
-
+    def show
+      @source_tree.filter do |node|
+        @filter.call(node.value.path)
+      end
       @source_tree.print_tree
     end
 
     def process_trace(tp)
       if tp.event == :call
-        return unless @filter.call(tp.path)
-
         parent = @stack.last
-        return unless parent && @stack.size < MAX
-
         hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method: tp.method_id }
         value = SourceValue.new(hash)
         node = SourceNode.new(parent, value)
@@ -42,8 +38,6 @@ module RShade
       end
 
       if tp.event == :return
-        return unless @filter.call(tp.path)
-
         @stack.pop if @stack.size > 1
       end
     end

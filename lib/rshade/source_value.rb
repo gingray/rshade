@@ -1,9 +1,10 @@
 module RShade
   class SourceValue
-    attr_accessor :hash, :lineno
+    attr_accessor :hash, :lineno, :valid
 
     def initialize(hash = {})
       @hash = hash
+      @valid = true
     end
 
     def inspect

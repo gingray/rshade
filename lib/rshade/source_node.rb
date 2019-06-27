@@ -4,7 +4,7 @@ module RShade
     MAX_SIZE = 5
 
     def initialize(parent, value=nil)
-      @nodes = Set.new
+      @nodes = []
       @value = value
       @parent = parent
     end
@@ -13,22 +13,30 @@ module RShade
       @nodes << node
     end
 
-    def eql?(other)
-      value?.path == other.value?.path
-    end
-
     def print_tree
       str = StringIO.new
       traverse(self) do |node|
-        str.write"#{' ' * node.value.level}#{node.value.inspect}\n"
+        str.write"#{' ' * node.value.level}#{node.value.inspect}\n" if node.value.valid
       end
       str.string
+    end
+
+    def filter(node = self, &block)
+      return unless block_given?
+
+      node.nodes.each do |item|
+        filter(item, &block)
+      end
+
+      unless yield(node)
+        node.value.valid = false
+      end
     end
 
     def traverse(node, &block)
       return unless block_given?
 
-      block.call(node)
+      yield(node)
       node.nodes.each { |leaf| traverse(leaf, &block) }
     end
   end
