@@ -20,14 +20,6 @@ module RShade
       @tp.disable
     end
 
-    def start
-      @tp.enable
-    end
-
-    def stop
-      @tp.disable
-    end
-
     def show
       @source_tree.filter do |node|
         next true unless node.parent
