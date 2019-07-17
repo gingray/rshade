@@ -41,6 +41,22 @@ module RShade
       @value[:lineno]
     end
 
+    def valid_parent(node = self)
+      any_valid_node = node.parent.nodes.any? do |item|
+        next false if item == node
+
+        node.valid?
+      end
+      return node.parent if node.parent.valid? || any_valid_node || node.parent.nil?
+
+      return valid_parent(node.parent) if node.parent
+      nil
+    end
+
+    def copy
+      SourceNode.new(nil, @value.dup)
+    end
+
     def pretty
       class_method = "#{klass}##{method_name}".colorize(:green)
       full_path = "#{path}:#{lineno}".colorize(:blue)
@@ -57,6 +73,19 @@ module RShade
       unless yield(node)
         node.toggle_valid false
       end
+    end
+
+    def filter2(node = self, copy = SourceNode.new(nil), &block)
+      return unless block_given?
+
+      node.nodes.each do |item|
+        node_copy = filter2(item, copy, &block)
+        copy.add node_copy unless node_copy.nil?
+      end
+
+      return node.copy if yield(node)
+
+      nil
     end
 
     def traverse(node = self, &block)

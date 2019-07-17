@@ -5,7 +5,10 @@ module RShade
       str.write "\n\n"
       str.write "---\n".colorize(:yellow)
       root.traverse do |node|
-        str.write"#{' ' * node.level}#{node.pretty}\n" if node.valid?
+        level = 0
+        parent = node.valid_parent
+        level = parent.level if parent
+        str.write"#{' ' * level}#{node.pretty}\n" if node.valid?
       end
       str.write '---'.colorize(:yellow)
       str.string
