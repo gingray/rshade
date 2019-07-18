@@ -53,8 +53,16 @@ module RShade
       nil
     end
 
-    def copy
-      SourceNode.new(nil, @value.dup)
+    def copy(node=RShade::SourceNode.new(nil))
+      if self.is_valid?
+        new_root = RShade::SourceNode.new(node, @value)
+        new_root.parent = node
+        node = new_root
+      end
+
+      nodes.each do |item|
+        node.add item.copy(node)
+      end
     end
 
     def pretty
@@ -73,19 +81,6 @@ module RShade
       unless yield(node)
         node.toggle_valid false
       end
-    end
-
-    def filter2(node = self, copy = SourceNode.new(nil), &block)
-      return unless block_given?
-
-      node.nodes.each do |item|
-        node_copy = filter2(item, copy, &block)
-        copy.add node_copy unless node_copy.nil?
-      end
-
-      return node.copy if yield(node)
-
-      nil
     end
 
     def traverse(node = self, &block)
