@@ -18,7 +18,13 @@ module RShade
       @tp.disable
     end
 
-    def show(tree = nil)
+    def show(type = ::RShade::APP_TRACE)
+      return show_app_trace if type == ::RShade::APP_TRACE
+
+      show_full_trace
+    end
+
+    def show_full_trace(tree = nil)
       buffer = StringIO.new
       tree ||= source_tree
       tree.pre_order_traverse do |node, depth|
@@ -32,13 +38,13 @@ module RShade
       puts buffer.string
     end
 
-    def show_only_app_code
+    def show_app_trace
       clone = source_tree.clone_by do |node|
         next true if node.root?
 
         node.value.app_code?
       end
-      show(clone)
+      show_full_trace(clone)
     end
 
     def process_trace(tp)

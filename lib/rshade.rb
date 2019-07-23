@@ -7,4 +7,6 @@ require 'rshade/rspec'
 require 'rshade/version'
 
 module RShade
+  APP_TRACE = :app_trace
+  FULL_TRACE = :full_trace
 end

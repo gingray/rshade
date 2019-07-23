@@ -2,7 +2,7 @@ module RShade
   REPORTS = []
 
   module RSpecHelper
-    def rshade_reveal(&block)
+    def rshade_reveal(type = ::RShade::ONLY_APP_CODE, &block)
       raise 'No block given' unless block_given?
 
       trace = Trace.new
@@ -10,7 +10,7 @@ module RShade
         yield
       end
 
-      REPORTS.push trace.show_only_app_code
+      REPORTS.push trace.show(type)
     end
   end
 end
