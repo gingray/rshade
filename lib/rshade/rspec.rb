@@ -10,7 +10,7 @@ module RShade
         yield
       end
 
-      REPORTS.push trace.show
+      REPORTS.push trace.show_only_app_code
     end
   end
 end

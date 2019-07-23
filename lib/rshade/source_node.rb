@@ -1,69 +1,23 @@
 module RShade
-  class SourceNode
-    attr_accessor :nodes, :value, :parent
-
-    def initialize(parent, value = nil)
-      @nodes = []
-      @value = value || { valid: true, level: 0 }
-      @value[:valid] = true unless @value.has_key?(:valid)
-      @parent = parent
+  # nodoc
+  class SourceNode < Tree
+    def initialize(value = nil)
+      super(value)
     end
 
-    def add(node)
-      @nodes << node
-    end
-
-    def valid?
-      @value[:valid]
-    end
-
-    def toggle_valid(state)
-      @value[:valid] = state
-    end
-
-    def level
-      @value[:level] || 0
-    end
-
-    def klass
-      @value[:klass]
-    end
-
-    def method_name
-      @value[:method_name]
-    end
-
-    def path
-      @value[:path]
-    end
-
-    def lineno
-      @value[:lineno]
-    end
-
-    def pretty
-      class_method = "#{klass}##{method_name}".colorize(:green)
-      full_path = "#{path}:#{lineno}".colorize(:blue)
-      "#{class_method} -> #{full_path}"
-    end
-
-    def filter(node = self, &block)
-      return unless block_given?
-
-      node.nodes.each do |item|
-        filter(item, &block)
+    def clone_by(new_tree = SourceNode.new(nil), &block)
+      if yield(self)
+        new_tree.value = value
+        node = SourceNode.new(nil)
+        node.parent = new_tree
+        new_tree << node
+        new_tree = node
       end
 
-      unless yield(node)
-        node.toggle_valid false
+      nodes.each do |item|
+        item.clone_by(new_tree, &block)
       end
-    end
-
-    def traverse(node = self, &block)
-      return unless block_given?
-
-      yield(node)
-      node.nodes.each { |leaf| traverse(leaf, &block) }
+      new_tree
     end
   end
 end
