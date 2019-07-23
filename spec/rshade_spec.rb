@@ -1,9 +1,10 @@
-RSpec.describe RShade, focus: true do
+RSpec.describe RShade do
   subject { RShade::Trace.new }
 
-  it "has a version number", focus: true do
+  it "has a version number" do
     subject.reveal do
-      TestRshade.new.some
+      TestRshade.call
     end
+    expect(subject.show).to eq ''
   end
 end

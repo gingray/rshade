@@ -1,6 +1,8 @@
 module RShade
   # nodoc
   class Source
+    RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
+
     def initialize(hash)
       @hash = hash
     end

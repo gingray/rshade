@@ -1,13 +1,11 @@
 module RShade
   class Trace
-    include RShade::Helper
     attr_accessor :source_tree, :open, :close, :set
     EVENTS = %i[call return].freeze
 
     def initialize
       @source_tree = SourceNode.new(nil)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
-      @filter = RShade::Filter.new
       @stack = [@source_tree]
     end
 
@@ -20,21 +18,36 @@ module RShade
       @tp.disable
     end
 
-    def show
-      @source_tree.filter do |node|
-        next true unless node.parent
+    def show(tree = nil)
+      buffer = StringIO.new
+      tree ||= source_tree
+      tree.pre_order_traverse do |node, depth|
+        if node.root?
+          buffer << "---\n"
+          next
+        end
 
-        @filter.call(node.path)
+        buffer << "#{' ' * depth} #{node.value.pretty}\n" if node.value
       end
-      pretty_print @source_tree
+      puts buffer.string
+    end
+
+    def show_only_app_code
+      clone = source_tree.clone_by do |node|
+        next true if node.root?
+
+        node.value.app_code?
+      end
+      show(clone)
     end
 
     def process_trace(tp)
       if tp.event == :call
         parent = @stack.last
         hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id }
-        node = SourceNode.new(parent, hash)
-        parent.add node
+        node = SourceNode.new(Source.new(hash))
+        node.parent = parent
+        parent << node
         @stack.push node
       end
 

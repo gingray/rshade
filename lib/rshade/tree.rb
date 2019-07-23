@@ -18,22 +18,13 @@ module RShade
       @nodes << node
     end
 
-    def pre_order_traverse(node = self, depth = 0, &block)
+    def pre_order_traverse(depth = 0, &block)
       return unless block_given?
 
-      yield(node, depth)
+      yield(self, depth)
       nodes.each do |item|
-        pre_order_traverse(item, depth + 1, &block)
+        item.pre_order_traverse(depth + 1, &block)
       end
-    end
-
-    def print_tree(buffer = StringIO.new, depth = 0)
-      buffer << "+\n" if root?
-      buffer << "#{depth * ''}#{value}\n"
-      @nodes.each do |node|
-        node.pretty_print(buffer, depth + 1)
-      end
-      buffer.string
     end
   end
 end
