@@ -1,14 +1,14 @@
 module RShade
   # nodoc
-  class SourceNode < Tree
+  class Node < Tree
     def initialize(value = nil)
       super(value)
     end
 
-    def clone_by(new_tree = SourceNode.new(nil), &block)
+    def clone_by(new_tree = Node.new(nil), &block)
       if yield(self)
         new_tree.value = value
-        node = SourceNode.new(nil)
+        node = Node.new(nil)
         node.parent = new_tree
         new_tree << node
         new_tree = node
