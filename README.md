@@ -18,6 +18,9 @@ trace.show
  end 
 
 ```
+Below is example how output will looks like.
+As you can sse all code that have been using are printed.
+[![asciicast](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373.svg)](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373)
 
 ## Installation  
   
