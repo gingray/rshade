@@ -5,6 +5,6 @@ RSpec.describe RShade do
     subject.reveal do
       TestRshade.call
     end
-    expect(subject.show).to eq ''
+    expect(subject.show).to eq nil
   end
 end

@@ -11,6 +11,7 @@ trace = RShade::Trace.new
 trace.reveal do  
   #your code here
 end
+trace.show
 #rspec
  rshade_reveal do
    #code here

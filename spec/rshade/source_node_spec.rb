@@ -1,4 +1,4 @@
-RSpec.describe RShade::Node, focus: true do
+RSpec.describe RShade::SourceNode do
   describe '.clone_by' do
     subject { RShade::Trace.new }
 
@@ -9,7 +9,7 @@ RSpec.describe RShade::Node, focus: true do
     end
 
     it do
-      clone = subject.show_only_app_code
+      clone = subject.show_app_trace
       expect(clone).to eq nil
     end
   end
