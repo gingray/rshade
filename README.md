@@ -1,10 +1,8 @@
 # RShade  
-  
  
 ![warcraft shade](https://github.com/gingray/rshade/raw/master/shade.jpg)
 
 Ruby Shade or RShade gem to help you to reveal which code are used in program execution.
-
   
 ```ruby
 trace = RShade::Trace.new  
@@ -18,8 +16,25 @@ trace.show
  end 
 
 ```
+## Example
+I've took example from https://github.com/spree/spree code base. Wrap code to take a look what code used when you save variant.
+On huge codebase as spree it's helpful to know what callbacks are triggered and so on.
+```ruby
+  context '#cost_currency' do
+    context 'when cost currency is nil' do
+      before { variant.cost_currency = nil }
+
+      it 'populates cost currency with the default value on save', focus: true do
+        rshade_reveal do
+          variant.save!
+        end
+        expect(variant.cost_currency).to eql 'USD'
+      end
+    end
+  end
+```
 Below is example how output will looks like.
-As you can sse all code that have been using are printed.
+As you can sse all code that have been use are printed.
 [![asciicast](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373.svg)](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373)
 
 ## Installation  
@@ -30,23 +45,13 @@ Add this line to your application's Gemfile:
 gem 'rshade'  
 ```  
   
-And then execute:  
-  
- $ bundle  
-Or install it yourself as:  
-  
- $ gem install rshade  
-## Usage  
-  
-TODO: Write usage instructions here  
-  
 ## TODO  
 Use stack to keep connections between current method and caller  
 take a look on https://github.com/matugm/visual-call-graph  
   
 ## Contributing  
   
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rshade.  
+Bug reports and pull requests are welcome on GitHub at https://github.com/gingray/rshade.  
   
 ## License  
   
