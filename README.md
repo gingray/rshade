@@ -2,7 +2,7 @@
  
 ![warcraft shade](https://github.com/gingray/rshade/raw/master/shade.jpg)
 
-Ruby Shade or RShade gem to help you to reveal which code are used in program execution.
+Ruby Shade or RShade gem to help you to reveal what lines of code are used in program execution.
   
 ```ruby
 trace = RShade::Trace.new  
@@ -17,8 +17,8 @@ trace.show
 
 ```
 ## Example
-I've took example from https://github.com/spree/spree code base. Wrap code to take a look what code used when you save variant.
-On huge codebase as spree it's helpful to know what callbacks are triggered and so on.
+I've took example from https://github.com/spree/spree code base. Wrap code to take a look what code is in use when you save variant.
+On such huge codebase as spree it's helpful to know what callbacks are triggered and so on.
 ```ruby
   context '#cost_currency' do
     context 'when cost currency is nil' do
@@ -33,8 +33,8 @@ On huge codebase as spree it's helpful to know what callbacks are triggered and 
     end
   end
 ```
-Below is example how output will looks like.
-As you can see all code that have been use are printed.
+Below is example how output will look like.
+As you can see all code that have been in use is printed.
 [![asciicast](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373.svg)](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373)
 
 ## Installation  
