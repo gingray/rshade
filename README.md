@@ -34,7 +34,7 @@ On huge codebase as spree it's helpful to know what callbacks are triggered and 
   end
 ```
 Below is example how output will looks like.
-As you can sse all code that have been use are printed.
+As you can see all code that have been use are printed.
 [![asciicast](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373.svg)](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373)
 
 ## Installation  
