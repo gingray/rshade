@@ -1,5 +1,5 @@
 class TestRshade
-  def some
+  def some(x)
     val = 2 + 2
     another + val
   end
@@ -9,6 +9,6 @@ class TestRshade
   end
 
   def self.call
-    new.some
+    new.some(3)
   end
 end

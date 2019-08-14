@@ -50,14 +50,20 @@ module RShade
     def process_trace(tp)
       if tp.event == :call
         parent = @stack.last
-        hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id }
+        vars = {}
+        tp.binding.local_variables.each do |var|
+          vars[var] = tp.binding.local_variable_get var
+        end
+        hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
         node = SourceNode.new(Source.new(hash))
         node.parent = parent
         parent << node
         @stack.push node
       end
 
-      @stack.pop if tp.event == :return && @stack.size > 1
+      if tp.event == :return && @stack.size > 1
+        @stack.pop
+      end
     end
   end
 end
