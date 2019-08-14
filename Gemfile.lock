@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rshade (0.1.2)
+    rshade (0.1.3)
       colorize
 
 GEM
