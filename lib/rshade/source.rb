@@ -31,6 +31,10 @@ module RShade
       @hash[:method_name]
     end
 
+    def vars
+      @hash[:vars]
+    end
+
     def exclude_path
       @path_arr ||= begin
         [ENV['GEM_PATH'].split(':'), parse_ruby_version].flatten.compact
@@ -47,7 +51,7 @@ module RShade
     def pretty
       class_method = "#{klass}##{method_name}".colorize(:green)
       full_path = "#{path}:#{lineno}".colorize(:blue)
-      "#{class_method} -> #{full_path}"
+      "#{class_method}(#{vars.to_json}) -> #{full_path}"
     end
   end
 end
