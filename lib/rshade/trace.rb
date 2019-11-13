@@ -1,6 +1,6 @@
 module RShade
   class Trace
-    attr_accessor :source_tree, :open, :close, :set
+    attr_accessor :source_tree, :options
     EVENTS = %i[call return].freeze
 
     def initialize
@@ -9,7 +9,7 @@ module RShade
       @stack = [@source_tree]
     end
 
-    def reveal
+    def reveal(options = {})
       return unless block_given?
 
       @tp.enable
