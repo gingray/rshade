@@ -1,4 +1,4 @@
-RSpec.describe RShade::SourceNode do
+RSpec.describe RShade::SourceNode, focus: true do
   describe '.clone_by' do
     subject { RShade::Trace.new }
 

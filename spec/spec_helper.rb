@@ -1,6 +1,8 @@
+require 'pry'
 require "bundler/setup"
 require "rshade"
 require 'fixture/test'
+
 Bundler.require(:test, :development)
 
 RSPEC_ROOT = File.dirname __FILE__
