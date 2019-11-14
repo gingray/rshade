@@ -5,7 +5,7 @@ module RShade
     attr_accessor :custom_arg_print, :included_gems
 
     def initialize
-      @included_gems = []
+      @included_gems = Set.new
     end
 
     def default_arg_print(args)
