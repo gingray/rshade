@@ -4,7 +4,7 @@ module RShade
     EVENTS = %i[call return].freeze
 
     def initialize
-      @source_tree = SourceNode.new(nil)
+      @source_tree = Event.new(nil)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @stack = [@source_tree]
     end
@@ -55,7 +55,7 @@ module RShade
           vars[var] = tp.binding.local_variable_get var
         end
         hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
-        node = SourceNode.new(Source.new(hash))
+        node = Event.new(Code.new(hash))
         node.parent = parent
         parent << node
         @stack.push node

@@ -1,6 +1,6 @@
 module RShade
   # nodoc
-  class Source
+  class Code
 
     def initialize(hash)
       @hash = hash
@@ -15,7 +15,7 @@ module RShade
     end
 
     def app_code?
-      return true if RShade.configuration.included_gems.any? { |item| path.include? item }
+      return true if RShade.configuration.track_gems.any? { |item| path.include? item }
 
       @app_code ||= RShade.configuration.excluded_paths.none? { |item| path.include? item }
     end

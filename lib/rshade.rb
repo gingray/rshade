@@ -1,10 +1,10 @@
 require 'colorize'
 require 'rshade/configuration'
-require 'rshade/source'
+require 'rshade/code'
 require 'rshade/tree'
-require 'rshade/source_node'
+require 'rshade/event'
 require 'rshade/trace'
-require 'rshade/rspec'
+require 'rshade/rspec/rspec'
 require 'rshade/version'
 
 
