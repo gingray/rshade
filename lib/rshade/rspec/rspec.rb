@@ -10,7 +10,7 @@ module RShade
         yield
       end
 
-      REPORTS.push trace.show(type)
+      REPORTS.push trace.show
     end
   end
 end

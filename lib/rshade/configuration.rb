@@ -2,7 +2,7 @@ module RShade
   class Configuration
     RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
 
-    attr_accessor :track_gems
+    attr_accessor :track_gems, :filter, :formatter
 
     def initialize
       @track_gems = Set.new
@@ -24,5 +24,12 @@ module RShade
       val[0]
     end
 
+    def filter
+      @filter ||= ::RShade::Filter::AppFilter
+    end
+
+    def formatter
+      @filter ||= ::RShade::Formatter::Stdout
+    end
   end
 end

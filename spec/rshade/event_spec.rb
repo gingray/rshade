@@ -9,7 +9,7 @@ RSpec.describe RShade::Event, focus: true do
     end
 
     it do
-      clone = subject.show_app_trace
+      clone = subject.show
       expect(clone).to eq nil
     end
   end
