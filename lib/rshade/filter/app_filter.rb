@@ -10,14 +10,13 @@ module RShade
       def call
         origin_tree.clone_by do |node|
           next true if node.root?
-          next false unless node.value
           valid?(node.value.path)
         end
       end
 
       def valid?(path)
-        return true if RShade.configuration.track_gems.any? { |item| path.include? item }
-        RShade.configuration.excluded_paths.none? { |item| path.include? item }
+        return true if RShade.config.track_gems.any? { |item| path.include? item }
+        RShade.config.excluded_paths.none? { |item| path.include? item }
       end
     end
   end

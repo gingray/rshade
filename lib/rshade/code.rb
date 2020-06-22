@@ -15,9 +15,9 @@ module RShade
     end
 
     def app_code?
-      return true if RShade.configuration.track_gems.any? { |item| path.include? item }
+      return true if RShade.config.track_gems.any? { |item| path.include? item }
 
-      @app_code ||= RShade.configuration.excluded_paths.none? { |item| path.include? item }
+      @app_code ||= RShade.config.excluded_paths.none? { |item| path.include? item }
     end
 
     def path

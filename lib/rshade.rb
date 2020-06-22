@@ -2,6 +2,7 @@ require 'colorize'
 require 'rshade/configuration'
 require 'rshade/base'
 require 'rshade/filter/app_filter'
+require 'rshade/formatter/string'
 require 'rshade/formatter/stdout'
 require 'rshade/formatter/http'
 require 'rshade/code'
@@ -19,7 +20,7 @@ module RShade
   class << self
     attr_writer :config
 
-    def configuration
+    def config
       @config ||= Configuration.new
     end
 

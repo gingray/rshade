@@ -29,7 +29,7 @@ module RShade
     end
 
     def formatter
-      @filter ||= ::RShade::Formatter::Stdout
+      @formatter ||= ::RShade::Formatter::Stdout
     end
   end
 end

@@ -1,26 +1,31 @@
 module RShade
   class Trace
-    attr_accessor :source_tree, :options
+    attr_accessor :source_tree, :formatter, :filter
     EVENTS = %i[call return].freeze
 
-    def initialize
+    def initialize(options={})
       @source_tree = Event.new(nil)
+      @formatter = options.fetch(:formatter, RShade.config.formatter)
+      @filter = options.fetch(:formatter, RShade.config.filter)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @stack = [@source_tree]
     end
 
-    def reveal(options = {})
+    def self.reveal(options={}, &block)
+      new(options).reveal(&block)
+    end
+
+    def reveal
       return unless block_given?
 
       @tp.enable
       yield
+      self
     ensure
       @tp.disable
     end
 
     def show
-      filter = RShade.configuration.filter
-      formatter = RShade.configuration.formatter
       formatter.call(filter.call(source_tree))
     end
 

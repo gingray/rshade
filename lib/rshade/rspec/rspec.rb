@@ -2,15 +2,14 @@ module RShade
   REPORTS = []
 
   module RSpecHelper
-    def rshade_reveal(type = ::RShade::APP_TRACE, options = {})
+    def rshade_reveal(options = {})
       raise 'No block given' unless block_given?
-
-      trace = Trace.new
-      trace.reveal(options) do
+      options.merge!(formatter: Formatter::String)
+      result = Trace.reveal(options) do
         yield
       end
 
-      REPORTS.push trace.show
+      REPORTS.push result.show.string
     end
   end
 end
