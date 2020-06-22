@@ -14,7 +14,7 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    rake (10.5.0)
+    rake (13.0.1)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -35,9 +35,9 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.16)
   pry
-  rake (~> 10.0)
+  rake (>= 12.3.3)
   rshade!
   rspec (~> 3.0)
 
 BUNDLED WITH
-   1.16.6
+   1.17.3
