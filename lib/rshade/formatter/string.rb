@@ -11,6 +11,7 @@ module RShade
       def call
         buffer = StringIO.new
         origin_tree.pre_order_traverse do |node, depth|
+          next if depth > 50
           if node.root?
             buffer << ROOT_SEP
             next

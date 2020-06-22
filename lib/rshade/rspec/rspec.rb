@@ -8,7 +8,6 @@ module RShade
       result = Trace.reveal(options) do
         yield
       end
-
       REPORTS.push result.show.string
     end
   end

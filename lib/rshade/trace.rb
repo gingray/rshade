@@ -6,7 +6,7 @@ module RShade
     def initialize(options={})
       @source_tree = Event.new(nil)
       @formatter = options.fetch(:formatter, RShade.config.formatter)
-      @filter = options.fetch(:formatter, RShade.config.filter)
+      @filter = options.fetch(:filter, RShade.config.filter)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @stack = [@source_tree]
     end
@@ -35,6 +35,7 @@ module RShade
         vars = {}
         tp.binding.local_variables.each do |var|
           vars[var] = tp.binding.local_variable_get var
+          vars[var] = vars[var].encode('UTF-8', invalid: :replace, undef: :replace, replace: '?') if vars[var].is_a?(String)
         end
         hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
         node = Event.new(Code.new(hash))
