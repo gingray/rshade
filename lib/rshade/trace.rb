@@ -9,6 +9,9 @@ module RShade
       @filter = options.fetch(:filter, RShade.config.filter)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @stack = [@source_tree]
+      @stat = {}
+      @calls = 0
+      @returns = 0
     end
 
     def self.reveal(options={}, &block)
@@ -26,7 +29,12 @@ module RShade
     end
 
     def show
-      formatter.call(filter.call(source_tree))
+      puts "STATS: #{stat}"
+      formatter.call(source_tree)
+    end
+
+    def stat
+      { calls: @calls, returns: @returns }
     end
 
     def process_trace(tp)
@@ -38,6 +46,8 @@ module RShade
           vars[var] = vars[var].encode('UTF-8', invalid: :replace, undef: :replace, replace: '?') if vars[var].is_a?(String)
         end
         hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
+        return unless filter.call(hash)
+        @calls += 1
         node = Event.new(Code.new(hash))
         node.parent = parent
         parent << node
@@ -45,6 +55,7 @@ module RShade
       end
 
       if tp.event == :return && @stack.size > 1
+        @returns += 1
         @stack.pop
       end
     end

@@ -18,7 +18,7 @@ module RShade
           end
 
           buffer << line(node.value, depth) if node.value
-        end
+        en  d
         buffer
       end
 

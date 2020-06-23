@@ -8,6 +8,7 @@ module RShade
       @value = value
       @nodes = []
       @parent = nil
+      @counter = 0
     end
 
     def root?
@@ -19,8 +20,9 @@ module RShade
     end
 
     def pre_order_traverse(depth = 0, &block)
+      @counter +=1
       return unless block_given?
-
+      puts @counter
       yield(self, depth)
       nodes.each do |item|
         item.pre_order_traverse(depth + 1, &block)

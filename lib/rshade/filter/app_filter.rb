@@ -1,17 +1,14 @@
 module RShade
   module Filter
     class AppFilter < ::RShade::Base
-      attr_reader :origin_tree
+      attr_reader :data
 
-      def initialize(origin_tree)
-        @origin_tree = origin_tree
+      def initialize(data)
+        @data = data
       end
 
       def call
-        origin_tree.clone_by do |node|
-          next true if node.root?
-          valid?(node.value.path)
-        end
+        valid?(data[:path])
       end
 
       def valid?(path)
