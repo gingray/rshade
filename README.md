@@ -5,8 +5,7 @@
 Ruby Shade or RShade gem to help you to reveal what lines of code are used in program execution.
   
 ```ruby
-trace = RShade::Trace.new  
-trace.reveal do  
+trace = RShade::Trace.reveal do  
   #your code here
 end
 trace.show
