@@ -23,7 +23,7 @@ module RShade
       def line(value, depth)
         class_method = "#{value.klass}##{value.method_name}".colorize(:green)
         full_path = "#{value.path}:#{value.lineno}".colorize(:blue)
-        "#{'  ' * depth}#{class_method}() -> #{full_path}\n"
+        "#{'  ' * depth}#{class_method}(#{value.vars}) -> #{full_path}\n"
       end
     end
   end

@@ -1,6 +1,7 @@
 require 'colorize'
 require 'rshade/configuration'
 require 'rshade/base'
+require 'rshade/event_serializer'
 require 'rshade/filter/app_filter'
 require 'rshade/formatter/string'
 require 'rshade/formatter/json'

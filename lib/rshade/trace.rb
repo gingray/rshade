@@ -39,12 +39,7 @@ module RShade
     def process_trace(tp)
       if tp.event == :call
         @level +=1
-        vars = {}
-        tp.binding.local_variables.each do |var|
-          vars[var] = tp.binding.local_variable_get var
-          vars[var] = vars[var].encode('UTF-8', invalid: :replace, undef: :replace, replace: '?') if vars[var].is_a?(String)
-        end
-        hash = { level: @level, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
+        hash = EventSerializer.call(tp, @level)
         return unless filter.call(hash)
         @calls += 1
         event_store << Event.new(hash)

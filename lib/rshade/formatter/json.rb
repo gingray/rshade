@@ -48,7 +48,7 @@ module RShade
             class: value.klass.to_s,
             method_name: value.method_name,
             full_path: "#{value.path}:#{value.lineno}",
-            vars: {}
+            vars: value.vars
         }
       end
     end

@@ -1,4 +1,4 @@
-RSpec.describe RShade, focus: true do
+RSpec.describe RShade do
   let(:result) do
     RShade::Trace.reveal do
       TestRshade.call
