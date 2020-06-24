@@ -1,23 +1,35 @@
 module RShade
   # nodoc
-  class Event < Tree
-    def initialize(value = nil)
-      super(value)
+  class Event
+    attr_reader :hash
+    attr_accessor :depth
+
+    def initialize(hash)
+      @hash = hash
     end
 
-    def clone_by(new_tree = Event.new(nil), &block)
-      if yield(self)
-        new_tree.value = value
-        node = Event.new(nil)
-        node.parent = new_tree
-        new_tree << node
-        new_tree = node
-      end
+    def level
+      @hash[:level]
+    end
 
-      nodes.each do |item|
-        item.clone_by(new_tree, &block)
-      end
-      new_tree
+    def klass
+      @hash[:klass]
+    end
+
+    def path
+      @hash[:path]
+    end
+
+    def lineno
+      @hash[:lineno]
+    end
+
+    def method_name
+      @hash[:method_name]
+    end
+
+    def vars
+      @hash[:vars]
     end
   end
 end

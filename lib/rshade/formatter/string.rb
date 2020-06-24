@@ -1,31 +1,29 @@
 module RShade
   module Formatter
     class String < ::RShade::Base
-      attr_reader :origin_tree
+      attr_reader :event_store
       ROOT_SEP = "---\n"
 
-      def initialize(origin_tree)
-        @origin_tree = origin_tree
+      def initialize(event_store)
+        @event_store = event_store
       end
 
       def call
         buffer = StringIO.new
-        origin_tree.pre_order_traverse do |node, depth|
-          next if depth > 50
-          if node.root?
+        event_store.iterate do |node, depth|
+          if depth == 1
             buffer << ROOT_SEP
             next
           end
-
-          buffer << line(node.value, depth) if node.value
-        en  d
-        buffer
+          puts line(node, depth)
+        end
+        buffer.string
       end
 
       def line(value, depth)
         class_method = "#{value.klass}##{value.method_name}".colorize(:green)
         full_path = "#{value.path}:#{value.lineno}".colorize(:blue)
-        "#{'  ' * depth} #{class_method}(#{value.vars.to_json}) -> #{full_path}\n"
+        "#{'  ' * depth}#{class_method}() -> #{full_path}\n"
       end
     end
   end

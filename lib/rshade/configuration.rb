@@ -31,5 +31,9 @@ module RShade
     def formatter
       @formatter ||= ::RShade::Formatter::Stdout
     end
+
+    def store_dir
+      File.expand_path('../../tmp', __dir__)
+    end
   end
 end

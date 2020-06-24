@@ -3,7 +3,7 @@ module RShade
     class Stdout < String
       def call
         buffer = super
-        puts buffer.string
+        puts buffer
       end
     end
   end
