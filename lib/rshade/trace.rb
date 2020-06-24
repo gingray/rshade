@@ -1,68 +1,58 @@
 module RShade
   class Trace
-    attr_accessor :source_tree, :options
+    attr_accessor :event_store, :formatter, :filter
     EVENTS = %i[call return].freeze
 
-    def initialize
-      @source_tree = SourceNode.new(nil)
+    def initialize(options={})
+      @event_store = EventStore.new
+      @formatter = options.fetch(:formatter, RShade.config.formatter)
+      @filter = options.fetch(:filter, RShade.config.filter)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
-      @stack = [@source_tree]
+      @level = 1
+      @stat = {}
+      @calls = 0
+      @returns = 0
     end
 
-    def reveal(options = {})
+    def self.reveal(options={}, &block)
+      new(options).reveal(&block)
+    end
+
+    def reveal
       return unless block_given?
 
       @tp.enable
       yield
+      self
     ensure
       @tp.disable
     end
 
-    def show(type = ::RShade::APP_TRACE)
-      return show_app_trace if type == ::RShade::APP_TRACE
-
-      show_full_trace
+    def show
+      formatter.call(event_store)
     end
 
-    def show_full_trace(tree = nil)
-      buffer = StringIO.new
-      tree ||= source_tree
-      tree.pre_order_traverse do |node, depth|
-        if node.root?
-          buffer << "---\n"
-          next
-        end
-
-        buffer << "#{'  ' * depth} #{node.value.pretty}\n" if node.value
-      end
-      puts buffer.string
-    end
-
-    def show_app_trace
-      clone = source_tree.clone_by do |node|
-        next true if node.root?
-
-        node.value.app_code?
-      end
-      show_full_trace(clone)
+    def stat
+      { calls: @calls, returns: @returns }
     end
 
     def process_trace(tp)
       if tp.event == :call
-        parent = @stack.last
+        @level +=1
         vars = {}
         tp.binding.local_variables.each do |var|
           vars[var] = tp.binding.local_variable_get var
+          vars[var] = vars[var].encode('UTF-8', invalid: :replace, undef: :replace, replace: '?') if vars[var].is_a?(String)
         end
-        hash = { level: @stack.size, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
-        node = SourceNode.new(Source.new(hash))
-        node.parent = parent
-        parent << node
-        @stack.push node
+        hash = { level: @level, path: tp.path, lineno: tp.lineno, klass: tp.defined_class, method_name: tp.method_id, vars: vars }
+        return unless filter.call(hash)
+        @calls += 1
+        event_store << Event.new(hash)
       end
 
-      if tp.event == :return && @stack.size > 1
-        @stack.pop
+      if tp.event == :return && @level > 0
+        @returns += 1
+        @level -=1
       end
     end
   end

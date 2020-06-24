@@ -1,10 +1,15 @@
 require 'colorize'
 require 'rshade/configuration'
-require 'rshade/source'
-require 'rshade/tree'
-require 'rshade/source_node'
+require 'rshade/base'
+require 'rshade/filter/app_filter'
+require 'rshade/formatter/string'
+require 'rshade/formatter/json'
+require 'rshade/formatter/stdout'
+require 'rshade/formatter/http'
+require 'rshade/event'
+require 'rshade/event_store'
 require 'rshade/trace'
-require 'rshade/rspec'
+require 'rshade/rspec/rspec'
 require 'rshade/version'
 
 
@@ -15,7 +20,7 @@ module RShade
   class << self
     attr_writer :config
 
-    def configuration
+    def config
       @config ||= Configuration.new
     end
 
