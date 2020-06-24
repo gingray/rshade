@@ -9,6 +9,19 @@ module RShade
       end
 
       def call
+        flat
+      end
+
+      def flat
+        arr = []
+        event_store.iterate do |node, depth|
+          arr << item(node)
+        end
+        write_to_file(JSON.pretty_generate(arr.sort_by { |item| item[:depth]}))
+        arr
+      end
+
+      def hierarchical
         hash = {}
         event_store.iterate do |node, depth|
           ref = hash_iterate(hash, depth)
@@ -48,6 +61,7 @@ module RShade
             class: value.klass.to_s,
             method_name: value.method_name,
             full_path: "#{value.path}:#{value.lineno}",
+            depth: value.depth,
             vars: value.vars
         }
       end
