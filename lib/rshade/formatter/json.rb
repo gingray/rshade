@@ -2,7 +2,6 @@ module RShade
   module Formatter
     class Json < ::RShade::Base
       attr_reader :event_store
-      FILE_NAME = 'stacktrace.json'.freeze
 
       def initialize(event_store)
         @event_store = event_store
@@ -17,8 +16,7 @@ module RShade
         event_store.iterate do |node, depth|
           arr << item(node)
         end
-        write_to_file(JSON.pretty_generate(arr.sort_by { |item| item[:depth]}))
-        arr
+        arr.sort_by { |item| item[:depth]}
       end
 
       def hierarchical
@@ -27,15 +25,7 @@ module RShade
           ref = hash_iterate(hash, depth)
           ref[:data] = item(node)
         end
-        hash = sort_hash(hash)
-        write_to_file(JSON.pretty_generate(hash))
-        hash
-      end
-
-      def write_to_file(data)
-        File.open(File.join(RShade.config.store_dir, FILE_NAME), "w+") do |f|
-          f.write data
-        end
+        sort_hash(hash)
       end
 
       def sort_hash(h)

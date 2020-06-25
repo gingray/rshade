@@ -1,0 +1,72 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>RShade call trace viewer</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="me">
+    <style>
+        body {
+            overflow-x: scroll;
+        }
+        .stacktrace-line {
+            color: #1c1c1c;
+            font-family: monospace;
+            border: 1px solid hsla(210,50%, 50%, 1);
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+        .method-line {
+            font-size: 1.2rem;
+            padding: 10px;
+            background: hsla(210,50%, 50%, 0.1);
+        }
+
+        .path-line {
+            padding: 10px;
+            font-size: 0.9rem;
+            background: hsla(110,50%, 50%, 0.1);
+        }
+
+        .vars-line {
+            font-size: 0.7rem;
+            padding: 10px;
+            background: hsla(60,50%, 50%, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+<div class="stacktrace"></div>
+<script>
+    var data = <%=json %>;
+    var el = document.querySelector(".stacktrace");
+    for(i=0; i < data.length; i++) {
+        var value = data[i];
+        var newEl = document.createElement('div');
+        newEl.setAttribute("class", "stacktrace-line");
+        newEl.style.marginLeft = `${value.depth * 10}px`
+
+        line1 = document.createElement('div');
+        line1.setAttribute("class", "method-line");
+        line1.innerText = `${value.class}#${value.method_name}`;
+
+        var line2 = document.createElement('div');
+        line2.setAttribute("class", "path-line");
+        line2.innerText = `${value.class}#${value.full_path}`;
+
+        var line3 = document.createElement('div');
+        line3.setAttribute("class", "vars-line");
+        line3.innerText = JSON.stringify(value.vars)
+
+        newEl.appendChild(line1);
+        newEl.appendChild(line2);
+        newEl.appendChild(line3);
+        el.appendChild(newEl)
+    }
+    console.log(data);
+</script>
+
+</body>
+</html>

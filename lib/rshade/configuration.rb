@@ -35,5 +35,9 @@ module RShade
     def store_dir
       File.expand_path('../../tmp', __dir__)
     end
+
+    def root_dir
+      @root_dir ||= File.expand_path('../../', __dir__)
+    end
   end
 end
