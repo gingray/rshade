@@ -48,8 +48,7 @@ end
 trace.show
 
 # evt is hash with keys
-# evt = { level: @level, path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: process_locals(evt) }
-# {:level=>1, :path=>"...rvm/gems/ruby-2.6.6/gems/rails-controller-testing-1.0.2/lib/rails/controller/testing/integration.rb", :lineno=>10, :klass=>Rails::Controller::Testing::Integration, :method_name=>:get, :vars=>{:args=>[:arg1, {:params=>{:search_query=>"boo"}, :xhr=>true}], :method=>"get"}}
+# evt = {:level=>1, :path=>"...rvm/gems/ruby-2.6.6/gems/rails-controller-testing-1.0.2/lib/rails/controller/testing/integration.rb", :lineno=>10, :klass=>Rails::Controller::Testing::Integration, :method_name=>:get, :vars=>{:args=>[:arg1, {:params=>{:search_query=>"boo"}, :xhr=>true}], :method=>"get"}}
 ```
 Below is example how output will look like.
 As you can see all code that have been in use is printed.
