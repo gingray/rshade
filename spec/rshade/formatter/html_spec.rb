@@ -1,4 +1,4 @@
-RSpec.describe RShade::Formatter::Html, focus: true do
+RSpec.describe RShade::Formatter::Html do
   let(:formatter) { double }
 
   let(:json) { [1,2,3] }
