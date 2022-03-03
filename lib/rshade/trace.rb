@@ -8,7 +8,7 @@ module RShade
       @formatter = options.fetch(:formatter, RShade.config.formatter)
       @filter = options.fetch(:filter, RShade.config.filter)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
-      @level = 1
+      @level = 0
       @stat = {}
       @calls = 0
       @returns = 0
