@@ -11,7 +11,7 @@ module RShade
 
       def call
         buffer = StringIO.new
-        event_store.each do |node|
+        event_store.each_with_index do |node, idx|
           depth = node.level
           event = node.event
           if depth == 1
@@ -19,15 +19,16 @@ module RShade
             next
           end
           next if @ignore_skipped && event.skipped
-          buffer.write line(event, depth)
+          buffer.write line(idx, event, depth)
         end
         buffer.string
       end
 
-      def line(value, depth)
+      def line(line_idx, value, depth)
         class_method = ColorizedString["#{value.klass}##{value.method_name}"].colorize(:green)
         full_path = ColorizedString["#{value.path}:#{value.lineno}"].colorize(:blue)
-        "#{'  ' * depth}#{class_method}(#{value.vars}) -> #{full_path}\n"
+        line_idx = ColorizedString["[#{line_idx}] "].colorize(:red)
+        "#{'  ' * depth}#{line_idx}#{class_method}(#{value.vars}) -> #{full_path}\n"
       end
     end
   end
