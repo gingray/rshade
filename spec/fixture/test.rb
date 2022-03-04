@@ -20,9 +20,11 @@ class TestRshade2
   end
 
   def inner
+    inner2
     1 * -1
   rescue => e
     "catch exception #{e.message}"
+    1 * -1
   end
 
   def inner2

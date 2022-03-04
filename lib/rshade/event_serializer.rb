@@ -9,7 +9,8 @@ module RShade
     end
 
     def call
-      { level: @level, path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: process_locals(evt) }
+      { level: @level, path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: process_locals(evt),
+        event_type: @evt.event }
     end
 
     def process_locals(evt)
