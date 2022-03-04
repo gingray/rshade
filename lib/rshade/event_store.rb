@@ -1,10 +1,12 @@
 module RShade
   # nodoc
   class EventStore
+    include Enumerable
+
     attr_reader :current, :head
 
     def initialize
-      @current = EventStoreNode.new(0)
+      @current = EventStoreNode.new(Event.create_blank(0))
       @head = @current
     end
 
@@ -14,16 +16,28 @@ module RShade
         return
       end
       if current.level + 1 < event.level
+
+        last = current.children.last
+        unless last
+          current.children << EventStoreNode.new(Event.create_blank(current.level + 1), current)
+        end
         @current = current.children.last
         self.<<(event)
         return
       end
+
       if current.level + 1 > event.level
-        return unless current.parent
+        unless current.parent
+          return
+        end
         @current = current.parent
         self.<<(event)
         return
       end
+    end
+
+    def each(&block)
+      head.each(&block)
     end
   end
 
@@ -34,13 +48,9 @@ module RShade
 
     def initialize(event, parent=nil)
       @children = []
-      unless parent
-        @level = 0
-        return
-      end
-
       @level = event.level
       @event = event
+      @parent = parent
     end
 
     def each(&block)

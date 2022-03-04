@@ -13,15 +13,16 @@ module RShade
 
       def flat
         arr = []
-        event_store.iterate do |node, depth|
-          arr << item(node)
+        event_store.each do |node|
+          arr << item(node.event)
         end
         arr.sort_by { |item| item[:depth]}
       end
 
       def hierarchical
         hash = {}
-        event_store.iterate do |node, depth|
+        event_store.each do |node|
+          depth = node.level
           ref = hash_iterate(hash, depth)
           ref[:data] = item(node)
         end

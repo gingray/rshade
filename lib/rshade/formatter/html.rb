@@ -1,3 +1,5 @@
+require 'json'
+
 module RShade
   module Formatter
     class Html < ::RShade::Base
