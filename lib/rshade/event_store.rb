@@ -43,7 +43,7 @@ module RShade
 
   class EventStoreNode
     include Enumerable
-    attr_reader :children, :level, :event
+    attr_reader :children, :level, :event, :vlevel
     attr_accessor :parent
 
     def initialize(event, parent=nil)
@@ -51,6 +51,17 @@ module RShade
       @level = event.level
       @event = event
       @parent = parent
+      @vlevel = set_vlevel(parent)
+    end
+
+    def set_vlevel(parent)
+      return 0 if parent == nil
+
+      if !parent.event.skipped || parent.level == 0
+        parent.vlevel + 1
+      else
+        set_vlevel(parent.parent)
+      end
     end
 
     def each(&block)
