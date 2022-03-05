@@ -12,10 +12,6 @@ module RShade
       def self.create(filters, formatter)
         new(filters, formatter)
       end
-
-      def apply_filters(event)
-        filters.any? { |filter| filter.call(event) }
-      end
     end
   end
 end

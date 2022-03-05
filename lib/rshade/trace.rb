@@ -38,17 +38,21 @@ module RShade
 
     def process_trace(tp)
       if tp.event == :call
-        @level +=1
+        @level += 1
         event = EventSerializer.call(tp, @level)
-        return unless config.apply_filters(event)
-        @calls += 1
+        return unless pass?(event)
         event_store << event
+        @calls += 1
       end
 
       if tp.event == :return && @level > 0
         @returns += 1
-        @level -=1
+        @level -= 1
       end
+    end
+
+    def pass?(event)
+      config.filters.any? { |filter| filter.call(event) }
     end
   end
 end
