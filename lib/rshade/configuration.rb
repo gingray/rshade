@@ -1,3 +1,5 @@
+require 'set'
+
 module RShade
   class Configuration
     RUBY_VERSION_PATTERN = /ruby-[0-9.]*/

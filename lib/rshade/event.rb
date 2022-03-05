@@ -1,11 +1,13 @@
 module RShade
   # nodoc
   class Event
-    attr_reader :hash
+    attr_reader :hash, :skipped
     attr_accessor :depth
 
-    def initialize(hash)
+
+    def initialize(hash, skipped=false)
       @hash = hash
+      @skipped = skipped
     end
 
     def level
@@ -13,23 +15,33 @@ module RShade
     end
 
     def klass
-      @hash[:klass]
+      fetch :klass
     end
 
     def path
-      @hash[:path]
+      fetch :path
     end
 
     def lineno
-      @hash[:lineno]
+      fetch :lineno
     end
 
     def method_name
-      @hash[:method_name]
+      fetch :method_name
     end
 
     def vars
-      @hash[:vars]
+      fetch :vars
+    end
+
+    def self.create_blank(level)
+      new({level: level}, true)
+    end
+
+    private
+
+    def fetch(key)
+      @hash[key] || "<skipped>"
     end
   end
 end

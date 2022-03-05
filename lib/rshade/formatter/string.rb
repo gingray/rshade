@@ -4,26 +4,31 @@ module RShade
       attr_reader :event_store
       ROOT_SEP = "---\n"
 
-      def initialize(event_store)
+      def initialize(event_store, opts= {})
         @event_store = event_store
+        @ignore_skipped = opts.fetch(:ignore_skipped, true)
       end
 
       def call
         buffer = StringIO.new
-        event_store.iterate do |node, depth|
+        event_store.each_with_index do |node, idx|
+          depth = node.level
+          event = node.event
           if depth == 1
             buffer << ROOT_SEP
             next
           end
-          puts line(node, depth)
+          next if @ignore_skipped && event.skipped
+          buffer.write line(idx, event, depth)
         end
         buffer.string
       end
 
-      def line(value, depth)
-        class_method = "#{value.klass}##{value.method_name}".colorize(:green)
-        full_path = "#{value.path}:#{value.lineno}".colorize(:blue)
-        "#{'  ' * depth}#{class_method}(#{value.vars}) -> #{full_path}\n"
+      def line(line_idx, value, depth)
+        class_method = ColorizedString["#{value.klass}##{value.method_name}"].colorize(:green)
+        full_path = ColorizedString["#{value.path}:#{value.lineno}"].colorize(:blue)
+        line_idx = ColorizedString["[#{line_idx}] "].colorize(:red)
+        "#{'  ' * depth}#{line_idx}#{class_method}(#{value.vars}) -> #{full_path}\n"
       end
     end
   end

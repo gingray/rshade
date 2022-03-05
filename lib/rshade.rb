@@ -1,4 +1,4 @@
-require 'colorize'
+require 'colorized_string'
 require 'erb'
 require 'rshade/configuration'
 require 'rshade/base'
