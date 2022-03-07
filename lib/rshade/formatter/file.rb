@@ -19,7 +19,7 @@ module RShade
       end
 
       def write_to_file(data)
-        ::File.open(::File.join(RShade.config.store_dir, FILE_NAME), "w+") do |f|
+        ::File.open(::File.join(RShade::Config.store_dir, FILE_NAME), "w+") do |f|
           f.write data
         end
       end

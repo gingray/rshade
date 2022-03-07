@@ -39,3 +39,20 @@ RSpec.describe RShade::EventStore do
       end
     end
 end
+
+# RShade::Trace.show(:stdout)
+#              .exclude { |paths| paths << "new-path"}
+#              .include { |paths| paths << "new-path"}
+#              .formatter { Formatter::Mine }
+#              .match_args { |matcher| macther[:type] = SomeClass; matcher[:value] = "TestValue" }
+#              .reveal do
+#   some_code_exe
+# end
+#
+# config = RShade::Config.default.show(:stdout)
+#               .exclude { |paths| paths << /reg/ }
+#               .include { |paths| paths << "new-path"}
+#
+# RShade::Trace.reveal(config) do
+#   #your code here.
+# end.show

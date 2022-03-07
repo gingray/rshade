@@ -1,12 +1,11 @@
 module RShade
   class Trace
-    attr_accessor :event_store, :formatter, :filter
+    attr_accessor :event_store, :config
     EVENTS = %i[call return].freeze
 
-    def initialize(options={})
+    def initialize(config)
       @event_store = EventStore.new
-      @formatter = options.fetch(:formatter, RShade.config.formatter)
-      @filter = options.fetch(:filter, RShade.config.filter)
+      @config = config
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @level = 0
       @stat = {}
@@ -14,8 +13,9 @@ module RShade
       @returns = 0
     end
 
-    def self.reveal(options={}, &block)
-      new(options).reveal(&block)
+    def self.reveal(config=nil, &block)
+      config = config || ::RShade::Config.default
+      new(config).reveal(&block)
     end
 
     def reveal
@@ -29,7 +29,7 @@ module RShade
     end
 
     def show
-      formatter.call(event_store)
+      config.formatter.new(event_store).call
     end
 
     def stat
@@ -38,17 +38,21 @@ module RShade
 
     def process_trace(tp)
       if tp.event == :call
-        @level +=1
-        hash = EventSerializer.call(tp, @level)
-        return unless filter.call(hash)
+        @level += 1
+        event = EventSerializer.call(tp, @level)
+        return unless pass?(event)
+        event_store << event
         @calls += 1
-        event_store << Event.new(hash)
       end
 
       if tp.event == :return && @level > 0
         @returns += 1
-        @level -=1
+        @level -= 1
       end
+    end
+
+    def pass?(event)
+      config.filters.any? { |filter| filter.call(event) }
     end
   end
 end
