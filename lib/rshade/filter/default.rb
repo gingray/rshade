@@ -21,7 +21,7 @@ module RShade
       end
 
       def excluded_paths
-        [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN].flatten.compact
+        [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN, /internal/].flatten.compact
       end
     end
   end

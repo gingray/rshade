@@ -2,12 +2,15 @@ module RShade
   module Filter
     class IncludePathFilter < Base
       attr_reader :paths
+
+      NAME = :include_paths
+
       def initialize
         @paths = []
       end
 
       def name
-        :include_paths
+        NAME
       end
 
       def priority

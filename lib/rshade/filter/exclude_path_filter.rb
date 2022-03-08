@@ -1,9 +1,10 @@
 module RShade
   module Filter
     class ExcludePathFilter < IncludePathFilter
+      NAME = :exclude_paths
 
       def name
-        :exclude_paths
+        NAME
       end
 
       def priority

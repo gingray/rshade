@@ -3,12 +3,20 @@
 ![warcraft shade](https://github.com/gingray/rshade/raw/master/shade.jpg)
 
 Ruby Shade or RShade gem to help you to reveal what lines of code are used in program execution.
-  
 ```ruby
-trace = RShade::Trace.reveal do  
+# with default config (exclude ruby internals and code from gem files)
+RShade::Trace.reveal do  
   #your code here
-end
-trace.show
+end.show
+
+# with custom config
+config = ::RShade::Config.create_with_default.include_paths { |paths| paths << /devise/ }
+
+RShade::Trace.reveal(config) do
+  #your code here
+end.show
+
+
 #rspec
  rshade_reveal do
    #code here
@@ -34,21 +42,13 @@ On such huge codebase as spree it's helpful to know what callbacks are triggered
 ```
 by default gem filter everything related to your installed gems and shows only what related to your app, to change this behaviour  
 ```ruby
-# show everything
-custom_filter = ->(evt) { true }
-rshade_reveal(filter: custom_filter) do
-  variant.save!
-end
-
-# show everything
-custom_filter = ->(evt) { true }
-trace = RShade::Trace.reveal(filter: custom_filter) do
+# create empty config which reveal everything
+config = ::RShade::Config.create
+trace = RShade::Trace.reveal(config) do
   #your code here
 end
 trace.show
 
-# evt is hash with keys
-# evt = {:level=>1, :path=>"...rvm/gems/ruby-2.6.6/gems/rails-controller-testing-1.0.2/lib/rails/controller/testing/integration.rb", :lineno=>10, :klass=>Rails::Controller::Testing::Integration, :method_name=>:get, :vars=>{:args=>[:arg1, {:params=>{:search_query=>"boo"}, :xhr=>true}], :method=>"get"}}
 ```
 Below is example how output will look like.
 As you can see all code that have been in use is printed.

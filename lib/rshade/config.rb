@@ -10,11 +10,11 @@ module RShade
     end
 
     def self.create
-      config = new(Config::Store.new)
+      new(Config::Store.new)
     end
 
     def self.create_with_default
-      config = new(::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout))
+      new(::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout))
     end
 
     def include_paths(&block)

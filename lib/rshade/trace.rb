@@ -5,7 +5,7 @@ module RShade
 
     def initialize(config)
       @event_store = EventStore.new
-      @config = config
+      @config = fetch_config(config)
       @tp = TracePoint.new(*EVENTS, &method(:process_trace))
       @level = 0
       @stat = {}
@@ -14,7 +14,6 @@ module RShade
     end
 
     def self.reveal(config=nil, &block)
-      config = config || ::RShade::Config.default
       new(config).reveal(&block)
     end
 
@@ -52,7 +51,19 @@ module RShade
     end
 
     def pass?(event)
-      config.filters.any? { |filter| filter.call(event) }
+      grouped_filters = config.filters.group_by { |filter| filter.name }
+      return true if grouped_filters[::RShade::Filter::IncludePathFilter::NAME]&.any? { |filter| filter.call(event) }
+      return false if grouped_filters[::RShade::Filter::ExcludePathFilter::NAME]&.any? { |filter| filter.call(event) }
+
+      true
+    end
+
+    private
+
+    def fetch_config(config)
+      config = config || ::RShade::Config.default
+      config = config.value if config.is_a?(::RShade::Config)
+      config
     end
   end
 end
