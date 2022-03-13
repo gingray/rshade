@@ -24,7 +24,7 @@ module RShade
           vars[var] = shallow_copy_of_hash(local_var)
         else
           class_name =  local_var.is_a?(Class) ? local_var.to_s : local_var.class.to_s
-          vars[var] = "FILTERED[#{class_name}]"
+          vars[var] = { type: class_name.to_s, value: local_var }
         end
       end
       vars
