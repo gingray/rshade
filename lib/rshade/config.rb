@@ -31,6 +31,13 @@ module RShade
       self
     end
 
+    def match_variable(&block)
+      filter = ::RShade::Filter::VariableFilter.new
+      filter.config(&block)
+      @config_store.add_filter(filter)
+      self
+    end
+
     def formatter(&block)
       formatter = block.call
       @config_store.set_formatter(formatter)

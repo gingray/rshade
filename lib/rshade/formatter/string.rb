@@ -12,14 +12,14 @@ module RShade
       def call
         buffer = StringIO.new
         event_store.each_with_index do |node, idx|
-          depth = node.vlevel
+          depth = node.level
           event = node.event
           if depth == 1
             buffer << ROOT_SEP
             next
           end
           next if @ignore_skipped && event.skipped
-          buffer.write line(idx, event, depth)
+          buffer.write line(idx, event, node.vlevel)
         end
         buffer.string
       end
