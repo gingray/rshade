@@ -20,7 +20,7 @@ RSpec.describe RShade::Config do
 
     it do
       expect(config.filters[0]).to be_a(::RShade::Filter::ExcludePathFilter)
-      expect(config.formatter).to eq ::RShade::Formatter::Stdout
+      expect(config.formatter).to be_a(::RShade::Formatter::Stdout)
     end
   end
 end

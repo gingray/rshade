@@ -2,7 +2,7 @@ RSpec.describe RShade::Formatter::Html do
   let(:formatter) { double }
 
   let(:json) { [1,2,3] }
-  let(:service) { RShade::Formatter::Html.new({}, formatter: formatter) }
+  let(:service) { RShade::Formatter::Html.new(formatter: formatter) }
 
   context 'check html template generation' do
     before { allow(formatter).to receive(:call).and_return(json) }
@@ -13,7 +13,7 @@ RSpec.describe RShade::Formatter::Html do
     end
 
     it do
-      val = service.call
+      val = service.call({})
       expect(val).to be_kind_of(String)
       expect(val).to match(Regexp.escape "var data = [1,2,3];")
     end
