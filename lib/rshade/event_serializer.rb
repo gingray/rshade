@@ -1,11 +1,15 @@
 require 'date'
 module RShade
-  class EventSerializer < Base
+  class EventSerializer
     attr_reader :evt, :level
     SERIALIZE_CLASSES = [NilClass, TrueClass, FalseClass, Numeric, Time, Date, String, Symbol, Array]
     def initialize(evt, level)
       @evt = evt
       @level = level
+    end
+
+    def self.call(*args)
+      new(*args).call
     end
 
     def call

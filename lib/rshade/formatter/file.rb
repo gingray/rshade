@@ -1,15 +1,14 @@
 module RShade
   module Formatter
-    class File < Base
+    class File
       attr_reader :formatter
       FILE_NAME = 'stacktrace.json'.freeze
 
-      def initialize(event_store, args={})
+      def initialize(args={})
         @formatter = args.fetch(:format, Json)
-        super event_store
       end
 
-      def call
+      def call(event_store)
         data = formatter.call(event_store)
         if formatter == Json
           write_to_file(JSON.pretty_generate(data))
