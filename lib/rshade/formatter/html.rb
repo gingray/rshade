@@ -2,17 +2,16 @@ require 'json'
 
 module RShade
   module Formatter
-    class Html < ::RShade::Base
-      attr_reader :formatter, :event_store
+    class Html
+      attr_reader :formatter
       FILE_NAME = 'stacktrace.html'.freeze
       TEMPLATE = 'html/template.html.erb'
 
-      def initialize(event_store, args={})
-        @event_store = event_store
+      def initialize(args={})
         @formatter = args.fetch(:formatter, Json)
       end
 
-      def call
+      def call(event_store)
         data = formatter.call(event_store)
         erb_template = ERB.new(template)
         content = erb_template.result_with_hash({json: data.to_json})

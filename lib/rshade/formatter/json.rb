@@ -1,13 +1,10 @@
 module RShade
   module Formatter
-    class Json < ::RShade::Base
+    class Json
       attr_reader :event_store
 
-      def initialize(event_store)
+      def call(event_store)
         @event_store = event_store
-      end
-
-      def call
         flat
       end
 

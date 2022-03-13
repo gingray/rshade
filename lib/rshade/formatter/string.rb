@@ -1,15 +1,13 @@
 module RShade
   module Formatter
-    class String < ::RShade::Base
-      attr_reader :event_store
+    class String
       ROOT_SEP = "---\n"
 
-      def initialize(event_store, opts= {})
-        @event_store = event_store
+      def initialize(opts= {})
         @ignore_skipped = opts.fetch(:ignore_skipped, true)
       end
 
-      def call
+      def call(event_store)
         buffer = StringIO.new
         event_store.each_with_index do |node, idx|
           depth = node.level

@@ -1,9 +1,11 @@
-RSpec.describe RShade::Filter::VariableFilter, focus: true do
-  context "match by variable name" do
+RSpec.describe RShade::Filter::VariableFilter do
+  let(:formatter) { TestFormatter.new }
+  let(:base_config) { ::RShade::Config.create.formatter { formatter }.exclude_paths { |paths| paths << /test/ } }
+  context "variable name" do
     let(:config) do
-      ::RShade::Config.create.match_variable do |name, value|
+      base_config.match_variable do |name, value|
         name == :x
-      end.exclude_paths {  |paths| paths << /test/ }
+      end
     end
 
     let(:result) do
@@ -12,17 +14,18 @@ RSpec.describe RShade::Filter::VariableFilter, focus: true do
       end
     end
 
-    it "match variable by name" do
+    it "match" do
       expect(result).to be_kind_of RShade::Trace
       result.show
+      expect(formatter.events.count).to eq 1
     end
   end
 
-  context "match by variable value" do
+  context "variable value" do
     let(:config) do
-      ::RShade::Config.create.match_variable do |name, value|
+      base_config.match_variable do |name, value|
         value == 3
-      end.exclude_paths {  |paths| paths << /test/ }
+      end
     end
 
     let(:result) do
@@ -31,9 +34,50 @@ RSpec.describe RShade::Filter::VariableFilter, focus: true do
       end
     end
 
-    it "match variable by name" do
+    it "match" do
       expect(result).to be_kind_of RShade::Trace
       result.show
+      expect(formatter.events.count).to eq 1
+    end
+  end
+
+  context "variable value" do
+    let(:config) do
+      base_config.match_variable do |name, value|
+        value == 4
+      end
+    end
+
+    let(:result) do
+      RShade::Trace.reveal(config) do
+        TestRshade3.call
+      end
+    end
+
+    it "not match" do
+      expect(result).to be_kind_of RShade::Trace
+      result.show
+      expect(formatter.events.count).to eq 0
+    end
+  end
+
+  context "variable name" do
+    let(:config) do
+      base_config.match_variable do |name, value|
+        name == :z
+      end
+    end
+
+    let(:result) do
+      RShade::Trace.reveal(config) do
+        TestRshade3.call
+      end
+    end
+
+    it "not match" do
+      expect(result).to be_kind_of RShade::Trace
+      result.show
+      expect(formatter.events.count).to eq 0
     end
   end
 end

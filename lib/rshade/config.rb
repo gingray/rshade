@@ -2,7 +2,7 @@ module RShade
   class Config
 
     def self.default
-      ::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout)
+      ::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout.new)
     end
 
     def initialize(config_store)
@@ -14,7 +14,7 @@ module RShade
     end
 
     def self.create_with_default
-      new(::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout))
+      new(::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout.new))
     end
 
     def include_paths(&block)

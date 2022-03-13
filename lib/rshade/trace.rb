@@ -28,7 +28,7 @@ module RShade
     end
 
     def show
-      config.formatter.new(event_store).call
+      config.formatter.call(event_store)
     end
 
     def stat

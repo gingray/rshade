@@ -1,9 +1,8 @@
 module RShade
   module Formatter
     class Stdout < String
-      def call
-        buffer = super
-        puts buffer
+      def call(event_store)
+        puts super(event_store)
       end
     end
   end

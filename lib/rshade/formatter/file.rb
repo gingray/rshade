@@ -1,12 +1,12 @@
 module RShade
   module Formatter
-    class File < ::RShade::Base
-      attr_reader :formatter, :event_store
+    class File < Base
+      attr_reader :formatter
       FILE_NAME = 'stacktrace.json'.freeze
 
       def initialize(event_store, args={})
-        @event_store = event_store
         @formatter = args.fetch(:format, Json)
+        super event_store
       end
 
       def call
