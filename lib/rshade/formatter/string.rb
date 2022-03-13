@@ -25,10 +25,11 @@ module RShade
       end
 
       def line(line_idx, value, depth)
+        vars = value.vars.map { |key, val| [key, val[:copy]]}.to_h
         class_method = ColorizedString["#{value.klass}##{value.method_name}"].colorize(:green)
         full_path = ColorizedString["#{value.path}:#{value.lineno}"].colorize(:blue)
         line_idx = ColorizedString["[#{line_idx}] "].colorize(:red)
-        "#{'  ' * depth}#{line_idx}#{class_method}(#{value.vars}) -> #{full_path}\n"
+        "#{'  ' * depth}#{line_idx}#{class_method}(#{vars}) -> #{full_path}\n"
       end
     end
   end

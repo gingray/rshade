@@ -48,12 +48,14 @@ module RShade
       end
 
       def item(value)
+        vars = value.vars.map { |key, val| [k, val[:copy]]}.to_h
+
         {
             class: value.klass.to_s,
             method_name: value.method_name,
             full_path: "#{value.path}:#{value.lineno}",
             depth: value.depth,
-            vars: value.vars
+            vars: vars
         }
       end
     end
