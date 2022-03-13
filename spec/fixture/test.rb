@@ -40,3 +40,13 @@ class TestRshade2
   end
 end
 
+class TestRshade3
+  def some(x)
+  end
+
+  def self.call
+    new.some(3)
+  end
+end
+
+

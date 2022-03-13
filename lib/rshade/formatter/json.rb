@@ -1,13 +1,10 @@
 module RShade
   module Formatter
-    class Json < ::RShade::Base
+    class Json
       attr_reader :event_store
 
-      def initialize(event_store)
+      def call(event_store)
         @event_store = event_store
-      end
-
-      def call
         flat
       end
 
@@ -48,12 +45,14 @@ module RShade
       end
 
       def item(value)
+        vars = value.vars.map { |key, val| [k, val[:copy]]}.to_h
+
         {
             class: value.klass.to_s,
             method_name: value.method_name,
             full_path: "#{value.path}:#{value.lineno}",
             depth: value.depth,
-            vars: value.vars
+            vars: vars
         }
       end
     end

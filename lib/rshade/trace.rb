@@ -28,7 +28,7 @@ module RShade
     end
 
     def show
-      config.formatter.new(event_store).call
+      config.formatter.call(event_store)
     end
 
     def stat
@@ -52,6 +52,7 @@ module RShade
 
     def pass?(event)
       grouped_filters = config.filters.group_by { |filter| filter.name }
+      return true if grouped_filters[::RShade::Filter::VariableFilter::NAME]&.any? { |filter| filter.call(event) }
       return true if grouped_filters[::RShade::Filter::IncludePathFilter::NAME]&.any? { |filter| filter.call(event) }
       return false if grouped_filters[::RShade::Filter::ExcludePathFilter::NAME]&.any? { |filter| filter.call(event) }
 

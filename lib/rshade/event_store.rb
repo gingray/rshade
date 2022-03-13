@@ -32,7 +32,6 @@ module RShade
         end
         @current = current.parent
         self.<<(event)
-        return
       end
     end
 

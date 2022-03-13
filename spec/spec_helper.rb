@@ -2,6 +2,7 @@ require 'pry'
 require "bundler/setup"
 require "rshade"
 require 'fixture/test'
+require 'test_formatter'
 
 Bundler.require(:test, :development)
 
