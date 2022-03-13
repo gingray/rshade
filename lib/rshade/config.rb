@@ -2,7 +2,7 @@ module RShade
   class Config
 
     def self.default
-      ::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout.new)
+      ::RShade::Config::Store.create(::RShade::AbstractFilter::Default.create, ::RShade::Formatter::Stdout.new)
     end
 
     def initialize(config_store)
@@ -14,25 +14,25 @@ module RShade
     end
 
     def self.create_with_default
-      new(::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout.new))
+      new(::RShade::Config::Store.create(::RShade::AbstractFilter::Default.create, ::RShade::Formatter::Stdout.new))
     end
 
     def include_paths(&block)
-      filter = ::RShade::Filter::IncludePathFilter.new
+      filter = ::RShade::AbstractFilter::IncludePathFilter.new
       filter.config(&block)
       @config_store.add_filter(filter)
       self
     end
 
     def exclude_paths(&block)
-      filter = ::RShade::Filter::ExcludePathFilter.new
+      filter = ::RShade::AbstractFilter::ExcludePathFilter.new
       filter.config(&block)
       @config_store.add_filter(filter)
       self
     end
 
     def match_variable(&block)
-      filter = ::RShade::Filter::VariableFilter.new
+      filter = ::RShade::AbstractFilter::VariableFilter.new
       filter.config(&block)
       @config_store.add_filter(filter)
       self

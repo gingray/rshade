@@ -1,5 +1,5 @@
 module RShade
-  module Filter
+  module AbstractFilter
     class IncludePathFilter < Base
       attr_reader :paths
 

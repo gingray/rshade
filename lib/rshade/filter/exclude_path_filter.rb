@@ -1,5 +1,5 @@
 module RShade
-  module Filter
+  module AbstractFilter
     class ExcludePathFilter < IncludePathFilter
       NAME = :exclude_paths
 
