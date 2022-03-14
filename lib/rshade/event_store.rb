@@ -8,30 +8,31 @@ module RShade
     def initialize
       @current = EventStoreNode.new(Event.create_blank(0))
       @head = @current
+      @var_serializer = BindingSerializer.new
     end
 
-    def <<(event, depth)
-      if current.level + 1 == depth
-        current.children << EventStoreNode.new(event, current)
+    def <<(event)
+      if current.level + 1 == event.level
+        current.children << EventStoreNode.new(event.with_serialized_vars(@var_serializer), current)
         return
       end
-      if current.level + 1 < depth
+      if current.level + 1 < event.level
 
         last = current.children.last
         unless last
           current.children << EventStoreNode.new(Event.create_blank(current.level + 1), current)
         end
         @current = current.children.last
-        self.<<(event, depth)
+        self.<<(event)
         return
       end
 
-      if current.level + 1 > depth
+      if current.level + 1 > event.level
         unless current.parent
           return
         end
         @current = current.parent
-        self.<<(event, depth)
+        self.<<(event)
       end
     end
 

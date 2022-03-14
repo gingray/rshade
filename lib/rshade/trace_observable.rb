@@ -1,11 +1,10 @@
 module RShade
-  class Trace2
+  class TraceObservable
     include Observable
     attr_reader :trace_p
-    CALL_EVENTS = Set[:call, :c_call, :b_call]
-    RETURN_EVENTS = Set[:return, :c_return, :b_return]
+    CALL_EVENTS = Set[:call]
+    RETURN_EVENTS = Set[:return]
     OTHER_EVENTS = Set[:line, :raise]
-
 
     # @param [Enumerable<#call>, #call] observers
     def initialize(observers)
@@ -35,8 +34,8 @@ module RShade
       changed
       event = Event.from_trace_point(tp)
       notify_observers(event, :enter) if CALL_EVENTS.include?(tp.event)
-      notify_observers(event, :leave) if RETURN_EVENTS.include?(tp.event)
-      notify_observers(event, :other) if OTHER_EVENTS.include?(tp.event)
+      # notify_observers(event, :leave) if RETURN_EVENTS.include?(tp.event)
+      # notify_observers(event, :other) if OTHER_EVENTS.include?(tp.event)
     end
   end
 end

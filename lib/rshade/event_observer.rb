@@ -4,8 +4,8 @@ module RShade
 
     def initialize(config)
       @event_store = EventStore.new
-      @event_store = config
-      @depth = 0
+      @config = fetch_config(config)
+      @level = 0
       @hook = Hash.new(0)
       @hook[:enter] = 1
       @hook[:leave] = -1
@@ -14,22 +14,28 @@ module RShade
     # @param [:enter, :leave, :other] type
     # @param [RShade::Event] event
     def call(event, type)
-      @depth += @hook[type]
+      @level += @hook[type]
+
       return unless pass?(event)
 
+      event.with_level!(@level)
       enter(event) if type == :enter
       leave(event) if type == :leave
       other(event) if type == :other
     end
 
+    def show
+      config.formatter.call event_store
+    end
+
     private
 
     def enter(event)
-      event_store.<<(event, @depth)
+      event_store << event
     end
 
     def leave(event)
-      event_store.<<(event, @depth)
+      event_store << event
     end
 
     def other(event)
@@ -43,6 +49,12 @@ module RShade
       return false if grouped_filters[::RShade::AbstractFilter::ExcludePathFilter::NAME]&.any? { |filter| filter.call(event) }
 
       true
+    end
+
+    def fetch_config(config)
+      config = config || ::RShade::Config.default
+      config = config.value if config.is_a?(::RShade::Config)
+      config
     end
   end
 end

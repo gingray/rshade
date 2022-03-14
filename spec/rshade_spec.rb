@@ -6,7 +6,7 @@ RSpec.describe RShade do
   end
 
   it "show report" do
-    expect(result).to be_kind_of RShade::Trace
+    expect(result).to be_kind_of RShade::EventObserver
     result.show
   end
 end

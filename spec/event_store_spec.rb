@@ -4,7 +4,7 @@ RSpec.describe RShade::EventStore do
   context "events go without jumps" do
     let(:sequence) { [1,2,3,2,1] }
       before do
-        sequence.map { |item| OpenStruct.new({level: item}) }.each do |event|
+        sequence.map { |item| RShade::Event.new({level: item, vars: {}}) }.each do |event|
           store << event
         end
       end
@@ -17,7 +17,7 @@ RSpec.describe RShade::EventStore do
     context "check levels sequence" do
       let(:sequence) { [1,2,5,2,1] }
       before do
-        sequence.map { |item| OpenStruct.new({level: item}) }.each do |event|
+        sequence.map { |item| RShade::Event.new({level: item, vars: {}}) }.each do |event|
           store << event
         end
       end
@@ -30,7 +30,7 @@ RSpec.describe RShade::EventStore do
     context "check vlevels sequence" do
       let(:sequence) { [1,2,5,2,1] }
       before do
-        sequence.map { |item| OpenStruct.new({level: item}) }.each do |event|
+        sequence.map { |item| RShade::Event.new({level: item, vars: {}}) }.each do |event|
           store << event
         end
       end

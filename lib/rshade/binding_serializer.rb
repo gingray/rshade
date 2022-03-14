@@ -6,18 +6,17 @@ module RShade
     def initialize(opts={})
     end
 
-    def call(binding)
+    def call(trace_binding)
       vars = {}
-      binding.local_variables.each do |var_name|
-        local_var = binding.local_variable_get var_name
-        if SERIALIZE_CLASSES.any? { |klass| local_var.is_a?(klass) }
-          vars[var_name] = local_var
-        elsif local_var.is_a?(Hash)
-          copy = shallow_copy_of_hash(local_var)
-          vars[var_name] = copy
+      trace_binding.each do |name, value|
+        if SERIALIZE_CLASSES.any? { |klass| value.is_a?(klass) }
+          vars[name] = value
+        elsif value.is_a?(Hash)
+          copy = shallow_copy_of_hash(value)
+          vars[name] = copy
         else
-          class_name =  local_var.is_a?(Class) ? local_var.to_s : local_var.class.to_s
-          vars[var_name] = class_name
+          class_name =  value.is_a?(Class) ? value.to_s : value.class.to_s
+          vars[name] = class_name
         end
       end
       vars

@@ -1,6 +1,12 @@
 RSpec.describe RShade::AbstractFilter::VariableFilter do
   let(:formatter) { TestFormatter.new }
-  let(:base_config) { ::RShade::Config.create.formatter { formatter }.exclude_paths { |paths| paths << /test/ } }
+  let(:base_config) do
+    ::RShade::Config.create.formatter { formatter }.exclude_paths do |paths|
+      paths << /.rb/
+      paths << /internal/
+    end
+  end
+
   context "variable name" do
     let(:config) do
       base_config.match_variable do |name, value|
@@ -15,7 +21,7 @@ RSpec.describe RShade::AbstractFilter::VariableFilter do
     end
 
     it "match" do
-      expect(result).to be_kind_of RShade::Trace
+      expect(result).to be_kind_of RShade::EventObserver
       result.show
       expect(formatter.events.count).to eq 1
     end
@@ -35,7 +41,7 @@ RSpec.describe RShade::AbstractFilter::VariableFilter do
     end
 
     it "match" do
-      expect(result).to be_kind_of RShade::Trace
+      expect(result).to be_kind_of RShade::EventObserver
       result.show
       expect(formatter.events.count).to eq 1
     end
@@ -54,8 +60,8 @@ RSpec.describe RShade::AbstractFilter::VariableFilter do
       end
     end
 
-    it "not match" do
-      expect(result).to be_kind_of RShade::Trace
+    it "not match", focus: true do
+      expect(result).to be_kind_of RShade::EventObserver
       result.show
       expect(formatter.events.count).to eq 0
     end
@@ -75,7 +81,7 @@ RSpec.describe RShade::AbstractFilter::VariableFilter do
     end
 
     it "not match" do
-      expect(result).to be_kind_of RShade::Trace
+      expect(result).to be_kind_of RShade::EventObserver
       result.show
       expect(formatter.events.count).to eq 0
     end
