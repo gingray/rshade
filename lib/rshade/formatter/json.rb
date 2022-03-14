@@ -14,7 +14,7 @@ module RShade
         event_store.each do |node|
           arr << item(node.event)
         end
-        arr.sort_by { |item| item[:depth]}
+        arr.sort_by { |item| item[:level]}
       end
 
       def hierarchical
@@ -46,14 +46,12 @@ module RShade
       end
 
       def item(value)
-        vars = value.vars.map { |key, val| [k, val[:copy]]}.to_h
-
         {
-            class: value.klass.to_s,
-            method_name: value.method_name,
-            full_path: "#{value.path}:#{value.lineno}",
-            depth: value.depth,
-            vars: vars
+          class: value.klass.to_s,
+          method_name: value.method_name,
+          full_path: "#{value.path}:#{value.lineno}",
+          level: value.depth,
+          vars: value.vars
         }
       end
     end

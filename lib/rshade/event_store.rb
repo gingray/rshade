@@ -8,11 +8,12 @@ module RShade
     def initialize
       @current = EventStoreNode.new(Event.create_blank(0))
       @head = @current
+      @var_serializer = BindingSerializer.new
     end
 
     def <<(event)
       if current.level + 1 == event.level
-        current.children << EventStoreNode.new(event, current)
+        current.children << EventStoreNode.new(event.with_serialized_vars(@var_serializer), current)
         return
       end
       if current.level + 1 < event.level

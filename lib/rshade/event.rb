@@ -2,7 +2,7 @@ module RShade
   # nodoc
   class Event
     attr_reader :hash, :skipped
-    attr_accessor :depth
+    attr_accessor :level
 
 
     def initialize(hash, skipped=false)
@@ -10,28 +10,31 @@ module RShade
       @skipped = skipped
     end
 
-    def level
-      @hash[:level]
+    [:klass, :path, :lineno, :method_name, :vars, :level].each do |method_name|
+      define_method method_name do
+        fetch method_name
+      end
     end
 
-    def klass
-      fetch :klass
+    def with_level!(level)
+      @hash[:level] = level
+      self
     end
 
-    def path
-      fetch :path
+    def with_serialized_vars(serializer)
+      @hash[:vars] = serializer.call(@hash[:vars])
+      self
     end
 
-    def lineno
-      fetch :lineno
-    end
+    def self.from_trace_point(evt)
+      vars = {}
+      evt.binding.local_variables.each do |var_name|
+        vars[var_name] = evt.binding.local_variable_get var_name
+      end
 
-    def method_name
-      fetch :method_name
-    end
-
-    def vars
-      fetch :vars
+      hash = { path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: vars,
+               event_type: evt.event }
+      new(hash)
     end
 
     def self.create_blank(level)

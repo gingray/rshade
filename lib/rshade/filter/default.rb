@@ -1,5 +1,5 @@
 module RShade
-  module AbstractFilter
+  module Filter
     class Default
       RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
 

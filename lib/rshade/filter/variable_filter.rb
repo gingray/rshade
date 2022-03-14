@@ -1,6 +1,6 @@
 module RShade
-  module AbstractFilter
-    class VariableFilter < Base
+  module Filter
+    class VariableFilter < AbstractFilter
       attr_reader :matchers
       NAME = :variable_filter
 
@@ -19,7 +19,7 @@ module RShade
       def call(event)
         matchers.each do |match|
           event.vars.each do |name, value|
-            return true if match.call(name, value[:weak])
+            return true if match.call(name, value)
           end
         end
         false

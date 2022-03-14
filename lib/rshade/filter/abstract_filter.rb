@@ -1,6 +1,6 @@
 module RShade
-  module AbstractFilter
-    class Base
+  module Filter
+    class AbstractFilter
       def name
         raise NotImplementedError
       end
