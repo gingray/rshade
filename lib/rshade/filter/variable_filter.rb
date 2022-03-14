@@ -1,6 +1,6 @@
 module RShade
-  module AbstractFilter
-    class VariableFilter < Base
+  module Filter
+    class VariableFilter < AbstractFilter
       attr_reader :matchers
       NAME = :variable_filter
 

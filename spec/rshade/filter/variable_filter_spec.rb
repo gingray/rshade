@@ -1,4 +1,4 @@
-RSpec.describe RShade::AbstractFilter::VariableFilter do
+RSpec.describe RShade::Filter::VariableFilter do
   let(:formatter) { TestFormatter.new }
   let(:base_config) do
     ::RShade::Config.create.formatter { formatter }.exclude_paths do |paths|

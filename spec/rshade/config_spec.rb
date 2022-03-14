@@ -9,8 +9,8 @@ RSpec.describe RShade::Config do
     end
 
     it do
-      expect(config.filters[0]).to be_a(::RShade::AbstractFilter::IncludePathFilter)
-      expect(config.filters[1]).to be_a(::RShade::AbstractFilter::ExcludePathFilter)
+      expect(config.filters[0]).to be_a(::RShade::Filter::IncludePathFilter)
+      expect(config.filters[1]).to be_a(::RShade::Filter::ExcludePathFilter)
       expect(config.formatter).to eq formatter
     end
   end
@@ -19,7 +19,7 @@ RSpec.describe RShade::Config do
     let(:config) { RShade::Config.create_with_default.value }
 
     it do
-      expect(config.filters[0]).to be_a(::RShade::AbstractFilter::ExcludePathFilter)
+      expect(config.filters[0]).to be_a(::RShade::Filter::ExcludePathFilter)
       expect(config.formatter).to be_a(::RShade::Formatter::Stdout)
     end
   end
