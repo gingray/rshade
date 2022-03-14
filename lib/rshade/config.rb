@@ -5,6 +5,7 @@ module RShade
       ::RShade::Config::Store.create(::RShade::AbstractFilter::Default.create, ::RShade::Formatter::Stdout.new)
     end
 
+    # @param [RShade::Config::Store] config_store
     def initialize(config_store)
       @config_store = config_store
     end

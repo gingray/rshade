@@ -3,6 +3,10 @@ module RShade
   class EventSerializer
     attr_reader :evt, :level
     SERIALIZE_CLASSES = [NilClass, TrueClass, FalseClass, Numeric, Time, Date, String, Symbol, Array]
+    
+    # more info https://rubyapi.org/3.1/o/tracepoint
+    # @param [TracePoint] evt
+    # @param [Integer] level
     def initialize(evt, level)
       @evt = evt
       @level = level

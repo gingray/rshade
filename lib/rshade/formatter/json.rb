@@ -3,6 +3,7 @@ module RShade
     class Json
       attr_reader :event_store
 
+      # @param [RShade::EventStore] event_store
       def call(event_store)
         @event_store = event_store
         flat

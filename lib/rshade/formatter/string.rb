@@ -7,6 +7,7 @@ module RShade
         @ignore_skipped = opts.fetch(:ignore_skipped, true)
       end
 
+      # @param [RShade::EventStore] event_store
       def call(event_store)
         buffer = StringIO.new
         event_store.each_with_index do |node, idx|

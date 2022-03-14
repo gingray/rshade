@@ -34,7 +34,8 @@ module RShade
     def stat
       { calls: @calls, returns: @returns }
     end
-
+    
+    # @param [TracePoint] tp
     def process_trace(tp)
       if tp.event == :call
         @level += 1
