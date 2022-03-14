@@ -2,9 +2,11 @@ module RShade
   class EventObserver
     attr_reader :event_store, :config
 
-    def initialize(config)
-      @event_store = EventStore.new
-      @config = fetch_config(config)
+    # @param [RShade::Config::Store] config
+    # @param [RShade::EventStore] event_store
+    def initialize(config, event_store)
+      @event_store = event_store
+      @config = config
       @level = 0
       @hook = Hash.new(0)
       @hook[:enter] = 1
@@ -22,10 +24,6 @@ module RShade
       enter(event) if type == :enter
       leave(event) if type == :leave
       other(event) if type == :other
-    end
-
-    def show
-      config.formatter.call event_store
     end
 
     private
@@ -49,12 +47,6 @@ module RShade
       return false if grouped_filters[::RShade::Filter::ExcludePathFilter::NAME]&.any? { |filter| filter.call(event) }
 
       true
-    end
-
-    def fetch_config(config)
-      config = config || ::RShade::Config.default
-      config = config.value if config.is_a?(::RShade::Config)
-      config
     end
   end
 end

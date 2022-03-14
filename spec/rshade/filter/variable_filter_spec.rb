@@ -21,7 +21,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     end
 
     it "match" do
-      expect(result).to be_kind_of RShade::EventObserver
+      expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.events.count).to eq 1
     end
@@ -41,7 +41,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     end
 
     it "match" do
-      expect(result).to be_kind_of RShade::EventObserver
+      expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.events.count).to eq 1
     end
@@ -61,7 +61,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     end
 
     it "not match", focus: true do
-      expect(result).to be_kind_of RShade::EventObserver
+      expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.events.count).to eq 0
     end
@@ -81,7 +81,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     end
 
     it "not match" do
-      expect(result).to be_kind_of RShade::EventObserver
+      expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.events.count).to eq 0
     end
