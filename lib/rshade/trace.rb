@@ -39,7 +39,7 @@ module RShade
     def process_trace(tp)
       if tp.event == :call
         @level += 1
-        event = EventSerializer.call(tp, @level)
+        event = BindingSerializer.call(tp, @level)
         return unless pass?(event)
         event_store << event
         @calls += 1

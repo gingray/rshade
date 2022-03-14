@@ -10,28 +10,28 @@ module RShade
       @head = @current
     end
 
-    def <<(event)
-      if current.level + 1 == event.level
+    def <<(event, depth)
+      if current.level + 1 == depth
         current.children << EventStoreNode.new(event, current)
         return
       end
-      if current.level + 1 < event.level
+      if current.level + 1 < depth
 
         last = current.children.last
         unless last
           current.children << EventStoreNode.new(Event.create_blank(current.level + 1), current)
         end
         @current = current.children.last
-        self.<<(event)
+        self.<<(event, depth)
         return
       end
 
-      if current.level + 1 > event.level
+      if current.level + 1 > depth
         unless current.parent
           return
         end
         @current = current.parent
-        self.<<(event)
+        self.<<(event, depth)
       end
     end
 

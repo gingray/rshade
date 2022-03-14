@@ -19,7 +19,7 @@ module RShade
       def call(event)
         matchers.each do |match|
           event.vars.each do |name, value|
-            return true if match.call(name, value[:weak])
+            return true if match.call(name, value)
           end
         end
         false
