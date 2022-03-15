@@ -18,6 +18,12 @@ module RShade
       new(::RShade::Config::Store.create(::RShade::Filter::Default.create, ::RShade::Formatter::Stdout.new))
     end
 
+    def tp_events(&block)
+      events = block.call
+      @config_store.set_tp_events(events)
+      self
+    end
+
     def include_paths(&block)
       filter = ::RShade::Filter::IncludePathFilter.new
       filter.config(&block)

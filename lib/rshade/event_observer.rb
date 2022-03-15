@@ -21,6 +21,7 @@ module RShade
       return unless pass?(event)
 
       event.with_level!(@level)
+
       enter(event) if type == :enter
       leave(event) if type == :leave
       other(event) if type == :other
