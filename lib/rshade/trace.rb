@@ -1,6 +1,8 @@
 module RShade
   class Trace
     attr_reader :config, :event_store
+    
+    # @param [RShade::Config,RShade::Config::Store] config
     def initialize(config)
       @config = fetch_config(config)
       @event_store = EventStore.new
@@ -12,7 +14,7 @@ module RShade
 
     def reveal(&block)
       observer = EventObserver.new(config, event_store)
-      observable = RShade::TraceObservable.new([observer])
+      observable = RShade::TraceObservable.new([observer], config)
       observable.reveal &block
       self
     end
