@@ -1,15 +1,15 @@
-RSpec.describe RShade::EventStore do
-  let(:store) { RShade::EventStore.new }
+RSpec.describe RShade::EventTree do
+  let(:store) { RShade::EventTree.new }
 
   context "events go without jumps" do
     let(:sequence) { [1,2,3,2,1] }
       before do
         sequence.map { |item| RShade::Event.new({level: item, vars: {}}) }.each do |event|
-          store << event
+          store.add event, event.level
         end
       end
     it do
-      expect(store.map { |node| node.event.level }).to eq [1,2,3,2,1]
+      expect(store.map { |node| node.level }).to eq [1,2,3,2,1]
     end
   end
 
@@ -18,11 +18,11 @@ RSpec.describe RShade::EventStore do
       let(:sequence) { [1,2,5,2,1] }
       before do
         sequence.map { |item| RShade::Event.new({level: item, vars: {}}) }.each do |event|
-          store << event
+          store.add event, event.level
         end
       end
       it do
-        expect(store.map { |node| node.event.level }).to eq [1,2,3,4,5,2,1]
+        expect(store.map { |node| node.level }).to eq [1,2,3,4,5,2,1]
       end
     end
     end
@@ -31,7 +31,7 @@ RSpec.describe RShade::EventStore do
       let(:sequence) { [1,2,5,2,1] }
       before do
         sequence.map { |item| RShade::Event.new({level: item, vars: {}}) }.each do |event|
-          store << event
+          store.add event, event.level
         end
       end
       it do
