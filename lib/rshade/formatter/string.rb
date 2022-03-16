@@ -7,12 +7,12 @@ module RShade
         @ignore_skipped = opts.fetch(:ignore_skipped, true)
       end
 
-      # @param [RShade::EventStore] event_store
+      # @param [RShade::EventProcessor] event_store
       def call(event_store)
         buffer = StringIO.new
         event_store.each_with_index do |node, idx|
           depth = node.level
-          event = node.event
+          event = node.value
           if depth == 1
             buffer << ROOT_SEP
             next

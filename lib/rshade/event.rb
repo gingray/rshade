@@ -2,7 +2,6 @@ module RShade
   # nodoc
   class Event
     attr_reader :hash, :skipped
-    attr_accessor :level
 
 
     def initialize(hash, skipped=false)
@@ -21,7 +20,7 @@ module RShade
       self
     end
 
-    def with_serialized_vars(serializer)
+    def with_serialized_vars!(serializer)
       @hash[:vars] = serializer.call(@hash[:vars])
       self
     end

@@ -1,11 +1,11 @@
 module RShade
   class EventObserver
-    attr_reader :event_store, :config
+    attr_reader :event_processor, :config
 
     # @param [RShade::Config::Store] config
-    # @param [RShade::EventStore] event_store
-    def initialize(config, event_store)
-      @event_store = event_store
+    # @param [RShade::EventProcessor] event_store
+    def initialize(config, event_processor)
+      @event_processor = event_processor
       @config = config
       @level = 0
       @hook = Hash.new(0)
@@ -20,8 +20,6 @@ module RShade
 
       return unless pass?(event)
 
-      event.with_level!(@level)
-
       enter(event) if type == :enter
       leave(event) if type == :leave
       other(event) if type == :other
@@ -30,15 +28,15 @@ module RShade
     private
 
     def enter(event)
-      event_store << event
+      event_processor.enter event, @level
     end
 
     def leave(event)
-      event_store << event
+      event_processor.leave event, @level
     end
 
     def other(event)
-
+      event_processor.other event, @level
     end
 
     def pass?(event)

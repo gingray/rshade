@@ -11,7 +11,7 @@ module RShade
         @formatter = args.fetch(:formatter, Json)
       end
 
-      # @param [RShade::EventStore] event_store
+      # @param [RShade::EventProcessor] event_store
       def call(event_store)
         data = formatter.call(event_store)
         erb_template = ERB.new(template)

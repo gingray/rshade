@@ -7,7 +7,7 @@ module RShade
       def initialize
         @filters = []
         @formatter = ::RShade::Formatter::Stdout
-        @tp_events = [:call]
+        @tp_events = [:call, :return]
       end
 
       def self.create(filters, formatter)

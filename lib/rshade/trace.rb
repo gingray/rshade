@@ -5,7 +5,7 @@ module RShade
     # @param [RShade::Config,RShade::Config::Store] config
     def initialize(config)
       @config = fetch_config(config)
-      @event_store = EventStore.new
+      @event_store = EventTree.new
     end
 
     def self.reveal(config=nil, &block)
@@ -13,7 +13,8 @@ module RShade
     end
 
     def reveal(&block)
-      observer = EventObserver.new(config, event_store)
+      processor = EventProcessor.new(@event_store)
+      observer = EventObserver.new(config, processor)
       observable = RShade::TraceObservable.new([observer], config)
       observable.reveal &block
       self
