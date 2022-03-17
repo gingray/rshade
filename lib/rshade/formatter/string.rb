@@ -4,7 +4,6 @@ module RShade
       ROOT_SEP = "---\n"
 
       def initialize(opts= {})
-        @ignore_skipped = opts.fetch(:ignore_skipped, true)
       end
 
       # @param [RShade::EventProcessor] event_store
@@ -17,7 +16,7 @@ module RShade
             buffer << ROOT_SEP
             next
           end
-          next if @ignore_skipped && event.skipped
+          next unless event
           buffer.write line(idx, event, node.vlevel)
         end
         buffer.string
