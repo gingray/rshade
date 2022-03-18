@@ -19,7 +19,8 @@ module RShade
     # @param [Integer] level
     def leave(event, level)
       store.current! do |node|
-        # add return params to node
+        node.value.set_return_value!(event.return_value)
+            .with_serialized_return!(->(value) { value.inspect })
       end
     end
     # @param [RShade::Event] event

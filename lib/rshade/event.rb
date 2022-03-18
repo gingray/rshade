@@ -2,6 +2,7 @@ module RShade
   # nodoc
   class Event
     attr_reader :hash, :skipped
+    RETURN_EVENTS = [:return, :b_return, :c_return]
 
 
     def initialize(hash, skipped=false)
@@ -9,7 +10,7 @@ module RShade
       @skipped = skipped
     end
 
-    [:klass, :path, :lineno, :method_name, :vars, :level].each do |method_name|
+    [:klass, :path, :lineno, :method_name, :vars, :level, :return_value].each do |method_name|
       define_method method_name do
         fetch method_name
       end
@@ -17,6 +18,16 @@ module RShade
 
     def with_level!(level)
       @hash[:level] = level
+      self
+    end
+
+    def set_return_value!(return_value)
+      @hash[:return_value] = return_value
+      self
+    end
+
+    def with_serialized_return!(serializer)
+      @hash[:return_value] = serializer.call(@hash[:return_value])
       self
     end
 
@@ -33,6 +44,7 @@ module RShade
 
       hash = { path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: vars,
                event_type: evt.event }
+      hash.merge!({return_value: evt.return_value}) if RETURN_EVENTS.include?(evt.event)
       new(hash)
     end
 
@@ -43,7 +55,7 @@ module RShade
     private
 
     def fetch(key)
-      @hash[key] || "<skipped>"
+      @hash[key]
     end
   end
 end

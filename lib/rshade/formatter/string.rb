@@ -24,10 +24,12 @@ module RShade
 
       def line(line_idx, value, depth)
         vars = value.vars
+        returned = ColorizedString["=> |#{value.return_value}|"].colorize(:magenta)
+
         class_method = ColorizedString["#{value.klass}##{value.method_name}"].colorize(:green)
         full_path = ColorizedString["#{value.path}:#{value.lineno}"].colorize(:blue)
         line_idx = ColorizedString["[#{line_idx}] "].colorize(:red)
-        "#{'  ' * depth}#{line_idx}#{class_method}(#{vars}) -> #{full_path}\n"
+        "#{'  ' * depth}#{line_idx}#{class_method}(#{vars}) #{returned} -> #{full_path}\n"
       end
     end
   end
