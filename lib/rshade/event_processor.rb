@@ -19,9 +19,12 @@ module RShade
     # @param [Integer] level
     def leave(event, level)
       store.current! do |node|
-        node.value.set_return_value!(event.return_value)
-            .with_serialized_return!(->(value) { value.inspect })
+          node.value.set_return_value!(event.return_value)
+              .with_serialized_return!(->(value) { value.inspect })
       end
+    rescue => e
+      # this rescue here due this issue which reproduce in ruby-2.6.6 at least
+      # https://bugs.ruby-lang.org/issues/18060
     end
     # @param [RShade::Event] event
     # @param [Integer] level

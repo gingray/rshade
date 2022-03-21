@@ -17,7 +17,6 @@ module RShade
     # @param [RShade::Event] event
     def call(event, type)
       @level += @hook[type]
-
       return unless pass?(event)
 
       enter(event) if type == :enter

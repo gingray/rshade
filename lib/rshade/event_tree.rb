@@ -34,7 +34,7 @@ module RShade
     end
 
     def current!(&block)
-      block.call(current)
+      block.call(current.children.last) if current.children.last
     end
 
     def each(&block)

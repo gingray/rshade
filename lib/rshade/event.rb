@@ -5,9 +5,8 @@ module RShade
     RETURN_EVENTS = [:return, :b_return, :c_return]
 
 
-    def initialize(hash, skipped=false)
+    def initialize(hash)
       @hash = hash
-      @skipped = skipped
     end
 
     [:klass, :path, :lineno, :method_name, :vars, :level, :return_value].each do |method_name|
