@@ -6,6 +6,7 @@ module RShade
 
       def initialize
         @filters = []
+        # Filter::FilterComposition.new(Filter::FilterComposition::OR_OP,   )
         @formatter = ::RShade::Formatter::Stdout
         @tp_events = [:call, :return]
       end

@@ -20,7 +20,7 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "match", focus: true do
+    it "match" do
       expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.event_store.count).to eq 1
