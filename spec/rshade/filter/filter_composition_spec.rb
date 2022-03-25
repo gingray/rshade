@@ -1,4 +1,4 @@
-RSpec.describe RShade::Filter::FilterComposition, focus: true do
+RSpec.describe RShade::Filter::FilterComposition do
   let(:event) { true }
   context "when 'true and false'" do
     let(:composition) do
