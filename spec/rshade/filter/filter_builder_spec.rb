@@ -1,4 +1,4 @@
-RSpec.describe 'RShade::Filter::FilterBuilder', focus: true do
+RSpec.describe 'RShade::Filter::FilterBuilder' do
   context 'build filter composition from array' do
     let(:arr) { [:or, ->(event) { event }, ->(event) { !event }] }
     let(:service) { RShade::Filter::FilterBuilder.build(arr) }

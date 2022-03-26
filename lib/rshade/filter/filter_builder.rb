@@ -17,7 +17,7 @@ module RShade
         op, arity = map[arr[0]]
         arg1 = arr[1]
         arg2 = nil
-        arg2 = map[2] if arity == 2
+        arg2 = arr[2] if arity == 2
         arg1 = traverse(arg1) if arg1.is_a?(Array)
         arg2 = traverse(arg2) if arg2.is_a?(Array)
 

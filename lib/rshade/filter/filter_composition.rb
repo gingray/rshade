@@ -5,7 +5,8 @@ module RShade
       AND_OP = :and
       OR_OP = :or
       UNARY_OP = :unary
-      attr_reader :op, :left, :right
+      attr_reader :op, :left, :right, :parent
+      attr_accessor :parent
 
       # @param [#call, Enumerable] left
       # @param [#call, Enumerable] right
@@ -22,7 +23,10 @@ module RShade
         when AND_OP
           return left&.call(event) && right&.call(event)
         when OR_OP
-          return left&.call(event) || right&.call(event)
+          l = left&.call(event)
+          r = right&.call(event)
+          # puts "#{left} => #{l} OR #{right} => #{r}"
+          return l || r
         else
           raise 'undefined op'
         end

@@ -1,10 +1,8 @@
 RSpec.describe RShade::Filter::VariableFilter do
   let(:formatter) { TestFormatter.new }
   let(:base_config) do
-    ::RShade::Config.create.formatter { formatter }.exclude_paths do |paths|
-      paths << /.rb/
-      paths << /internal/
-    end
+    comp = RShade::Filter::FilterComposition.new(:unary, RShade::Filter::VariableFilter.new )
+    ::RShade::Config.create(filter_composition: comp).formatter { formatter }
   end
 
   context "variable name" do
@@ -60,7 +58,7 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "not match" do
+    it "not match", focus: true do
       expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.event_store.count).to eq 0
