@@ -13,11 +13,11 @@ module RShade
 
       private
       def str?(str, event_path)
-        event_path.include?(str)
+        !event_path.include?(str)
       end
 
       def regexp?(regex, event_path)
-        regex.match?(event_path)
+        !regex.match?(event_path)
       end
     end
   end

@@ -10,7 +10,7 @@ RShade::Trace.reveal do
 end.show
 
 # with custom config
-config = ::RShade::Config.create_with_default.include_paths { |paths| paths << /devise/ }
+config = ::RShade::Config.default.include_paths { |paths| paths << /devise/ }
 
 RShade::Trace.reveal(config) do
   #your code here
