@@ -58,7 +58,7 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "not match", focus: true do
+    it "not match" do
       expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.event_store.count).to eq 0

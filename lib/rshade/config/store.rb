@@ -4,10 +4,14 @@ module RShade
     class Store
       attr_reader :filter_composition, :formatter, :tp_events
 
+      # @param [Hash] options
+      # @option options [RShade::Filter::FilterComposition] :filter_composition
+      # @option options [#call(event_store)] :formatter
+      # @option options [Array<Symbol>] :tp_events
       def initialize(options={})
         @filter_composition = options.fetch(:filter_composition, default_filter_composition)
-        @formatter = ::RShade::Formatter::Stdout
-        @tp_events = [:call, :return]
+        @formatter = options.fetch(:formatter, ::RShade::Formatter::Stdout)
+        @tp_events = options.fetch(:tp_events, [:call, :return])
       end
 
       def set_tp_events(tp_events)

@@ -16,6 +16,10 @@ module RShade
       @config_store = config_store
     end
 
+    # @param [Hash] options
+    # @option options [RShade::Filter::FilterComposition] :filter_composition
+    # @option options [#call(event_store)] :formatter
+    # @option options [Array<Symbol>] :tp_events
     def self.create(options={})
       new(Config::Store.new(options))
     end
