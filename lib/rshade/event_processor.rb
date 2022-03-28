@@ -5,7 +5,7 @@ module RShade
 
     def initialize(store)
       @store = store
-      @var_serializer = BindingSerializer.new
+      @var_serializer = ::RShade::Serializer::Traversal.new
     end
 
     # @param [RShade::Event] event

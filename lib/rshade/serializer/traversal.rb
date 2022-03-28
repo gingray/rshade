@@ -2,26 +2,31 @@ module RShade
   module Serializer
     class Traversal
       attr_reader :types
-      def initialize(custom_types)
+      def initialize(custom_types={})
         @types = default_types.merge(custom_types)
       end
 
       def call(hash)
-        serialized_val = {}
+        new_val = {}
         hash.each do |name, value|
-          serialized_val[name] = traverse(value)
+          new_val[name] = traverse(value)
         end
+        new_val
       end
 
       def default_types
         {
           default: ->(value) { value.inspect },
+          Integer => ->(value) { value },
+          Float => ->(value) { value },
+          Numeric => ->(value) { value },
+          String => ->(value) { value },
           Hash => ->(value) do
-            temp = {}
+            hash = {}
             value.each do |k,v|
-              temp[k] = traverse(v)
+              hash[k] = traverse(v)
             end
-            temp
+            hash
           end,
           Array => ->(value) do
             value.map { |item| traverse(item) }
