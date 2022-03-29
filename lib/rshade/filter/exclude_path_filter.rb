@@ -11,14 +11,15 @@ module RShade
         0
       end
 
-      private
-      def str?(str, event_path)
-        !event_path.include?(str)
+      def call(event)
+        event_path = event.path
+        !paths.any? do |path|
+          next str?(path, event_path) if path.is_a? String
+          next regexp?(path, event_path) if path.is_a? Regexp
+          false
+        end
       end
 
-      def regexp?(regex, event_path)
-        !regex.match?(event_path)
-      end
     end
   end
 end

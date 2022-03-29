@@ -5,9 +5,9 @@ require 'set'
 require 'observer'
 require 'rshade/config'
 require 'rshade/config/store'
+require 'rshade/serializer/traversal'
 require 'rshade/event_tree'
 require 'rshade/event_processor'
-require 'rshade/binding_serializer'
 require 'rshade/event_observer'
 require 'rshade/trace_observable'
 require 'rshade/filter/abstract_filter'
@@ -26,7 +26,6 @@ require 'rshade/event'
 require 'rshade/trace'
 require 'rshade/rspec/rspec'
 require 'rshade/version'
-
 
 module RShade
 end

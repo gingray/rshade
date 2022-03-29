@@ -47,10 +47,6 @@ module RShade
       new(hash)
     end
 
-    def self.create_blank(level)
-      new({level: level}, true)
-    end
-
     private
 
     def fetch(key)
