@@ -13,7 +13,7 @@ module RShade
     end
 
     def reveal(&block)
-      processor = EventProcessor.new(@event_store)
+      processor = EventProcessor.new(event_store, config)
       observer = EventObserver.new(config, processor)
       observable = RShade::TraceObservable.new([observer], config)
       observable.reveal &block

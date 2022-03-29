@@ -3,9 +3,10 @@ module RShade
   class EventProcessor
     attr_reader :store
 
-    def initialize(store)
+    def initialize(store, config)
       @store = store
-      @var_serializer = ::RShade::Serializer::Traversal.new
+      custom_serializers = config.custom_serializers
+      @var_serializer = ::RShade::Serializer::Traversal.new(custom_serializers)
     end
 
     # @param [RShade::Event] event

@@ -2,6 +2,7 @@ module RShade
   module Serializer
     class Traversal
       attr_reader :types
+
       def initialize(custom_types={})
         @types = default_types.merge(custom_types)
       end
@@ -16,7 +17,7 @@ module RShade
 
       def default_types
         {
-          default: ->(value) { value.inspect },
+          default: ->(value) { value.to_s },
           Integer => ->(value) { value },
           Float => ->(value) { value },
           Numeric => ->(value) { value },

@@ -51,6 +51,11 @@ module RShade
       self
     end
 
+    def add_custom_serializers(hash)
+      @config_store.add_custom_serializers(hash)
+      self
+    end
+
     def value
       @config_store
     end
