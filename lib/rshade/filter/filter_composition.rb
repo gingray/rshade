@@ -5,19 +5,20 @@ module RShade
       AND_OP = :and
       OR_OP = :or
       UNARY_OP = :unary
-      attr_reader :op, :left, :right, :parent
+      OPS = [AND_OP, OR_OP, UNARY_OP]
+      attr_reader :value, :left, :right, :parent
       attr_accessor :parent
 
       # @param [#call, Enumerable] left
       # @param [#call, Enumerable] right
-      def initialize(op=UNARY_OP, left=nil, right=nil)
-        @op = op
+      def initialize(value, left=nil, right=nil)
+        @value = value
         @left = left
         @right = right
       end
 
       def call(event)
-        case op
+        case value
         when UNARY_OP
           return left&.call(event)
         when AND_OP
@@ -28,22 +29,14 @@ module RShade
           # puts "#{left} => #{l} OR #{right} => #{r}"
           return l || r
         else
-          raise 'undefined op'
+          value.call(event)
         end
       end
 
       def each(&block)
-        if left&.respond_to?(:each)
-          left&.each(&block)
-        else
-          yield left
-        end
-
-        if right&.respond_to?(:each)
-          right&.each(&block)
-        else
-          yield right
-        end
+        yield value unless OPS.include?(value)
+        left&.each(&block)
+        right&.each(&block)
       end
 
       def config_filter(type, &block)
@@ -51,6 +44,10 @@ module RShade
           filter.is_a? type
         end
         filter.config(&block) if filter
+      end
+
+      def self.build(arr)
+        ::RShade::Filter::FilterBuilder.build(arr)
       end
     end
   end

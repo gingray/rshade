@@ -1,7 +1,7 @@
 RSpec.describe RShade::Filter::VariableFilter do
   let(:formatter) { TestFormatter.new }
   let(:base_config) do
-    comp = RShade::Filter::FilterComposition.new(:unary, RShade::Filter::VariableFilter.new )
+    comp = RShade::Filter::FilterComposition.new(:unary,  RShade::Filter::FilterComposition.new(RShade::Filter::VariableFilter.new) )
     ::RShade::Config.create(filter_composition: comp).formatter { formatter }
   end
 
