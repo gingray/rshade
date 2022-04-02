@@ -5,7 +5,6 @@ module RShade
       AND_OP = :and
       OR_OP = :or
       UNARY_OP = :unary
-      OPS = [AND_OP, OR_OP, UNARY_OP]
       attr_reader :value, :left, :right, :parent
       attr_accessor :parent
 
@@ -24,17 +23,14 @@ module RShade
         when AND_OP
           return left&.call(event) && right&.call(event)
         when OR_OP
-          l = left&.call(event)
-          r = right&.call(event)
-          # puts "#{left} => #{l} OR #{right} => #{r}"
-          return l || r
+          return left&.call(event) || right&.call(event)
         else
           value.call(event)
         end
       end
 
       def each(&block)
-        yield value unless OPS.include?(value)
+        yield value unless left && right
         left&.each(&block)
         right&.each(&block)
       end
@@ -44,6 +40,13 @@ module RShade
           filter.is_a? type
         end
         filter.config(&block) if filter
+      end
+
+      # for debug purposes, show each filter and result of evaluation
+      def filter_results(event)
+        self.each_with_object([]) do |filter, arr|
+          arr << [filter, filter.call(event)]
+        end
       end
 
       def self.build(arr)

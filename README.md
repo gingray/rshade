@@ -85,7 +85,7 @@ On such huge codebase as spree it's helpful to know what callbacks are triggered
     context 'when cost currency is nil' do
       before { variant.cost_currency = nil }
 
-      it 'populates cost currency with the default value on save', focus: true do
+      it 'populates cost currency with the default value on save' do
          RShade::Trace.reveal do
           variant.save!
         end
