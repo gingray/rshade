@@ -2,7 +2,7 @@ RSpec.describe RShade::Filter::FilterComposition do
   let(:event) { true }
   context "when 'true and false'" do
     let(:composition) do
-      RShade::Filter::FilterComposition.new(:and, ->(event) { event }, ->(event) { !event })
+      RShade::Filter::FilterComposition.build([:and, ->(event) { event }, ->(event) { !event }])
     end
     it 'should be false' do
       expect(composition.call(event)).to eq false
@@ -11,7 +11,7 @@ RSpec.describe RShade::Filter::FilterComposition do
 
   context "when 'true and true'" do
     let(:composition) do
-      RShade::Filter::FilterComposition.new(:and, ->(event) { event }, ->(event) { event })
+      RShade::Filter::FilterComposition.build([:and, ->(event) { event }, ->(event) { event }])
     end
     it 'should be false' do
       expect(composition.call(event)).to eq true
@@ -20,7 +20,7 @@ RSpec.describe RShade::Filter::FilterComposition do
 
   context "when 'false and false'" do
     let(:composition) do
-      RShade::Filter::FilterComposition.new(:and, ->(event) { !event }, ->(event) { !event })
+      RShade::Filter::FilterComposition.build([:and, ->(event) { !event }, ->(event) { !event }])
     end
     it 'should be false' do
       expect(composition.call(event)).to eq false
@@ -29,7 +29,7 @@ RSpec.describe RShade::Filter::FilterComposition do
 
   context "when 'false or true'" do
     let(:composition) do
-      RShade::Filter::FilterComposition.new(:or, ->(event) { !event }, ->(event) { event })
+      RShade::Filter::FilterComposition.build([:or, ->(event) { !event }, ->(event) { event }])
     end
     it 'should be false' do
       expect(composition.call(event)).to eq true
@@ -38,9 +38,7 @@ RSpec.describe RShade::Filter::FilterComposition do
 
   context "complex filter" do
     let(:composition) do
-      comp = RShade::Filter::FilterComposition
-      left = comp.new(:and, ->(event) { event }, ->(event) { event })
-      comp.new(:and, left, ->(event) { event })
+      RShade::Filter::FilterComposition.build([:and, [:and, ->(event) { event }, ->(event) { event }], ->(event) { event }])
     end
     it 'should be false' do
       expect(composition.call(event)).to eq true
@@ -54,7 +52,7 @@ RSpec.describe RShade::Filter::FilterComposition do
       filter2 = RShade::Filter::IncludePathFilter.new
 
       comp = RShade::Filter::FilterComposition
-      comp.new(:or, filter1, filter2)
+      comp.new(:or, RShade::Filter::FilterComposition.new(filter1), RShade::Filter::FilterComposition.new(filter2))
     end
 
     before do

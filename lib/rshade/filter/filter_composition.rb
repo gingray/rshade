@@ -5,45 +5,34 @@ module RShade
       AND_OP = :and
       OR_OP = :or
       UNARY_OP = :unary
-      attr_reader :op, :left, :right, :parent
+      attr_reader :value, :left, :right, :parent
       attr_accessor :parent
 
       # @param [#call, Enumerable] left
       # @param [#call, Enumerable] right
-      def initialize(op=UNARY_OP, left=nil, right=nil)
-        @op = op
+      def initialize(value, left=nil, right=nil)
+        @value = value
         @left = left
         @right = right
       end
 
       def call(event)
-        case op
+        case value
         when UNARY_OP
           return left&.call(event)
         when AND_OP
           return left&.call(event) && right&.call(event)
         when OR_OP
-          l = left&.call(event)
-          r = right&.call(event)
-          # puts "#{left} => #{l} OR #{right} => #{r}"
-          return l || r
+          return left&.call(event) || right&.call(event)
         else
-          raise 'undefined op'
+          value.call(event)
         end
       end
 
       def each(&block)
-        if left&.respond_to?(:each)
-          left&.each(&block)
-        else
-          yield left
-        end
-
-        if right&.respond_to?(:each)
-          right&.each(&block)
-        else
-          yield right
-        end
+        yield value unless left && right
+        left&.each(&block)
+        right&.each(&block)
       end
 
       def config_filter(type, &block)
@@ -51,6 +40,17 @@ module RShade
           filter.is_a? type
         end
         filter.config(&block) if filter
+      end
+
+      # for debug purposes, show each filter and result of evaluation
+      def filter_results(event)
+        self.each_with_object([]) do |filter, arr|
+          arr << [filter, filter.call(event)]
+        end
+      end
+
+      def self.build(arr)
+        ::RShade::Filter::FilterBuilder.build(arr)
       end
     end
   end

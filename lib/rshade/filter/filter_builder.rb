@@ -18,8 +18,17 @@ module RShade
         arg1 = arr[1]
         arg2 = nil
         arg2 = arr[2] if arity == 2
-        arg1 = traverse(arg1) if arg1.is_a?(Array)
-        arg2 = traverse(arg2) if arg2.is_a?(Array)
+        if arg1.is_a?(Array)
+          arg1 = traverse(arg1)
+        else
+          arg1 = RShade::Filter::FilterComposition.new(arg1)
+        end
+
+        if arg2.is_a?(Array)
+          arg2 = traverse(arg2)
+        else
+          arg2 = RShade::Filter::FilterComposition.new(arg2)
+        end
 
         RShade::Filter::FilterComposition.new(op, arg1, arg2)
       end
