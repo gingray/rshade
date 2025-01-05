@@ -5,6 +5,8 @@ require 'bundler/setup'
 require 'rshade'
 require 'fixture/test'
 require 'fixture/test_2'
+require 'fixture/test_caller'
+
 require 'test_formatter'
 
 Bundler.require(:test, :development)
