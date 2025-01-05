@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RShade
   module Formatter
     class Stdout < String

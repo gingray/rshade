@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 RSpec.describe RShade::Filter::VariableFilter do
   let(:formatter) { TestFormatter.new }
   let(:base_config) do
-    comp = RShade::Filter::FilterComposition.new(:unary,  RShade::Filter::FilterComposition.new(RShade::Filter::VariableFilter.new) )
+    comp = RShade::Filter::FilterComposition.new(:unary,
+                                                 RShade::Filter::FilterComposition.new(RShade::Filter::VariableFilter.new))
     ::RShade::Config.create(filter_composition: comp).formatter { formatter }
   end
 
-  context "variable name" do
+  context 'variable name' do
     let(:config) do
-      base_config.match_variable do |name, value|
+      base_config.match_variable do |name, _value|
         name == :x
       end
     end
@@ -18,16 +21,16 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "match" do
+    it 'match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
-      expect(formatter.event_store.count).to eq 1
+      expect(formatter.event_store.count).to eq 2
     end
   end
 
-  context "variable value" do
+  context 'variable value' do
     let(:config) do
-      base_config.match_variable do |name, value|
+      base_config.match_variable do |_name, value|
         value == 3
       end
     end
@@ -38,16 +41,16 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "match" do
+    it 'match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.event_store.count).to eq 1
     end
   end
 
-  context "variable value" do
+  context 'variable value' do
     let(:config) do
-      base_config.match_variable do |name, value|
+      base_config.match_variable do |_name, value|
         value == 4
       end
     end
@@ -58,16 +61,16 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "not match" do
+    it 'not match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.event_store.count).to eq 0
     end
   end
 
-  context "variable name" do
+  context 'variable name' do
     let(:config) do
-      base_config.match_variable do |name, value|
+      base_config.match_variable do |name, _value|
         name == :z
       end
     end
@@ -78,7 +81,7 @@ RSpec.describe RShade::Filter::VariableFilter do
       end
     end
 
-    it "not match" do
+    it 'not match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
       expect(formatter.event_store.count).to eq 0

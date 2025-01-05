@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RShade
   module Filter
     class IncludePathFilter < AbstractFilter
@@ -22,6 +24,7 @@ module RShade
         paths.any? do |path|
           next str?(path, event_path) if path.is_a? String
           next regexp?(path, event_path) if path.is_a? Regexp
+
           false
         end
       end
@@ -31,6 +34,7 @@ module RShade
       end
 
       private
+
       def str?(str, event_path)
         event_path.include?(str)
       end

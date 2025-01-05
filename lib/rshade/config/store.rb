@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module RShade
   class Config
@@ -8,10 +9,10 @@ module RShade
       # @option options [RShade::Filter::FilterComposition] :filter_composition
       # @option options [#call(event_store)] :formatter
       # @option options [Array<Symbol>] :tp_events
-      def initialize(options={})
+      def initialize(options = {})
         @filter_composition = options.fetch(:filter_composition, default_filter_composition)
         @formatter = options.fetch(:formatter, ::RShade::Formatter::Stdout)
-        @tp_events = options.fetch(:tp_events, [:call, :return])
+        @tp_events = options.fetch(:tp_events, %i[call return])
         @custom_serializers = options.fetch(:custom_serializers, {})
       end
 
@@ -24,7 +25,6 @@ module RShade
         custom_serializers.merge!(hash)
         self
       end
-
 
       def config_filter(filter_type, &block)
         filter_composition.config_filter(filter_type, &block)
@@ -39,7 +39,8 @@ module RShade
       private
 
       def default_filter_composition
-        RShade::Filter::FilterBuilder.build([:or,[:or, RShade::Filter::VariableFilter.new, RShade::Filter::IncludePathFilter.new] , RShade::Filter::ExcludePathFilter.new])
+        RShade::Filter::FilterBuilder.build([:or,
+                                             [:or, RShade::Filter::VariableFilter.new, RShade::Filter::IncludePathFilter.new], RShade::Filter::ExcludePathFilter.new])
       end
     end
   end

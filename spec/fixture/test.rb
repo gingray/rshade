@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class TestRshade
-  def some(x)
+  def some(_x)
     val = 2 + 2
     another + val
   end
@@ -14,7 +16,7 @@ class TestRshade
 end
 
 class TestRshade2
-  def some(x)
+  def some(_x)
     val = 2 + 2
     inner + val
   end
@@ -22,8 +24,7 @@ class TestRshade2
   def inner
     inner2
     1 * -1
-  rescue => e
-    "catch exception #{e.message}"
+  rescue StandardError
     1 * -1
   end
 
@@ -32,7 +33,7 @@ class TestRshade2
   end
 
   def inner3
-    raise "exception"
+    raise 'exception'
   end
 
   def self.call
@@ -41,12 +42,9 @@ class TestRshade2
 end
 
 class TestRshade3
-  def some(x)
-  end
+  def some(x); end
 
   def self.call
     new.some(3)
   end
 end
-
-

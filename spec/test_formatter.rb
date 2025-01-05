@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestFormatter
   attr_reader :event_store
 

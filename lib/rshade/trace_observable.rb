@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module RShade
   class TraceObservable
     include Observable
     attr_reader :trace_p
+
     CALL_EVENTS = Set[:call, :c_call, :b_call]
     RETURN_EVENTS = Set[:return, :c_return, :b_return]
 
@@ -27,6 +30,7 @@ module RShade
     end
 
     private
+
     # more info https://rubyapi.org/3.1/o/tracepoint
     # @param [TracePoint] tp
     def process(tp)
@@ -34,6 +38,7 @@ module RShade
       event = Event.from_trace_point(tp)
       return notify_observers(event, :enter) if CALL_EVENTS.include?(tp.event)
       return notify_observers(event, :leave) if RETURN_EVENTS.include?(tp.event)
+
       notify_observers(event, :other)
     end
   end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module RShade
   module Serializer
     class Traversal
       attr_reader :types
 
-      def initialize(custom_types={})
+      def initialize(custom_types = {})
         @types = default_types.merge(custom_types)
       end
 
@@ -17,19 +19,19 @@ module RShade
 
       def default_types
         {
-          default: ->(value) { value.to_s },
+          default: lambda(&:to_s),
           Integer => ->(value) { value },
           Float => ->(value) { value },
           Numeric => ->(value) { value },
           String => ->(value) { value },
-          Hash => ->(value) do
+          Hash => lambda do |value|
             hash = {}
-            value.each do |k,v|
+            value.each do |k, v|
               hash[k] = traverse(v)
             end
             hash
           end,
-          Array => ->(value) do
+          Array => lambda do |value|
             value.map { |item| traverse(item) }
           end
         }
@@ -39,7 +41,7 @@ module RShade
         klass = value
         klass = value.class unless value.is_a?(Class)
         serializer = types[klass]
-        serializer = types[:default] unless serializer
+        serializer ||= types[:default]
         serializer.call(value)
       end
     end

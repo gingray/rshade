@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RShade
   module Filter
     class ExcludePathFilter < IncludePathFilter
@@ -13,13 +15,13 @@ module RShade
 
       def call(event)
         event_path = event.path
-        !paths.any? do |path|
+        paths.none? do |path|
           next str?(path, event_path) if path.is_a? String
           next regexp?(path, event_path) if path.is_a? Regexp
+
           false
         end
       end
-
     end
   end
 end

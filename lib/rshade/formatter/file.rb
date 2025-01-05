@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 module RShade
   module Formatter
     class File
       attr_reader :formatter
-      FILE_NAME = 'stacktrace.json'.freeze
 
-      def initialize(args={})
+      FILE_NAME = 'stacktrace.json'
+
+      def initialize(args = {})
         @formatter = args.fetch(:format, Json)
       end
 
@@ -19,7 +22,7 @@ module RShade
       end
 
       def write_to_file(data)
-        ::File.open(::File.join(RShade::Config.store_dir, FILE_NAME), "w+") do |f|
+        ::File.open(::File.join(RShade::Config.store_dir, FILE_NAME), 'w+') do |f|
           f.write data
         end
       end

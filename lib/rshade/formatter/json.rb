@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RShade
   module Formatter
     class Json
@@ -14,7 +16,7 @@ module RShade
         event_store.each do |node|
           arr << item(node.event)
         end
-        arr.sort_by { |item| item[:level]}
+        arr.sort_by { |item| item[:level] }
       end
 
       def hierarchical
@@ -29,17 +31,15 @@ module RShade
 
       def sort_hash(h)
         {}.tap do |h2|
-          h.sort.each do |k,v|
+          h.sort.each do |k, v|
             h2[k] = v.is_a?(Hash) ? sort_hash(v) : v
           end
         end
       end
 
       def hash_iterate(hash, depth)
-        (0..depth).each do |lvl|
-          unless hash[:inner]
-            hash[:inner] = {}
-          end
+        (0..depth).each do |_lvl|
+          hash[:inner] = {} unless hash[:inner]
           hash = hash[:inner]
         end
         hash

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module RShade
   class Trace
     attr_reader :config, :event_store
-    
+
     # @param [RShade::Config,RShade::Config::Store] config
     def initialize(config)
       @config = fetch_config(config)
       @event_store = EventTree.new
     end
 
-    def self.reveal(config=nil, &block)
+    def self.reveal(config = nil, &block)
       new(config).reveal(&block)
     end
 
@@ -16,7 +18,7 @@ module RShade
       processor = EventProcessor.new(event_store, config)
       observer = EventObserver.new(config, processor)
       observable = RShade::TraceObservable.new([observer], config)
-      observable.reveal &block
+      observable.reveal(&block)
       self
     end
 
@@ -25,8 +27,9 @@ module RShade
     end
 
     private
+
     def fetch_config(config)
-      config = config || ::RShade::Config.default
+      config ||= ::RShade::Config.default
       config = config.value if config.is_a?(::RShade::Config)
       config
     end

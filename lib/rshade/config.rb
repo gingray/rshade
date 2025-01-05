@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RShade
   class Config
     RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
@@ -20,7 +22,7 @@ module RShade
     # @option options [RShade::Filter::FilterComposition] :filter_composition
     # @option options [#call(event_store)] :formatter
     # @option options [Array<Symbol>] :tp_events
-    def self.create(options={})
+    def self.create(options = {})
       new(Config::Store.new(options))
     end
 
@@ -68,7 +70,6 @@ module RShade
       @root_dir ||= File.expand_path('../../', __dir__)
     end
 
-    private
     def self.default_excluded_path
       [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN, /internal/].flatten.compact
     end

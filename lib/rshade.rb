@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'colorized_string'
 require 'erb'
 require 'weakref'
-require 'set'
 require 'observer'
 require 'rshade/config'
 require 'rshade/config/store'
@@ -25,6 +26,7 @@ require 'rshade/formatter/stdout'
 require 'rshade/event'
 require 'rshade/trace'
 require 'rshade/rspec/rspec'
+require 'rshade/core_extensions/object/reveal'
 require 'rshade/version'
 
 module RShade

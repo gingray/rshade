@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RShade
   class EventObserver
     attr_reader :event_processor, :config

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module RShade
   module Filter
     class VariableFilter < AbstractFilter
       attr_reader :matchers
+
       NAME = :variable_filter
 
       def initialize
