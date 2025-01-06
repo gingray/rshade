@@ -2,18 +2,22 @@
 
 module RShade
   class Stack
-    def self.trace(_config = nil)
-      new.trace
+
+    attr_reader :config
+
+    def initialize(config: ::RShade::Config::StackStore.new)
+      @config = config
+    end
+
+    def self.trace(config: ::RShade::Config::StackStore.new)
+      new(config: config).trace
     end
 
     def trace
-      filter = RShade::Filter::ExcludePathFilter.new.config do |paths|
-        paths.concat(RShade::Config.default_excluded_path)
-      end
-
+      config.exclude_gems!
       result = binding.callers.drop(2).map do |bind|
         frame = StackFrame.from_binding(bind)
-        next nil unless filter.call(frame)
+        next nil unless config.filter.call(frame)
 
         frame
       end.compact.reverse
