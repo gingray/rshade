@@ -6,7 +6,7 @@ module RShade
       class Json
         attr_reader :filepath
 
-        def initialize(filepath: )
+        def initialize(filepath:)
           @filepath = filepath
         end
 
@@ -19,14 +19,16 @@ module RShade
           File.open(filepath, 'w+') do |file|
             record = {
               time: Time.now.getutc,
+              thread_id: Thread.current,
+              thread_list: Thread.list,
               frames: payload
             }
             file.write(JSON.pretty_generate(record))
           end
         end
-        
+
         private
-        
+
         # @param [RShade::StackFrame] frame
         def serialize(idx, frame)
           {

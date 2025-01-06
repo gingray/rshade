@@ -12,7 +12,7 @@ module RShade
         def call(stack)
           buffer = StringIO.new
           stack.each_with_index do |frame, idx|
-            if idx == 0
+            if idx.zero?
               buffer << ROOT_SEP
               next
             end

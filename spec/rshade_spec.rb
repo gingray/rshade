@@ -26,7 +26,7 @@ RSpec.describe RShade do
       # Prism::ParseLexResult
       # Prism::ProgramNode
       # binding.pry
-      expect(TestStacktraceSourceOne.new.call(1)).to eq 3
+      expect(TestStacktraceSourceOne.new.call(1)).to eq 4
     end
   end
 end

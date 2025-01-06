@@ -10,9 +10,7 @@ class TestStacktraceSourceJsOn
   end
 
   def inner_method_2(x)
-    config = ::RShade::Config::StackStore.new
-    config.set_formatter(::RShade::Formatter::Stack::Json.new(filepath: '/Users/gingray/github/rshade/spec/store/json_store.json'))
-    ::RShade::Stack.trace(config: config)
+    ::RShade::Stack.trace
     x
   end
 end

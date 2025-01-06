@@ -4,11 +4,11 @@ module RShade
   class Stack
     attr_reader :config
 
-    def initialize(config: ::RShade::Config::StackStore.new)
-      @config = config
+    def initialize(config: nil, registry: ::RShade::Config::Registry.instance)
+      @config = config || registry.default_stack_config
     end
 
-    def self.trace(config: ::RShade::Config::StackStore.new)
+    def self.trace(config: nil)
       new(config:).trace
     end
 
