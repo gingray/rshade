@@ -10,10 +10,9 @@ module RShade
       # @option options [#call(event_store)] :formatter
       def initialize(options = {})
         @filter = options.fetch(:filter, default_filter_composition)
-        @formatter = options.fetch(:formatter, ::RShade::Formatter::Stdout)
+        @formatter = options.fetch(:formatter, ::RShade::Formatter::Stack::Stdout)
         @custom_serializers = options.fetch(:custom_serializers, {})
       end
-
 
       def add_custom_serializers(hash)
         custom_serializers.merge!(hash)

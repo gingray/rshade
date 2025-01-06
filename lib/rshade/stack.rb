@@ -2,7 +2,6 @@
 
 module RShade
   class Stack
-
     attr_reader :config
 
     def initialize(config: ::RShade::Config::StackStore.new)
@@ -10,7 +9,7 @@ module RShade
     end
 
     def self.trace(config: ::RShade::Config::StackStore.new)
-      new(config: config).trace
+      new(config:).trace
     end
 
     def trace

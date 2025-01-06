@@ -24,7 +24,7 @@ RSpec.describe RShade::Config do
     xit do
       filters = config.filter_composition.to_a
       expect(filters[0]).to be_a(::RShade::Filter::ExcludePathFilter)
-      expect(config.formatter).to be_a(::RShade::Formatter::Stdout)
+      expect(config.formatter).to be_a(::RShade::Formatter::Trace::Stdout)
     end
   end
 

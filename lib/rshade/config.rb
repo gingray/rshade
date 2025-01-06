@@ -5,7 +5,7 @@ module RShade
     RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
 
     def self.default
-      ::RShade::Config::Store.new.set_formatter(::RShade::Formatter::Stdout.new)
+      ::RShade::Config::Store.new.set_formatter(::RShade::Formatter::Trace::Stdout.new)
                              .config_filter(::RShade::Filter::ExcludePathFilter) do |paths|
         default_excluded_path.each do |path|
           paths << path
