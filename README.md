@@ -1,6 +1,7 @@
 # RShade  
- 
-![warcraft shade](https://github.com/gingray/rshade/raw/master/shade.jpg)
+<p align="center">
+  <img src="https://github.com/gingray/rshade/raw/master/shade.jpg">
+</p>
 
 RShade is a debugging/code exploration tool based on `TracePoint` functionality. 
 Recent years I've working with relatively huge legacy code and I need a tool which can help me to figure out what is going on due execution. 
