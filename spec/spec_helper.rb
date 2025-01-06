@@ -3,11 +3,11 @@
 require 'pry'
 require 'bundler/setup'
 require 'rshade'
-require 'fixture/test'
-require 'fixture/test_2'
-require 'fixture/test_caller'
-
 require 'test_formatter'
+
+# require all fixtures
+Dir[File.dirname(__FILE__) + '/fixture/*.rb'].each {|file| require file }
+
 
 Bundler.require(:test, :development)
 

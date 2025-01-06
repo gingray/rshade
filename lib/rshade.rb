@@ -4,6 +4,7 @@ require 'colorized_string'
 require 'erb'
 require 'weakref'
 require 'observer'
+require 'json'
 require 'rshade/config'
 require 'rshade/config/store'
 require 'rshade/config/stack_store'
@@ -26,8 +27,11 @@ require 'rshade/formatter/trace/file'
 require 'rshade/formatter/trace/html'
 require 'rshade/formatter/trace/stdout'
 
+
 require 'rshade/formatter/stack/string'
 require 'rshade/formatter/stack/stdout'
+require 'rshade/formatter/stack/json'
+
 
 require 'rshade/event'
 require 'rshade/trace'

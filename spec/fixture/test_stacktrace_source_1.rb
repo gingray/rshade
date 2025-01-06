@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TestRshade5
+class TestStacktraceSourceOne
   def call(x)
     inner_method(x, 0)
   end

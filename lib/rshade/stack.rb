@@ -20,7 +20,7 @@ module RShade
 
         frame
       end.compact.reverse
-      puts result
+      config.formatter.call(result)
     end
   end
 end
