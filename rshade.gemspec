@@ -38,6 +38,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'colorize'
+  spec.add_runtime_dependency 'binding_of_caller'
+  spec.add_runtime_dependency 'prism'
 
   spec.add_development_dependency 'bundler', '~> 2.2.33'
   spec.add_development_dependency 'rake', '>= 12.3.3'

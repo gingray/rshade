@@ -2,7 +2,9 @@ PATH
   remote: .
   specs:
     rshade (0.1.9.1)
+      binding_of_caller
       colorize
+      prism
 
 GEM
   remote: https://rubygems.org/
