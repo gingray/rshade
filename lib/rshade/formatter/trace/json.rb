@@ -13,9 +13,8 @@ module RShade
         end
 
         def flat
-          arr = []
-          event_store.each do |node|
-            arr << item(node.event)
+          arr = event_store.map do |node|
+            item(node.event)
           end
           arr.sort_by { |item| item[:level] }
         end
@@ -30,9 +29,9 @@ module RShade
           sort_hash(hash)
         end
 
-        def sort_hash(h)
+        def sort_hash(hash)
           {}.tap do |h2|
-            h.sort.each do |k, v|
+            hash.sort.each do |k, v|
               h2[k] = v.is_a?(Hash) ? sort_hash(v) : v
             end
           end

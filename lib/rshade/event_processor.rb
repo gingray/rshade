@@ -22,7 +22,7 @@ module RShade
     # @param [Integer] level
     def leave(event, _level)
       store.current! do |node|
-        node.value.set_return_value!(event.return_value)
+        node.value.return_value!(event.return_value)
             .with_serialized_return!(serializer)
       end
     rescue StandardError

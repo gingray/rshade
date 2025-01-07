@@ -51,8 +51,12 @@ module RShade
       end
 
       def default_filter_composition
+        variable_filter = RShade::Filter::VariableFilter.new
+        include_filter = RShade::Filter::IncludePathFilter.new
+        exclude_filter = RShade::Filter::ExcludePathFilter.new
+
         RShade::Filter::FilterBuilder.build([:or,
-                                             [:or, RShade::Filter::VariableFilter.new, RShade::Filter::IncludePathFilter.new], RShade::Filter::ExcludePathFilter.new])
+                                             [:or, variable_filter, include_filter], exclude_filter])
       end
     end
   end

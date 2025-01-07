@@ -7,7 +7,7 @@ RSpec.describe 'RShade::Formatter::Stack::Json' do
     let(:filepath) { File.join(spec_store_path, 'json_store.json.log') }
 
     before do
-      ::RShade::Config::Registry.instance.stack_config do |config|
+      RShade::Config::Registry.instance.stack_config do |config|
         config.formatter!(:json, { filepath: filepath, pretty: true })
       end
     end

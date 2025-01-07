@@ -10,6 +10,7 @@ module RShade
       @current = @head = EventTreeNode.new(nil, 0, nil)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def add(value, level)
       if current.level + 1 == level
         current.children << EventTreeNode.new(value, level, current)
@@ -30,6 +31,7 @@ module RShade
       @current = current.parent
       add(value, level)
     end
+    # rubocop:enable Metrics/AbcSize
 
     def current!(&block)
       block.call(current.children.last) if current.children.last
@@ -50,7 +52,7 @@ module RShade
       @level = level
       @parent = parent
       @value = value
-      @vlevel = set_vlevel(parent)
+      @vlevel = vlevel!(parent)
     end
 
     def each(&block)
@@ -60,13 +62,13 @@ module RShade
 
     private
 
-    def set_vlevel(node)
+    def vlevel!(node)
       return 0 if node.nil?
 
       if node.value || node.level.zero?
         node.vlevel + 1
       else
-        set_vlevel(node.parent)
+        vlevel!(node.parent)
       end
     end
   end

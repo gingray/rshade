@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Object
+  # rubocop:disable Metrics/MethodLength
   def reveal(method_name = nil, **opts, &block)
     if method_name
       @__cache_rshade_reveal ||= {}
@@ -8,6 +9,7 @@ class Object
       @__cache_rshade_reveal[method_name] = config
       instance_eval do
         def method_added(name)
+          super
           return unless @__cache_rshade_reveal[name]
 
           if @__reveal_rewrite
@@ -34,4 +36,5 @@ class Object
       trace.show
     end
   end
+  # rubocop:enable Metrics/MethodLength
 end

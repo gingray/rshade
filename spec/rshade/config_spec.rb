@@ -12,8 +12,8 @@ RSpec.describe RShade::Config do
 
     xit do
       filters = config.filter_composition.to_a
-      expect(filters[0]).to be_a(::RShade::Filter::IncludePathFilter)
-      expect(filters[1]).to be_a(::RShade::Filter::ExcludePathFilter)
+      expect(filters[0]).to be_a(RShade::Filter::IncludePathFilter)
+      expect(filters[1]).to be_a(RShade::Filter::ExcludePathFilter)
       expect(config.formatter).to eq formatter
     end
   end
@@ -23,8 +23,8 @@ RSpec.describe RShade::Config do
 
     xit do
       filters = config.filter_composition.to_a
-      expect(filters[0]).to be_a(::RShade::Filter::ExcludePathFilter)
-      expect(config.formatter).to be_a(::RShade::Formatter::Trace::Stdout)
+      expect(filters[0]).to be_a(RShade::Filter::ExcludePathFilter)
+      expect(config.formatter).to be_a(RShade::Formatter::Trace::Stdout)
     end
   end
 

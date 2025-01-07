@@ -22,7 +22,7 @@ module RShade
       self
     end
 
-    def set_return_value!(return_value)
+    def return_value!(return_value)
       @hash[:return_value] = return_value
       self
     end

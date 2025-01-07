@@ -102,11 +102,12 @@ As you can see all code that have been in use is printed.
 
 ## Stack reveal
 Config
+
 ```ruby
 ::RShade::Config::Registry.instance.stack_config do |config|
-  config.exclude_gems!
-  filepath = File.join(Rails.root, 'log', 'rshade-stack.json.log')
-  config.set_formatter(:json, { filepath: filepath, pretty: false })
+   config.exclude_gems!
+   filepath = File.join(Rails.root, 'log', 'rshade-stack.json.log')
+   config.formatter!(:json, { filepath: filepath, pretty: false })
 end
 ```
 

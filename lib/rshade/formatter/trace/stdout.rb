@@ -6,7 +6,7 @@ module RShade
       class Stdout < String
         # @param [RShade::EventProcessor] event_store
         def call(event_store)
-          puts super(event_store)
+          puts super
         end
       end
     end
