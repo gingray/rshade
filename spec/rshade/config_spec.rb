@@ -39,4 +39,16 @@ RSpec.describe RShade::Config do
       expect(service.call(ruby_gem_event)).to eq false
     end
   end
+
+  context 'check default filter ignore gems events when pattern just /gems/' do
+    let(:service) { RShade::Config.default.filter_composition }
+    let(:events) { [ruby_gem_event] }
+    let(:ruby_gem_event) { double }
+    before do
+      allow(ruby_gem_event).to receive(:path).and_return('/Users/test/.rvm/gems/ruby/2.7.5/gems')
+    end
+    it 'succeeds' do
+      expect(service.call(ruby_gem_event)).to eq false
+    end
+  end
 end

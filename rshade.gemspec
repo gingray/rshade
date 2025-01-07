@@ -41,6 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'binding_of_caller'
   spec.add_dependency 'colorize'
   spec.add_dependency 'prism'
-  
+
   spec.metadata['rubygems_mfa_required'] = 'true'
 end

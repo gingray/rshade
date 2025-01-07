@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module RShade
-  REPORTS = [].freeze
+  # rubocop:disable Style/MutableConstant
+  REPORTS = []
+  # rubocop:enable Style/MutableConstant
 
   module RSpecHelper
     def rshade_reveal(options = {}, &block)

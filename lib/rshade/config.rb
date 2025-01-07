@@ -71,7 +71,7 @@ module RShade
     end
 
     def self.default_excluded_path
-      [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN, /internal/].flatten.compact
+      [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN, /internal/, %r{/gems/}].flatten.compact
     end
   end
 end

@@ -20,7 +20,7 @@ RSpec.describe RShade do
     end
   end
 
-  context 'use binding of caller', focus: true do
+  context 'use binding of caller' do
     before do
       RShade::Config::Registry.instance.stack_config do |config|
         config.formatter!(:stdout, { colorize: true })
