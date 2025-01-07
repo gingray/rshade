@@ -26,9 +26,14 @@ module RShade
           String => ->(value) { value },
           Hash => lambda do |value|
             hash = {}
-            value.each do |k, v|
-              hash[k] = traverse(v)
+            begin
+              value.each do |k, v|
+                hash[k] = traverse(v)
+              end
+            rescue Exception => e
+              binding.pry
             end
+
             hash
           end,
           Array => lambda do |value|
@@ -38,7 +43,7 @@ module RShade
       end
 
       def traverse(value)
-        klass = value
+        klass = Class
         klass = value.class unless value.is_a?(Class)
         serializer = types[klass]
         serializer ||= types[:default]

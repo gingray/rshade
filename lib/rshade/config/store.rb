@@ -11,7 +11,7 @@ module RShade
       # @option options [Array<Symbol>] :tp_events
       def initialize(options = {})
         @filter_composition = options.fetch(:filter_composition, default_filter_composition)
-        @formatter = options.fetch(:formatter, ::RShade::Formatter::Stdout)
+        @formatter = options.fetch(:formatter, ::RShade::Formatter::Trace::Stdout)
         @tp_events = options.fetch(:tp_events, %i[call return])
         @custom_serializers = options.fetch(:custom_serializers, {})
       end

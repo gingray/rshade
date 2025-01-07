@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RShade
-  REPORTS = []
+  REPORTS = [].freeze
 
   module RSpecHelper
     def rshade_reveal(options = {}, &block)

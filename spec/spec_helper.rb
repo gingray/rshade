@@ -3,9 +3,10 @@
 require 'pry'
 require 'bundler/setup'
 require 'rshade'
-require 'fixture/test'
-require 'fixture/test_2'
 require 'test_formatter'
+
+# require all fixtures
+Dir["#{File.dirname(__FILE__)}/fixture/*.rb"].each { |file| require file }
 
 Bundler.require(:test, :development)
 
@@ -15,6 +16,10 @@ module Helpers
   def file_fixture_read(path)
     absolute_path = File.join(RSPEC_ROOT, 'fixture', path)
     File.read(absolute_path)
+  end
+
+  def spec_store_path
+    File.join(RSPEC_ROOT, 'store')
   end
 
   def create_source_node(hash, parent = nil)
@@ -44,5 +49,11 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+  config.before(:suite) do
+    store_dir = File.join(RSPEC_ROOT, 'store')
+    FileUtils.mkdir_p(store_dir) unless Dir.exist?(store_dir)
+    # be careful wipe all entire dir
+    FileUtils.rm_rf(Dir.glob(File.join(store_dir, '/**.*')))
   end
 end

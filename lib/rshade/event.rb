@@ -52,7 +52,7 @@ module RShade
       if RETURN_EVENTS.include?(evt.event)
         ret_val = evt.return_value
         ret_val_type  = evt.return_value.is_a?(Class) ? evt.return_value : evt.return_value.class
-        hash.merge!({ return_value: {value: ret_val, type: ret_val_type } })
+        hash.merge!({ return_value: { value: ret_val, type: ret_val_type } })
       end
       new(hash)
     end

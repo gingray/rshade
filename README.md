@@ -1,6 +1,7 @@
 # RShade  
- 
-![warcraft shade](https://github.com/gingray/rshade/raw/master/shade.jpg)
+<p align="center">
+  <img src="https://github.com/gingray/rshade/raw/master/shade.jpg">
+</p>
 
 RShade is a debugging/code exploration tool based on `TracePoint` functionality. 
 Recent years I've working with relatively huge legacy code and I need a tool which can help me to figure out what is going on due execution. 
@@ -98,6 +99,21 @@ On such huge codebase as spree it's helpful to know what callbacks are triggered
 Below is example how output will look like.
 As you can see all code that have been in use is printed.
 [![asciicast](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373.svg)](https://asciinema.org/a/MR5KL7TmHmYRUhwBUWQjBI373)
+
+## Stack reveal
+Config
+```ruby
+::RShade::Config::Registry.instance.stack_config do |config|
+  config.exclude_gems!
+  filepath = File.join(Rails.root, 'log', 'rshade-stack.json.log')
+  config.set_formatter(:json, { filepath: filepath, pretty: false })
+end
+```
+
+Execute (put in any place where you want reveal stack)
+```ruby
+::RShade::Stack.trace
+```
 
 ## TODO  
 Use stack to keep connections between current method and caller  

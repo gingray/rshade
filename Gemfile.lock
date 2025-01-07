@@ -2,15 +2,21 @@ PATH
   remote: .
   specs:
     rshade (0.1.9.1)
+      binding_of_caller
       colorize
+      prism
 
 GEM
   remote: https://rubygems.org/
   specs:
+    binding_of_caller (1.0.1)
+      debug_inspector (>= 1.2.0)
     coderay (1.1.3)
     colorize (0.8.1)
+    debug_inspector (1.2.0)
     diff-lcs (1.5.0)
     method_source (1.0.0)
+    prism (1.3.0)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -35,7 +41,9 @@ PLATFORMS
   x86_64-darwin-22
 
 DEPENDENCIES
+  binding_of_caller
   bundler (~> 2.2.33)
+  prism
   pry
   rake (>= 12.3.3)
   rshade!
