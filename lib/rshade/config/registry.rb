@@ -27,6 +27,16 @@ module RShade
         val
       end
 
+      def stack_config(&block)
+        val = nil
+        mutex.synchronize do
+          val = ::RShade::Config::StackStore.new
+          block.call(val)
+          map[:store_default] = val
+        end
+        val
+      end
+
       def defaults
         mutex.synchronize do
           map[:store_default] = ::RShade::Config::StackStore.new

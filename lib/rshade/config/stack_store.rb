@@ -5,6 +5,10 @@ module RShade
     class StackStore
       attr_reader :filter, :formatter, :custom_serializers
 
+      DEFAULT_FORMATTER = {
+        json: ::RShade::Formatter::Stack::Json
+      }.freeze
+
       # @param [Hash] options
       # @option options [::RShade::Filter::FilterComposition] :filter_composition
       # @option options [#call(event_store)] :formatter
@@ -24,8 +28,8 @@ module RShade
         self
       end
 
-      def set_formatter(formatter)
-        @formatter = formatter
+      def set_formatter(formatter, opts = {})
+        @formatter = formatter.is_a?(Symbol) ? set_symbol_formatter(formatter, opts) : formatter
         self
       end
 
@@ -37,6 +41,13 @@ module RShade
       end
 
       private
+
+      def set_symbol_formatter(type, opts)
+        formatter_class = DEFAULT_FORMATTER[type]
+        return formatter_class unless formatter_class
+
+        @formatter = formatter_class.new(**opts)
+      end
 
       def default_filter_composition
         RShade::Filter::FilterBuilder.build([:or,

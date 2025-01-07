@@ -9,7 +9,7 @@ module RShade
       @hash = hash
     end
 
-    %i[source_location source local_vars].each do |method_name|
+    %i[source_location source local_vars receiver_variables].each do |method_name|
       define_method method_name do
         fetch method_name
       end
@@ -30,11 +30,20 @@ module RShade
         type = value.is_a?(Class) ? value : value.class
         memo[var_name] = {
           name: var_name,
-          value: binding_frame.local_variable_get(var_name),
+          value:,
           type: type.to_s
         }
       end
-      hash = { source_location:, local_vars:, source: {} }
+      receiver_variables = binding_frame.receiver.instance_variables.each_with_object({}) do |var_name, memo|
+        value = binding_frame.receiver.instance_variable_get(var_name)
+        type = value.is_a?(Class) ? value : value.class
+        memo[var_name] = {
+          name: var_name,
+          value:,
+          type: type.to_s
+        }
+      end
+      hash = { source_location:, local_vars:, source: {}, receiver_variables: }
       new(hash)
     end
 

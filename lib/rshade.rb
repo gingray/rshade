@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 require 'colorized_string'
+require 'binding_of_caller'
 require 'erb'
 require 'weakref'
 require 'observer'
 require 'json'
 require 'singleton'
-
-require 'rshade/config'
-require 'rshade/config/store'
-require 'rshade/config/stack_store'
-require 'rshade/config/registry'
 
 require 'rshade/serializer/traversal'
 require 'rshade/event_tree'
@@ -34,6 +30,11 @@ require 'rshade/formatter/trace/stdout'
 require 'rshade/formatter/stack/string'
 require 'rshade/formatter/stack/stdout'
 require 'rshade/formatter/stack/json'
+
+require 'rshade/config'
+require 'rshade/config/store'
+require 'rshade/config/stack_store'
+require 'rshade/config/registry'
 
 require 'rshade/event'
 require 'rshade/trace'
