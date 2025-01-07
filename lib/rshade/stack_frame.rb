@@ -30,7 +30,7 @@ module RShade
         type = value.is_a?(Class) ? value : value.class
         memo[var_name] = {
           name: var_name,
-          value:,
+          value: value,
           type: type.to_s
         }
       end
@@ -39,11 +39,12 @@ module RShade
         type = value.is_a?(Class) ? value : value.class
         memo[var_name] = {
           name: var_name,
-          value:,
+          value: value,
           type: type.to_s
         }
       end
-      hash = { source_location:, local_vars:, source: {}, receiver_variables: }
+      hash = { source_location: source_location, local_vars: local_vars, source: {},
+               receiver_variables: receiver_variables }
       new(hash)
     end
 

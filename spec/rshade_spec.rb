@@ -21,6 +21,12 @@ RSpec.describe RShade do
   end
 
   context 'use binding of caller', focus: true do
+    before do
+      ::RShade::Config::Registry.instance.stack_config do |config|
+        config.formatter!(:stdout, { colorize: true })
+      end
+    end
+
     it do
       # result = Prism.parse_lex_file("/Users/gingray/github/rshade/spec/fixture/test_caller.rb")
       # Prism::ParseLexResult

@@ -6,7 +6,8 @@ module RShade
       attr_reader :filter, :formatter, :custom_serializers
 
       DEFAULT_FORMATTER = {
-        json: ::RShade::Formatter::Stack::Json
+        json: ::RShade::Formatter::Stack::Json,
+        stdout: ::RShade::Formatter::Stack::Stdout
       }.freeze
 
       # @param [Hash] options
@@ -28,7 +29,7 @@ module RShade
         self
       end
 
-      def set_formatter(formatter, opts = {})
+      def formatter!(formatter, opts = {})
         @formatter = formatter.is_a?(Symbol) ? set_symbol_formatter(formatter, opts) : formatter
         self
       end

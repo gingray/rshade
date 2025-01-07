@@ -9,7 +9,7 @@ module RShade
     end
 
     def self.trace(config: nil)
-      new(config:).trace
+      new(config: config).trace
     end
 
     def trace

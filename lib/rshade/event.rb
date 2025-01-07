@@ -46,7 +46,7 @@ module RShade
         vars[var_name] = hash
       end
 
-      hash = { path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars:,
+      hash = { path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: vars,
                event_type: evt.event }
 
       if RETURN_EVENTS.include?(evt.event)
