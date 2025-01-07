@@ -6,7 +6,7 @@ require 'rshade'
 require 'test_formatter'
 
 # require all fixtures
-Dir["#{File.dirname(__FILE__)}/fixture/*.rb"].each { |file| require file }
+Dir["#{File.dirname(__FILE__)}/fixture/*.rb"].sort.each { |file| require file }
 
 Bundler.require(:test, :development)
 
@@ -52,7 +52,7 @@ RSpec.configure do |config|
   end
   config.before(:suite) do
     store_dir = File.join(RSPEC_ROOT, 'store')
-    FileUtils.mkdir_p(store_dir) unless Dir.exist?(store_dir)
+    FileUtils.mkdir_p(store_dir)
     # be careful wipe all entire dir
     FileUtils.rm_rf(Dir.glob(File.join(store_dir, '/**.*')))
   end

@@ -12,8 +12,8 @@ RSpec.describe RShade::Config do
 
     xit do
       filters = config.filter_composition.to_a
-      expect(filters[0]).to be_a(::RShade::Filter::IncludePathFilter)
-      expect(filters[1]).to be_a(::RShade::Filter::ExcludePathFilter)
+      expect(filters[0]).to be_a(RShade::Filter::IncludePathFilter)
+      expect(filters[1]).to be_a(RShade::Filter::ExcludePathFilter)
       expect(config.formatter).to eq formatter
     end
   end
@@ -23,8 +23,8 @@ RSpec.describe RShade::Config do
 
     xit do
       filters = config.filter_composition.to_a
-      expect(filters[0]).to be_a(::RShade::Filter::ExcludePathFilter)
-      expect(config.formatter).to be_a(::RShade::Formatter::Trace::Stdout)
+      expect(filters[0]).to be_a(RShade::Filter::ExcludePathFilter)
+      expect(config.formatter).to be_a(RShade::Formatter::Trace::Stdout)
     end
   end
 
@@ -34,6 +34,18 @@ RSpec.describe RShade::Config do
     let(:ruby_gem_event) { double }
     before do
       allow(ruby_gem_event).to receive(:path).and_return('/Users/test/.rvm/gems/ruby-2.7.5/gems')
+    end
+    it 'succeeds' do
+      expect(service.call(ruby_gem_event)).to eq false
+    end
+  end
+
+  context 'check default filter ignore gems events when pattern just /gems/' do
+    let(:service) { RShade::Config.default.filter_composition }
+    let(:events) { [ruby_gem_event] }
+    let(:ruby_gem_event) { double }
+    before do
+      allow(ruby_gem_event).to receive(:path).and_return('/Users/test/.rvm/gems/ruby/2.7.5/gems')
     end
     it 'succeeds' do
       expect(service.call(ruby_gem_event)).to eq false

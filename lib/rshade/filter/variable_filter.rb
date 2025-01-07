@@ -8,6 +8,7 @@ module RShade
       NAME = :variable_filter
 
       def initialize
+        super
         @matchers = []
       end
 

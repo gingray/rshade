@@ -7,7 +7,7 @@ module RShade
       AND_OP = :and
       OR_OP = :or
       UNARY_OP = :unary
-      attr_reader :value, :left, :right, :parent
+      attr_reader :value, :left, :right
       attr_accessor :parent
 
       # @param [#call, Enumerable] left
@@ -18,6 +18,7 @@ module RShade
         @right = right
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity
       def call(event)
         case value
         when UNARY_OP
@@ -30,6 +31,7 @@ module RShade
           value.call(event)
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       def each(&block)
         yield value unless left && right
@@ -38,8 +40,8 @@ module RShade
       end
 
       def config_filter(type, &block)
-        filter = find do |filter|
-          filter.is_a? type
+        filter = find do |f|
+          f.is_a? type
         end
         filter&.config(&block)
       end

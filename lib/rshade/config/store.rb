@@ -16,7 +16,7 @@ module RShade
         @custom_serializers = options.fetch(:custom_serializers, {})
       end
 
-      def set_tp_events(tp_events)
+      def tp_events!(tp_events)
         @tp_events = tp_events
         self
       end
@@ -31,7 +31,7 @@ module RShade
         self
       end
 
-      def set_formatter(formatter)
+      def formatter!(formatter)
         @formatter = formatter
         self
       end
@@ -39,8 +39,12 @@ module RShade
       private
 
       def default_filter_composition
+        variable_filter = RShade::Filter::VariableFilter.new
+        include_filter = RShade::Filter::IncludePathFilter.new
+        exclude_filter = RShade::Filter::ExcludePathFilter.new
+
         RShade::Filter::FilterBuilder.build([:or,
-                                             [:or, RShade::Filter::VariableFilter.new, RShade::Filter::IncludePathFilter.new], RShade::Filter::ExcludePathFilter.new])
+                                             [:or, variable_filter, include_filter], exclude_filter])
       end
     end
   end

@@ -2,14 +2,14 @@
 
 require 'rspec'
 
-RSpec.describe 'RShade::Formatter::Stack::Json', focus: true do
+RSpec.describe 'RShade::Formatter::Stack::Json' do
   context 'when condition' do
-    let(:filepath) { File.join(spec_store_path, 'json_store.json') }
+    let(:filepath) { File.join(spec_store_path, 'json_store.json.log') }
 
     before do
-      config = ::RShade::Config::StackStore.new
-      config.set_formatter(::RShade::Formatter::Stack::Json.new(filepath:))
-      ::RShade::Config::Registry.instance.set_default_stack(config)
+      RShade::Config::Registry.instance.stack_config do |config|
+        config.formatter!(:json, { filepath: filepath, pretty: true })
+      end
     end
     it 'succeeds' do
       expect(TestStacktraceSourceJsOn.new.call(1)).to eq 4

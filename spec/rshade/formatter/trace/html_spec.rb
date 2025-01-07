@@ -4,7 +4,7 @@ RSpec.describe RShade::Formatter::Trace::Html do
   let(:formatter) { double }
 
   let(:json) { [1, 2, 3] }
-  let(:service) { RShade::Formatter::Trace::Html.new(formatter:) }
+  let(:service) { RShade::Formatter::Trace::Html.new(formatter: formatter) }
 
   context 'check html template generation' do
     before { allow(formatter).to receive(:call).and_return(json) }

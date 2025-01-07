@@ -22,7 +22,7 @@ module RShade
       self
     end
 
-    def set_return_value!(return_value)
+    def return_value!(return_value)
       @hash[:return_value] = return_value
       self
     end
@@ -46,7 +46,7 @@ module RShade
         vars[var_name] = hash
       end
 
-      hash = { path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars:,
+      hash = { path: evt.path, lineno: evt.lineno, klass: evt.defined_class, method_name: evt.method_id, vars: vars,
                event_type: evt.event }
 
       if RETURN_EVENTS.include?(evt.event)

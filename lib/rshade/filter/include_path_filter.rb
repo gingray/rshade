@@ -8,6 +8,7 @@ module RShade
       NAME = :include_paths
 
       def initialize
+        super
         @paths = []
       end
 

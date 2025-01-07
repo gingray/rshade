@@ -32,12 +32,12 @@ module RShade
     private
 
     # more info https://rubyapi.org/3.1/o/tracepoint
-    # @param [TracePoint] tp
-    def process(tp)
+    # @param [TracePoint] trace_point
+    def process(trace_point)
       changed
-      event = Event.from_trace_point(tp)
-      return notify_observers(event, :enter) if CALL_EVENTS.include?(tp.event)
-      return notify_observers(event, :leave) if RETURN_EVENTS.include?(tp.event)
+      event = Event.from_trace_point(trace_point)
+      return notify_observers(event, :enter) if CALL_EVENTS.include?(trace_point.event)
+      return notify_observers(event, :leave) if RETURN_EVENTS.include?(trace_point.event)
 
       notify_observers(event, :other)
     end

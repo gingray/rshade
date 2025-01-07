@@ -2,10 +2,10 @@
 
 module RShade
   class Config
-    RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
+    RUBY_VERSION_PATTERN = /ruby-[0-9.]*/.freeze
 
     def self.default
-      ::RShade::Config::Store.new.set_formatter(::RShade::Formatter::Trace::Stdout.new)
+      ::RShade::Config::Store.new.formatter!(::RShade::Formatter::Trace::Stdout.new)
                              .config_filter(::RShade::Filter::ExcludePathFilter) do |paths|
         default_excluded_path.each do |path|
           paths << path
@@ -28,7 +28,7 @@ module RShade
 
     def tp_events(&block)
       events = block.call
-      @config_store.set_tp_events(events)
+      @config_store.tp_events!(events)
       self
     end
 
@@ -49,7 +49,7 @@ module RShade
 
     def formatter(&block)
       formatter = block.call
-      @config_store.set_formatter(formatter)
+      @config_store.formatter!(formatter)
       self
     end
 
@@ -71,7 +71,7 @@ module RShade
     end
 
     def self.default_excluded_path
-      [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN, /internal/].flatten.compact
+      [ENV['GEM_PATH'].split(':'), RUBY_VERSION_PATTERN, /internal/, %r{/gems/}].flatten.compact
     end
   end
 end

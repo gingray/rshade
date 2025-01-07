@@ -26,14 +26,9 @@ module RShade
           String => ->(value) { value },
           Hash => lambda do |value|
             hash = {}
-            begin
-              value.each do |k, v|
-                hash[k] = traverse(v)
-              end
-            rescue Exception => e
-              binding.pry
+            value.each do |k, v|
+              hash[k] = traverse(v)
             end
-
             hash
           end,
           Array => lambda do |value|

@@ -5,7 +5,7 @@ module RShade
     module Stack
       class Stdout < String
         def call(stack)
-          puts super(stack)
+          puts super
         end
       end
     end

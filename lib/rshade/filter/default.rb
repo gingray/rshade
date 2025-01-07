@@ -3,7 +3,7 @@
 module RShade
   module Filter
     class Default
-      RUBY_VERSION_PATTERN = /ruby-[0-9.]*/
+      RUBY_VERSION_PATTERN = /ruby-[0-9.]*/.freeze
 
       def self.create
         new.create
