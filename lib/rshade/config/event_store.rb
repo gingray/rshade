@@ -5,6 +5,11 @@ module RShade
     class EventStore
       attr_reader :filter, :formatter, :tp_events, :custom_serializers
 
+      DEFAULT_FORMATTER = {
+        json: ::RShade::Formatter::Trace::Json,
+        stdout: ::RShade::Formatter::Trace::Stdout
+      }.freeze
+
       def self.default
         new.exclude_gems!
       end
@@ -36,8 +41,8 @@ module RShade
         self
       end
 
-      def formatter!(formatter)
-        @formatter = formatter
+      def formatter!(formatter, opts = {})
+        @formatter = formatter.is_a?(Symbol) ? set_symbol_formatter(formatter, opts) : formatter
         self
       end
 
@@ -49,6 +54,13 @@ module RShade
       end
 
       private
+
+      def set_symbol_formatter(type, opts)
+        formatter_class = DEFAULT_FORMATTER[type]
+        return formatter_class unless formatter_class
+
+        @formatter = formatter_class.new(**opts)
+      end
 
       def default_filter_composition
         variable_filter = RShade::Filter::VariableFilter.new
