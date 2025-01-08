@@ -2,18 +2,27 @@
 
 module RShade
   class Config
-    class Store
-      attr_reader :filter_composition, :formatter, :tp_events, :custom_serializers
+    class EventStore
+      attr_reader :filter, :formatter, :tp_events, :custom_serializers
+
+      def self.default
+        new.filter!(::RShade::Filter::ExcludePathFilter) do |paths|
+          RShade::Utils.default_excluded_path.each do |path|
+            paths << path
+          end
+        end
+      end
 
       # @param [Hash] options
       # @option options [RShade::Filter::FilterComposition] :filter_composition
       # @option options [#call(event_store)] :formatter
       # @option options [Array<Symbol>] :tp_events
-      def initialize(options = {})
-        @filter_composition = options.fetch(:filter_composition, default_filter_composition)
-        @formatter = options.fetch(:formatter, ::RShade::Formatter::Trace::Stdout)
-        @tp_events = options.fetch(:tp_events, %i[call return])
-        @custom_serializers = options.fetch(:custom_serializers, {})
+      def initialize(tp_events: %i[call return], formatter: RShade::Formatter::Trace::Stdout.new, filter: nil,
+                     serializers: {})
+        @filter = filter || default_filter_composition
+        @formatter = formatter
+        @tp_events = tp_events
+        @custom_serializers = serializers
       end
 
       def tp_events!(tp_events)
@@ -26,8 +35,8 @@ module RShade
         self
       end
 
-      def config_filter(filter_type, &block)
-        filter_composition.config_filter(filter_type, &block)
+      def filter!(filter_type, &block)
+        filter.filter(filter_type, &block)
         self
       end
 

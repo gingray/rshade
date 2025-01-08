@@ -60,7 +60,7 @@ RSpec.describe RShade::Filter::FilterComposition do
     end
 
     before do
-      composition.config_filter(RShade::Filter::VariableFilter) do |name, _value|
+      composition.filter(RShade::Filter::VariableFilter) do |name, _value|
         name == :x
       end
     end

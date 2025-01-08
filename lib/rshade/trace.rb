@@ -4,14 +4,14 @@ module RShade
   class Trace
     attr_reader :config, :event_store
 
-    # @param [RShade::Config,RShade::Config::Store] config
-    def initialize(config)
-      @config = fetch_config(config)
+    # @param [RShade::Config,RShade::Config::EventStore] config
+    def initialize(config: ::RShade::Config::EventStore.default)
+      @config = config
       @event_store = EventTree.new
     end
 
-    def self.reveal(config = nil, &block)
-      new(config).reveal(&block)
+    def self.reveal(config: ::RShade::Config::EventStore.default, &block)
+      new(config: config).reveal(&block)
     end
 
     def reveal(&block)
@@ -24,14 +24,6 @@ module RShade
 
     def show
       config.formatter.call(event_store)
-    end
-
-    private
-
-    def fetch_config(config)
-      config ||= ::RShade::Config.default
-      config = config.value if config.is_a?(::RShade::Config)
-      config
     end
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'RShade::Serializer::Traversal' do
-  let(:hash) { { test: 'test', arr: [1, 2, 3], custom_class: klass } }
+  let(:hash) { { test: 'test', arr: [1, 2, 3], custom_class: klass.new } }
   let(:klass) do
     Class.new
   end

@@ -25,7 +25,7 @@ module RShade
       end
 
       def config_filter(filter_type, &block)
-        filter.config_filter(filter_type, &block)
+        filter.filter(filter_type, &block)
         self
       end
 
@@ -36,7 +36,7 @@ module RShade
 
       def exclude_gems!
         config_filter(::RShade::Filter::ExcludePathFilter) do |paths|
-          paths.concat(RShade::Config.default_excluded_path)
+          paths.concat(RShade::Utils.default_excluded_path)
         end
         self
       end

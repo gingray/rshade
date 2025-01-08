@@ -31,8 +31,8 @@ require 'rshade/formatter/stack/string'
 require 'rshade/formatter/stack/stdout'
 require 'rshade/formatter/stack/json'
 
-require 'rshade/config'
-require 'rshade/config/store'
+require 'rshade/utils'
+require 'rshade/config/event_store'
 require 'rshade/config/stack_store'
 require 'rshade/config/registry'
 
