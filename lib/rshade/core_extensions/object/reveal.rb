@@ -5,7 +5,7 @@ class Object
   def reveal(method_name = nil, **opts, &block)
     if method_name
       @__cache_rshade_reveal ||= {}
-      config = opts.fetch(:config, ::RShade::Config::EventStore.default)
+      config = opts.fetch(:config, ::RShade::Config::Registry.instance.default_trace_config)
       @__cache_rshade_reveal[method_name] = config
       instance_eval do
         def method_added(name)

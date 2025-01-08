@@ -12,7 +12,7 @@ RSpec.describe 'RShade::Config::EventStore' do
     end
 
     xit do
-      filters = config.filter_composition.to_a
+      filters = config.filter.to_a
       expect(filters[0]).to be_a(RShade::Filter::IncludePathFilter)
       expect(filters[1]).to be_a(RShade::Filter::ExcludePathFilter)
       expect(config.formatter).to eq formatter
@@ -23,14 +23,14 @@ RSpec.describe 'RShade::Config::EventStore' do
     let(:config) { RShade::Config::EventStore.default }
 
     xit do
-      filters = config.filter_composition.to_a
+      filters = config.filter.to_a
       expect(filters[0]).to be_a(RShade::Filter::ExcludePathFilter)
       expect(config.formatter).to be_a(RShade::Formatter::Trace::Stdout)
     end
   end
 
   context 'check default filter ignore gems events' do
-    let(:service) { RShade::Config::EventStore.default.filter }
+    let(:service) { RShade::Config::Registry.instance.default_trace_config.filter }
     let(:events) { [ruby_gem_event] }
     let(:ruby_gem_event) { double }
     before do
@@ -42,7 +42,7 @@ RSpec.describe 'RShade::Config::EventStore' do
   end
 
   context 'check default filter ignore gems events when pattern just /gems/' do
-    let(:service) { RShade::Config::EventStore.default.filter }
+    let(:service) { RShade::Config::Registry.instance.default_trace_config.filter }
     let(:events) { [ruby_gem_event] }
     let(:ruby_gem_event) { double }
     before do

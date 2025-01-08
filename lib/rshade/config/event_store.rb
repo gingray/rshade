@@ -6,11 +6,7 @@ module RShade
       attr_reader :filter, :formatter, :tp_events, :custom_serializers
 
       def self.default
-        new.filter!(::RShade::Filter::ExcludePathFilter) do |paths|
-          RShade::Utils.default_excluded_path.each do |path|
-            paths << path
-          end
-        end
+        new.exclude_gems!
       end
 
       # @param [Hash] options
@@ -30,7 +26,7 @@ module RShade
         self
       end
 
-      def add_custom_serializers(hash)
+      def serializer!(hash)
         custom_serializers.merge!(hash)
         self
       end
@@ -42,6 +38,13 @@ module RShade
 
       def formatter!(formatter)
         @formatter = formatter
+        self
+      end
+
+      def exclude_gems!
+        filter!(::RShade::Filter::ExcludePathFilter) do |paths|
+          paths.concat(RShade::Utils.default_excluded_path)
+        end
         self
       end
 

@@ -19,12 +19,12 @@ module RShade
         @custom_serializers = options.fetch(:custom_serializers, {})
       end
 
-      def add_custom_serializers(hash)
+      def serializer!(hash)
         custom_serializers.merge!(hash)
         self
       end
 
-      def config_filter(filter_type, &block)
+      def filter!(filter_type, &block)
         filter.filter(filter_type, &block)
         self
       end
@@ -35,7 +35,7 @@ module RShade
       end
 
       def exclude_gems!
-        config_filter(::RShade::Filter::ExcludePathFilter) do |paths|
+        filter!(::RShade::Filter::ExcludePathFilter) do |paths|
           paths.concat(RShade::Utils.default_excluded_path)
         end
         self

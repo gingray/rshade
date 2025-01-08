@@ -5,12 +5,12 @@ module RShade
     attr_reader :config, :event_store
 
     # @param [RShade::Config,RShade::Config::EventStore] config
-    def initialize(config: ::RShade::Config::EventStore.default)
+    def initialize(config: ::RShade::Config::Registry.instance.default_trace_config)
       @config = config
       @event_store = EventTree.new
     end
 
-    def self.reveal(config: ::RShade::Config::EventStore.default, &block)
+    def self.reveal(config: ::RShade::Config::Registry.instance.default_trace_config, &block)
       new(config: config).reveal(&block)
     end
 
