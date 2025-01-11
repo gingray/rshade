@@ -17,6 +17,10 @@ module RShade
         new_val
       end
 
+      def merge!(new_types)
+        @types.merge!(new_types)
+      end
+
       def default_types
         {
           default: lambda(&:to_s),

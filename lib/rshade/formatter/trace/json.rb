@@ -4,53 +4,43 @@ module RShade
   module Formatter
     module Trace
       class Json
-        attr_reader :event_processor
+        attr_reader :filepath, :pretty
+
+        def initialize(filepath:, pretty: false)
+          @filepath = filepath
+          @pretty = pretty
+        end
 
         # @param [RShade::EventProcessor] event_store
         def call(event_store)
-          @event_store = event_store
-          flat
+          ::File.open(filepath, 'a+') do |file|
+            file.puts(convert_to_json(flat(event_store), pretty))
+          end
         end
 
-        def flat
-          arr = event_store.map do |node|
-            item(node.event)
+        private
+
+        def convert_to_json(object, pretty)
+          return JSON.pretty_generate(object) if pretty
+
+          JSON.generate(object)
+        end
+
+        def flat(event_store)
+          arr = event_store.filter_map do |node|
+            next unless node.value
+
+            serialize(node.value)
           end
           arr.sort_by { |item| item[:level] }
         end
 
-        def hierarchical
-          hash = {}
-          event_store.each do |node|
-            depth = node.level
-            ref = hash_iterate(hash, depth)
-            ref[:data] = item(node)
-          end
-          sort_hash(hash)
-        end
-
-        def sort_hash(hash)
-          {}.tap do |h2|
-            hash.sort.each do |k, v|
-              h2[k] = v.is_a?(Hash) ? sort_hash(v) : v
-            end
-          end
-        end
-
-        def hash_iterate(hash, depth)
-          (0..depth).each do |_lvl|
-            hash[:inner] = {} unless hash[:inner]
-            hash = hash[:inner]
-          end
-          hash
-        end
-
-        def item(value)
+        def serialize(value)
           {
             class: value.klass.to_s,
             method_name: value.method_name,
             full_path: "#{value.path}:#{value.lineno}",
-            level: value.depth,
+            level: value.level,
             vars: value.vars
           }
         end

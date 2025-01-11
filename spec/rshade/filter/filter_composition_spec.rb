@@ -50,7 +50,7 @@ RSpec.describe RShade::Filter::FilterComposition do
   end
 
   context 'event filter composition' do
-    let(:event) { RShade::Event.new({ vars: { x: nil } }) }
+    let(:event) { RShade::Event.new({ vars: { x: { value: nil, name: :x, type: 'NilClass' } } }) }
     let(:composition) do
       filter1 = RShade::Filter::VariableFilter.new
       filter2 = RShade::Filter::IncludePathFilter.new
@@ -60,7 +60,7 @@ RSpec.describe RShade::Filter::FilterComposition do
     end
 
     before do
-      composition.config_filter(RShade::Filter::VariableFilter) do |name, _value|
+      composition.filter(RShade::Filter::VariableFilter) do |name, _value|
         name == :x
       end
     end

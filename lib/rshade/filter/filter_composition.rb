@@ -39,7 +39,7 @@ module RShade
         right&.each(&block)
       end
 
-      def config_filter(type, &block)
+      def filter(type, &block)
         filter = find do |f|
           f.is_a? type
         end

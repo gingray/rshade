@@ -20,7 +20,7 @@ module RShade
 
         frame
       end.compact.reverse
-      config.formatter.call(result)
+      config.formatter.call(result, variable_serializer: config.variable_serializer)
     end
   end
 end

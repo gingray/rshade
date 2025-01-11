@@ -4,7 +4,7 @@ module RShade
   class EventObserver
     attr_reader :event_processor, :config
 
-    # @param [RShade::Config::Store] config
+    # @param [RShade::Config::EventStore] config
     # @param [RShade::EventProcessor] event_store
     def initialize(config, event_processor)
       @event_processor = event_processor
@@ -41,7 +41,7 @@ module RShade
     end
 
     def pass?(event)
-      config.filter_composition.call(event)
+      config.filter.call(event)
     end
   end
 end

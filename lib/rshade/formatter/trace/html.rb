@@ -24,11 +24,11 @@ module RShade
         end
 
         def write_to_file(data)
-          ::File.write(::File.join(RShade::Config.store_dir, FILE_NAME), data)
+          ::File.write(::File.join(RShade::Utils.store_dir, FILE_NAME), data)
         end
 
         def template
-          @template ||= ::File.read(::File.join(::RShade::Config.root_dir, TEMPLATE))
+          @template ||= ::File.read(::File.join(::RShade::Utils.root_dir, TEMPLATE))
         end
       end
     end

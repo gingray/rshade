@@ -9,7 +9,7 @@ module RShade
     RETURN_EVENTS = Set[:return, :c_return, :b_return]
 
     # @param [Enumerable<#call>, #call] observers
-    # @param [::RShade::Config::Store] config
+    # @param [::RShade::Config::EventStore] config
     def initialize(observers, config)
       @trace_p = TracePoint.new(*config.tp_events, &method(:process))
       observers = [observers] unless observers.is_a?(Enumerable)

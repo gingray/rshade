@@ -2,22 +2,34 @@
 
 module RShade
   class Config
-    class StackStore
-      attr_reader :filter, :formatter, :variable_serializer
+    class EventStore
+      attr_reader :filter, :formatter, :tp_events, :variable_serializer
 
       DEFAULT_FORMATTER = {
-        json: ::RShade::Formatter::Stack::Json,
-        stdout: ::RShade::Formatter::Stack::Stdout
+        json: ::RShade::Formatter::Trace::Json,
+        stdout: ::RShade::Formatter::Trace::Stdout
       }.freeze
 
-      # @param [RShade::Formatter::Stack::Stdout] formatter
+      def self.default
+        new.exclude_gems!
+      end
+
+      # @param [Array<Symbol>] tp_events
+      # @param [RShade::Formatter::Trace::Stdout] formatter
       # @param [RShade::Filter::FilterComposition] filter
       # @param [Hash] serializers
-      def initialize(formatter: RShade::Formatter::Stack::Stdout.new, filter: default_filter_composition,
+      def initialize(tp_events: %i[call return], formatter: RShade::Formatter::Trace::Stdout.new,
+                     filter: default_filter_composition,
                      serializers: {})
         @filter = filter
         @formatter = formatter
-        @variable_serializer = ::RShade::Serializer::Traversal.new(serializers)
+        @tp_events = tp_events
+        @variable_serializer = serializers
+      end
+
+      def tp_events!(tp_events)
+        @tp_events = tp_events
+        self
       end
 
       def serializer!(hash)

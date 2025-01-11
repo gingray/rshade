@@ -5,18 +5,18 @@ RSpec.describe RShade::Filter::VariableFilter do
   let(:base_config) do
     var_filter = RShade::Filter::FilterComposition.new(RShade::Filter::VariableFilter.new)
     comp = RShade::Filter::FilterComposition.new(:unary, var_filter)
-    RShade::Config.create(filter_composition: comp).formatter { formatter }
+    RShade::Config::EventStore.new(filter: comp).formatter!(formatter)
   end
 
   context 'variable name' do
     let(:config) do
-      base_config.match_variable do |name, _value|
+      base_config.filter!(RShade::Filter::VariableFilter) do |name, _value|
         name == :x
       end
     end
 
     let(:result) do
-      RShade::Trace.reveal(config) do
+      RShade::Trace.reveal(config: config) do
         TestRshade3.call
       end
     end
@@ -30,13 +30,13 @@ RSpec.describe RShade::Filter::VariableFilter do
 
   context 'variable value' do
     let(:config) do
-      base_config.match_variable do |_name, value|
+      base_config.filter!(RShade::Filter::VariableFilter) do |_name, value|
         value == 3
       end
     end
 
     let(:result) do
-      RShade::Trace.reveal(config) do
+      RShade::Trace.reveal(config: config) do
         TestRshade3.call
       end
     end
@@ -50,13 +50,13 @@ RSpec.describe RShade::Filter::VariableFilter do
 
   context 'variable value' do
     let(:config) do
-      base_config.match_variable do |_name, value|
+      base_config.filter!(RShade::Filter::VariableFilter) do |_name, value|
         value == 4
       end
     end
 
     let(:result) do
-      RShade::Trace.reveal(config) do
+      RShade::Trace.reveal(config: config) do
         TestRshade3.call
       end
     end
@@ -70,13 +70,13 @@ RSpec.describe RShade::Filter::VariableFilter do
 
   context 'variable name' do
     let(:config) do
-      base_config.match_variable do |name, _value|
+      base_config.filter!(RShade::Filter::VariableFilter) do |name, _value|
         name == :z
       end
     end
 
     let(:result) do
-      RShade::Trace.reveal(config) do
+      RShade::Trace.reveal(config: config) do
         TestRshade3.call
       end
     end
