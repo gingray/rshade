@@ -7,7 +7,7 @@ module RShade
 
     def initialize(store, config)
       @store = store
-      custom_serializers = config.custom_serializers
+      custom_serializers = config.variable_serializer
       @serializer = ::RShade::Serializer::Traversal.new(custom_serializers)
     end
 

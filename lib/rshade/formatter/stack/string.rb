@@ -12,10 +12,10 @@ module RShade
           @colorize = colorize
         end
 
-        # @param [RShade::EventProcessor] stack
-        def call(stack)
+        # @param [RShade::EventProcessor] stack_frames
+        def call(stack_frames, variable_serializer: nil)
           buffer = StringIO.new
-          stack.each_with_index do |frame, idx|
+          stack_frames.each_with_index do |frame, idx|
             if idx.zero?
               buffer << ROOT_SEP
               next

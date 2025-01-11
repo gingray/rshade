@@ -16,6 +16,14 @@ gem install rshade
 Simple wrap code that you want to check in to block and it will pretty print all of the calls which was made in this block with pointing line of executions, variables what was pass
 inside methods and variables what was return
 ```ruby
+# config
+::RShade::Config::Registry.instance.trace_config do |config|
+   config.exclude_gems!
+   filepath = File.join(Rails.root, 'log', 'rshade-trace.json.log')
+   config.formatter!(:json, { filepath: filepath, pretty: false })
+end
+
+# execute
 RShade::Trace.reveal do  
   #your code here
 end.show
@@ -34,25 +42,41 @@ change this behaviour or add your own filter. Even when some piece of code are n
 
 ### Configuration
 ```ruby
-config = ::RShade::Config.default
-
-RShade::Trace.reveal(config) do
-end.show
+::RShade::Config::Registry.instance.trace_config do |config|
+   # exclude gems 
+   config.exclude_gems!
+   # path where save output
+   filepath = File.join(Rails.root, 'log', 'rshade-trace.json.log')
+   # output can be json or stdout
+   config.formatter!(:json, { filepath: filepath, pretty: false })
+end
 ```
 ### Filters
 Filters by default represent by expression `(include_path or variable_match) or (not exclude_path)`
 Filters can be chained like:
 ```ruby
-config = ::RShade::Config.default.include_paths { |paths| paths << /devise/ }
-                                  .exclude_paths { |paths| paths << /warden/ } 
-                                  .match_variable { |name, value| name == :current_user }
+::RShade::Config::Registry.instance.trace_config do |config|
+   config.filter!(RShade::Filter::VariableFilter) do |name, value|
+      name == :current_user
+   end
+   config.filter!(::RShade::Filter::ExcludePathFilter) do |paths|
+      paths.concat(/gems/)
+   end
+   config.filter!(::RShade::Filter::IncludePathFilter) do |paths|
+      paths.concat(/devise/)
+   end
+end
 ```
 #### Filter by path include
 `paths` - is array which accept regex or string
 ```ruby
-config = ::RShade::Config.default.include_paths { |paths| paths << /devise/ }
+::RShade::Config::Registry.instance.trace_config do |config|
+   config.filter!(::RShade::Filter::IncludePathFilter) do |paths|
+      paths.concat(/devise/)
+   end
+end
 
-RShade::Trace.reveal(config) do
+RShade::Trace.reveal do
    #your code
 end.show
 
@@ -60,9 +84,13 @@ end.show
 #### Filter by path exclude
 `paths` - is array which accept regex or string
 ```ruby
-config = ::RShade::Config.default.exclude_paths { |paths| paths << /devise/ }
+::RShade::Config::Registry.instance.trace_config do |config|
+   config.filter!(::RShade::Filter::ExcludePathFilter) do |paths|
+      paths.concat(/gems/)
+   end
+end
 
-RShade::Trace.reveal(config) do
+RShade::Trace.reveal do
    #your code
 end.show
 ```
@@ -71,9 +99,14 @@ end.show
 `name` - represent variable name as symbol
 `value` - actual variable value
 ```ruby
-config = ::RShade::Config.default.match_variable { |name, value| name == :current_user }
 
-RShade::Trace.reveal(config) do
+::RShade::Config::Registry.instance.trace_config do |config|
+   config.filter!(RShade::Filter::VariableFilter) do |name, value|
+      name == :current_user
+   end
+end
+
+RShade::Trace.reveal do
    #your code
 end.show
 ```
@@ -108,6 +141,12 @@ Config
    config.exclude_gems!
    filepath = File.join(Rails.root, 'log', 'rshade-stack.json.log')
    config.formatter!(:json, { filepath: filepath, pretty: false })
+
+   config.serializer!({
+                              ActionDispatch::Request => ->(value) do
+                                 "#{value.to_s} -> #{value.method} -> #{value.path}"
+                              end
+                      })
 end
 ```
 

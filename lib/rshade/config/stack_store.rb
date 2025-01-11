@@ -3,24 +3,25 @@
 module RShade
   class Config
     class StackStore
-      attr_reader :filter, :formatter, :custom_serializers
+      attr_reader :filter, :formatter, :variable_serializer
 
       DEFAULT_FORMATTER = {
         json: ::RShade::Formatter::Stack::Json,
         stdout: ::RShade::Formatter::Stack::Stdout
       }.freeze
 
-      # @param [Hash] options
-      # @option options [::RShade::Filter::FilterComposition] :filter_composition
-      # @option options [#call(event_store)] :formatter
-      def initialize(options = {})
-        @filter = options.fetch(:filter, default_filter_composition)
-        @formatter = options.fetch(:formatter, ::RShade::Formatter::Stack::Stdout.new)
-        @custom_serializers = options.fetch(:custom_serializers, {})
+      # @param [RShade::Formatter::Stack::Stdout] formatter
+      # @param [RShade::Filter::FilterComposition] filter
+      # @param [Hash] serializers
+      def initialize(formatter: RShade::Formatter::Stack::Stdout.new, filter: default_filter_composition,
+                     serializers: {})
+        @filter = filter
+        @formatter = formatter
+        @variable_serializer = ::RShade::Serializer::Traversal.new(serializers)
       end
 
       def serializer!(hash)
-        custom_serializers.merge!(hash)
+        variable_serializer.merge!(hash)
         self
       end
 

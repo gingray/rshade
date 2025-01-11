@@ -22,8 +22,8 @@ module RShade
 
       def call(event)
         matchers.each do |match|
-          event.vars.each do |name, value|
-            return true if match.call(name, value)
+          event.vars.each do |name, hash|
+            return true if match.call(name, hash[:value])
           end
         end
         false

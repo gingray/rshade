@@ -23,7 +23,6 @@ require 'rshade/filter/default'
 
 require 'rshade/formatter/trace/string'
 require 'rshade/formatter/trace/json'
-require 'rshade/formatter/trace/file'
 require 'rshade/formatter/trace/html'
 require 'rshade/formatter/trace/stdout'
 

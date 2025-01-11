@@ -31,7 +31,7 @@ RSpec.describe RShade::Filter::VariableFilter do
   context 'variable value' do
     let(:config) do
       base_config.filter!(RShade::Filter::VariableFilter) do |_name, value|
-        value[:value] == 3
+        value == 3
       end
     end
 

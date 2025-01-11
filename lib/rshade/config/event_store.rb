@@ -3,7 +3,7 @@
 module RShade
   class Config
     class EventStore
-      attr_reader :filter, :formatter, :tp_events, :custom_serializers
+      attr_reader :filter, :formatter, :tp_events, :variable_serializer
 
       DEFAULT_FORMATTER = {
         json: ::RShade::Formatter::Trace::Json,
@@ -14,16 +14,17 @@ module RShade
         new.exclude_gems!
       end
 
-      # @param [Hash] options
-      # @option options [RShade::Filter::FilterComposition] :filter_composition
-      # @option options [#call(event_store)] :formatter
-      # @option options [Array<Symbol>] :tp_events
-      def initialize(tp_events: %i[call return], formatter: RShade::Formatter::Trace::Stdout.new, filter: nil,
+      # @param [Array<Symbol>] tp_events
+      # @param [RShade::Formatter::Trace::Stdout] formatter
+      # @param [RShade::Filter::FilterComposition] filter
+      # @param [Hash] serializers
+      def initialize(tp_events: %i[call return], formatter: RShade::Formatter::Trace::Stdout.new,
+                     filter: default_filter_composition,
                      serializers: {})
-        @filter = filter || default_filter_composition
+        @filter = filter
         @formatter = formatter
         @tp_events = tp_events
-        @custom_serializers = serializers
+        @variable_serializer = serializers
       end
 
       def tp_events!(tp_events)
@@ -32,7 +33,7 @@ module RShade
       end
 
       def serializer!(hash)
-        custom_serializers.merge!(hash)
+        variable_serializer.merge!(hash)
         self
       end
 
