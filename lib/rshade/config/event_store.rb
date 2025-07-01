@@ -18,10 +18,11 @@ module RShade
       # @param [RShade::Formatter::Trace::Stdout] formatter
       # @param [RShade::Filter::FilterComposition] filter
       # @param [Hash] serializers
-      def initialize(tp_events: %i[call return], formatter: RShade::Formatter::Trace::Stdout.new,
-                     filter: default_filter_composition,
+      def initialize(tp_events: %i[call return],
+                     formatter: RShade::Formatter::Trace::Stdout.new,
+                     filter: nil,
                      serializers: {})
-        @filter = filter
+        @filter = filter || default_filter_composition
         @formatter = formatter
         @tp_events = tp_events
         @variable_serializer = serializers
@@ -43,7 +44,7 @@ module RShade
       end
 
       def formatter!(formatter, opts = {})
-        @formatter = formatter.is_a?(Symbol) ? set_symbol_formatter(formatter, opts) : formatter
+        @formatter = formatter.is_a?(Symbol) ? fetch_formatter(formatter, opts) : formatter
         self
       end
 
@@ -56,7 +57,7 @@ module RShade
 
       private
 
-      def set_symbol_formatter(type, opts)
+      def fetch_formatter(type, opts)
         formatter_class = DEFAULT_FORMATTER[type]
         return formatter_class unless formatter_class
 

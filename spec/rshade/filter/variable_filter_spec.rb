@@ -8,9 +8,10 @@ RSpec.describe RShade::Filter::VariableFilter do
     RShade::Config::EventStore.new(filter: comp).formatter!(formatter)
   end
 
-  context 'variable name' do
+  context 'variable name', focus: true do
     let(:config) do
       base_config.filter!(RShade::Filter::VariableFilter) do |name, _value|
+        puts name
         name == :x
       end
     end
@@ -24,7 +25,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     it 'match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
-      expect(formatter.event_store.count).to eq 2
+      expect(formatter.event_tree.count).to eq 2
     end
   end
 
@@ -44,7 +45,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     it 'match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
-      expect(formatter.event_store.count).to eq 1
+      expect(formatter.event_tree.count).to eq 1
     end
   end
 
@@ -64,7 +65,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     it 'not match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
-      expect(formatter.event_store.count).to eq 0
+      expect(formatter.event_tree.count).to eq 0
     end
   end
 
@@ -84,7 +85,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     it 'not match' do
       expect(result).to be_kind_of RShade::Trace
       result.show
-      expect(formatter.event_store.count).to eq 0
+      expect(formatter.event_tree.count).to eq 0
     end
   end
 end

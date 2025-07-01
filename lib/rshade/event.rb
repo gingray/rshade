@@ -13,28 +13,8 @@ module RShade
 
     %i[klass path lineno method_name vars level return_value].each do |method_name|
       define_method method_name do
-        fetch method_name
+        fetch(method_name)
       end
-    end
-
-    def with_level!(level)
-      @hash[:level] = level
-      self
-    end
-
-    def return_value!(return_value)
-      @hash[:return_value] = return_value
-      self
-    end
-
-    def with_serialized_return!(serializer)
-      @hash[:return_value] = serializer.call(@hash[:return_value])
-      self
-    end
-
-    def with_serialized_vars!(serializer)
-      @hash[:vars] = serializer.call(@hash[:vars])
-      self
     end
 
     def self.from_trace_point(evt)
@@ -55,6 +35,26 @@ module RShade
         hash.merge!({ return_value: { value: ret_val, type: ret_val_type } })
       end
       new(hash)
+    end
+
+    def with_level!(level)
+      @hash[:level] = level
+      self
+    end
+
+    def return_value!(return_value)
+      @hash[:return_value] = return_value
+      self
+    end
+
+    def with_serialized_return!(serializer)
+      @hash[:return_value] = serializer.call(@hash[:return_value])
+      self
+    end
+
+    def with_serialized_vars!(serializer)
+      @hash[:vars] = serializer.call(@hash[:vars])
+      self
     end
 
     private
