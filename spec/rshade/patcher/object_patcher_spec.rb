@@ -14,7 +14,7 @@ module ModulePatcher
   end
 end
 
-RSpec.describe 'RShade::Patcher::ObjectPatcher', focus: true do
+RSpec.describe 'RShade::Patcher::ObjectPatcher' do
   context 'when instance patch through prepend' do
     let(:result) { [] }
     before do
@@ -30,7 +30,7 @@ RSpec.describe 'RShade::Patcher::ObjectPatcher', focus: true do
     end
   end
 
-  context 'when singleton method patch through prepend', focus: true do
+  context 'when singleton method patch through prepend' do
     let(:result) { [] }
     before do
       RShade::Patcher::ObjectPatcher.new.patch(ModulePatcher::TestPatcher, :call2, :class) do |*args|

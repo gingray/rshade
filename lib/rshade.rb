@@ -10,7 +10,6 @@ require 'singleton'
 
 require 'rshade/serializer/traversal'
 require 'rshade/event_tree'
-require 'rshade/event_processor'
 require 'rshade/event_observer'
 require 'rshade/trace_observable'
 require 'rshade/filter/abstract_filter'

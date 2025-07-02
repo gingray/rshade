@@ -15,8 +15,9 @@ module RShade
     end
 
     def reveal(&block)
-      processor = EventProcessor.new(event_tree, config)
-      observer = EventObserver.new(event_processor: processor, filter: config.filter)
+      custom_serializers = config.variable_serializer
+      serializer = ::RShade::Serializer::Traversal.new(custom_serializers)
+      observer = EventObserver.new(event_tree: event_tree, filter: config.filter, serializer: serializer)
       observable = RShade::TraceObservable.new([observer], config)
       observable.reveal(&block)
       self

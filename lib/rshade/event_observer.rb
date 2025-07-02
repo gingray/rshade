@@ -2,7 +2,7 @@
 
 module RShade
   class EventObserver
-    attr_reader :event_processor, :filter
+    attr_reader :event_tree, :filter, :serializer
 
     HOOK = {
       enter: 1,
@@ -11,9 +11,10 @@ module RShade
 
     # @param [RShade::Filter::AbstractFilter] filter
     # @param [RShade::EventProcessor] event_processor
-    def initialize(event_processor:, filter:)
-      @event_processor = event_processor
+    def initialize(event_tree:, filter:, serializer:)
+      @event_tree = event_tree
       @filter = filter
+      @serializer = serializer
       @level = 0
     end
 
@@ -25,14 +26,28 @@ module RShade
 
       case type
       when :enter
-        event_processor.enter(event, @level)
+        enter(event_tree, event, @level)
       when :leave
-        event_processor.leave(event, @level)
+        leave(event_tree, event)
       when :other
-        event_processor.other(event, @level)
       end
     rescue StandardError => e
       puts e
+    end
+
+    def enter(event_tree, event, level)
+      event.with_serialized_vars!(serializer).with_level!(level)
+      event_tree.add(event, level)
+    end
+
+    def leave(event_tree, event)
+      event_tree.current! do |node|
+        node.value.return_value!(event.return_value)
+            .with_serialized_return!(serializer)
+      end
+    rescue StandardError
+      # this rescue here due this issue which reproduce in ruby-2.6.6 at least
+      # https://bugs.ruby-lang.org/issues/18060
     end
   end
 end
