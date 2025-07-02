@@ -3,10 +3,11 @@
 module RShade
   # nodoc
   class EventProcessor
-    attr_reader :store, :serializer
+    attr_reader :event_tree, :serializer
 
-    def initialize(store, config)
-      @store = store
+    # @param [RShade::EventTree] event_tree
+    def initialize(event_tree, config)
+      @event_tree = event_tree
       custom_serializers = config.variable_serializer
       @serializer = ::RShade::Serializer::Traversal.new(custom_serializers)
     end
@@ -15,13 +16,13 @@ module RShade
     # @param [Integer] level
     def enter(event, level)
       event.with_serialized_vars!(serializer).with_level!(level)
-      store.add(event, level)
+      event_tree.add(event, level)
     end
 
     # @param [RShade::Event] event
     # @param [Integer] level
     def leave(event, _level)
-      store.current! do |node|
+      event_tree.current! do |node|
         node.value.return_value!(event.return_value)
             .with_serialized_return!(serializer)
       end

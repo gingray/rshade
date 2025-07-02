@@ -41,6 +41,11 @@ require 'rshade/stack'
 require 'rshade/stack_frame'
 require 'rshade/rspec/rspec'
 require 'rshade/core_extensions/object/reveal'
+require 'rshade/core_extensions/rails/trace_middleware'
+require 'rshade/core_extensions/rails/patch_middleware'
+require 'rshade/patcher/object_patcher'
+require 'rshade/core_extensions/rails/rails'
+
 require 'rshade/version'
 
 module RShade

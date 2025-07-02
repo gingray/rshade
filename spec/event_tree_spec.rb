@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 RSpec.describe RShade::EventTree do
-  let(:store) { RShade::EventTree.new }
+  let(:event_tree) { RShade::EventTree.new }
 
   context 'add element to the store should return one element' do
     let(:sequence) { [1] }
     before do
       sequence.map { |item| RShade::Event.new({ level: item, vars: {} }) }.each do |event|
-        store.add event, event.level
+        event_tree.add event, event.level
       end
     end
     it do
-      expect(store.count).to eq 1
+      expect(event_tree.count).to eq 1
     end
   end
 
@@ -19,11 +19,11 @@ RSpec.describe RShade::EventTree do
     let(:sequence) { [1, 2, 3, 2, 1] }
     before do
       sequence.map { |item| RShade::Event.new({ level: item, vars: {} }) }.each do |event|
-        store.add event, event.level
+        event_tree.add event, event.level
       end
     end
     it do
-      expect(store.map(&:level)).to eq [1, 2, 3, 2, 1]
+      expect(event_tree.map(&:level)).to eq [1, 2, 3, 2, 1]
     end
   end
 
@@ -32,11 +32,11 @@ RSpec.describe RShade::EventTree do
       let(:sequence) { [1, 2, 5, 2, 1] }
       before do
         sequence.map { |item| RShade::Event.new({ level: item, vars: {} }) }.each do |event|
-          store.add event, event.level
+          event_tree.add event, event.level
         end
       end
       it do
-        expect(store.map(&:level)).to eq [1, 2, 3, 4, 5, 2, 1]
+        expect(event_tree.map(&:level)).to eq [1, 2, 3, 4, 5, 2, 1]
       end
     end
   end
@@ -45,11 +45,11 @@ RSpec.describe RShade::EventTree do
     let(:sequence) { [1, 2, 5, 2, 1] }
     before do
       sequence.map { |item| RShade::Event.new({ level: item, vars: {} }) }.each do |event|
-        store.add event, event.level
+        event_tree.add event, event.level
       end
     end
     it do
-      expect(store.map(&:vlevel)).to eq [1, 2, 3, 3, 3, 2, 1]
+      expect(event_tree.map(&:vlevel)).to eq [1, 2, 3, 3, 3, 2, 1]
     end
   end
 end

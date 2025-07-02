@@ -8,7 +8,7 @@ RSpec.describe RShade::Filter::VariableFilter do
     RShade::Config::EventStore.new(filter: comp).formatter!(formatter)
   end
 
-  context 'variable name', focus: true do
+  context 'variable name' do
     let(:config) do
       base_config.filter!(RShade::Filter::VariableFilter) do |name, _value|
         puts name
